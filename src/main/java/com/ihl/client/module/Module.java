@@ -272,7 +272,7 @@ public class Module extends Helper {
     }
 
     public Option addOther(String name, String description) {
-        Option opt = new Option(this, name, description, new ValueString(""), Option.Type.OTHER);
+        Option opt = new OptNoS(this, name, description, new ValueString(""), Option.Type.OTHER);
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }

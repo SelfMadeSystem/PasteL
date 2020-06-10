@@ -301,7 +301,7 @@ public class Option {
     }
 
     public Option addOther(String name, String description) {
-        Option opt = new Option(this.module, name, description, new ValueString(""), Option.Type.OTHER);
+        Option opt = new OptNoS(this.module, name, description, new ValueString(""), Option.Type.OTHER);
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
