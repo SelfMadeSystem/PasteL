@@ -19,44 +19,42 @@ public class Speed extends Module {
 
     public Speed() {
         super("Speed", "Apply a movement multiplier", Category.MOVEMENT, "NONE");
-        //options.put("speed", new Option(this, "Speed", "Movement speed multiplier", new ValueDouble(2, new double[]{0.1, 10}, 0.1), Option.Type.NUMBER));
-//        options.put("ncp", new Option(this, "NCP", "Use NCP bypassed speed", new ValueBoolean(true), Option.Type.BOOLEAN, new Option[]{
-//                new Option(this, "Mode", "NCP version selector", new ValueChoice(1, new String[]{"normal", "fast"}), Option.Type.CHOICE),
-//                new Option(this, "Timer", "NCP speed timer modifier", new ValueDouble(1.15, new double[]{0.1, 10}, 0.01), Option.Type.NUMBER)
-//        }));
-        //options.put("mode", new Option(this, "Mode", "Bypass mode", new ValueChoice(1, "NCP", "AAC"), Option.Type.CHOICE));
-        options.put("addvalue", new OptNoS(this, "Add Value", "Adds Values. Enable this to add a value.", new ValueBoolean(false), Option.Type.BOOLEAN,
-          new OptNoS(this, "Name", "Name of this value", new ValueString("Custom Value"), Option.Type.STRING),
-          new OptNoS(this, "Condition", "Condition of this value, when it happens", new ValueChoice(0, "always", "up", "down", "ground"), Option.Type.CHOICE),
-          new OptNoS(this, "EveryGround", "Every X amount of ground hits to do this.", new ValueDouble(1, new double[]{1, 40}, 1), Option.Type.NUMBER),
-          new OptNoS(this, "EveryTick", "Every X ticks to do this.", new ValueDouble(1, new double[]{1, 40}, 1), Option.Type.NUMBER),
-          new OptNoS(this, "TickGround", "Every X ticks after ground.", new ValueDouble(1, new double[]{1, 40}, 1), Option.Type.NUMBER)));
-        options.put("normalvalues", new OptNoS(this, "Normal Values", "Normal values for the bypasses. Ground, up, down.",
-          new ValueString(""), Option.Type.OTHER,
-          new Option(this, "Ground", "Modifications when hitting ground", new ValueBoolean(true), Option.Type.BOOLEAN,
-            new Option(this, "VClip", "Teleport Up. Default: 0", new ValueDouble(0, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-            new Option(this, "HClip", "Teleport infront. Default: 0", new ValueDouble(0, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-            new Option(this, "Timer", "Timer modifier. Default: 1", new ValueDouble(1, new double[]{0.1, 5}, 0.01), Option.Type.NUMBER),
-            new Option(this, "VSet", "Vertical Add. Default: 0.42", new ValueDouble(0.42, new double[]{-1, 1}, 0.01), Option.Type.NUMBER),
-            new Option(this, "HAdd", "Horizontal Add. Default: 0", new ValueDouble(0, new double[]{-1, 1}, 0.01), Option.Type.NUMBER),
-            new Option(this, "HSet", "Sets horizontal instead of adding. Default: false", new ValueBoolean(false), Option.Type.BOOLEAN),
-            new Option(this, "HMult", "Horizontal Multiply. Default: 1", new ValueDouble(1, new double[]{-2, 2}, 0.1), Option.Type.NUMBER),
-            new Option(this, "Air Speed", "Air speed. Default: 0.02", new ValueDouble(0.02, new double[]{0, 0.5}, 0.001), Option.Type.NUMBER)),
-          new Option(this, "Up", "Modifications when going up", new ValueBoolean(true), Option.Type.BOOLEAN,
-            new Option(this, "Timer", "Timer modifier. Default: 1", new ValueDouble(1, new double[]{0.1, 5}, 0.01), Option.Type.NUMBER),
-            new Option(this, "VAdd", "Vertical Add. Default: 0", new ValueDouble(0, new double[]{-1, 1}, 0.01), Option.Type.NUMBER),
-            new Option(this, "VMult", "Vertical Multiply. Default: 1", new ValueDouble(1, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-            new Option(this, "HAdd", "Horizontal Add. Default: 0", new ValueDouble(0, new double[]{-1, 1}, 0.01), Option.Type.NUMBER),
-            new Option(this, "HMult", "Horizontal Multiply. Default: 1", new ValueDouble(1, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-            new Option(this, "Air Speed", "Air speed. Default: 0.02", new ValueDouble(0.02, new double[]{0, 0.5}, 0.001), Option.Type.NUMBER)),
-          new Option(this, "Down", "Modifications when going down", new ValueBoolean(true), Option.Type.BOOLEAN,
-            new Option(this, "Timer", "Timer modifier. Default: 1", new ValueDouble(1, new double[]{0.1, 5}, 0.01), Option.Type.NUMBER),
-            new Option(this, "VAdd", "Vertical Add. Default: 0", new ValueDouble(0, new double[]{-1, 1}, 0.01), Option.Type.NUMBER),
-            new Option(this, "VMult", "Vertical Multiply. Default: 1", new ValueDouble(1, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-            new Option(this, "HAdd", "Horizontal Add. Default: 0", new ValueDouble(0, new double[]{-1, 1}, 0.01), Option.Type.NUMBER),
-            new Option(this, "HMult", "Horizontal Multiply. Default: 1", new ValueDouble(1, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-            new Option(this, "Air Speed", "Air speed. Default: 0.02", new ValueDouble(0.02, new double[]{0, 0.5}, 0.001), Option.Type.NUMBER))));
-        options.put("customvalues", new OptNoS(this, "Custom Values", "Other values that you can add/remove", new ValueString(""), Option.Type.OTHER));
+        { //Add values to the AddValue section.
+            OptNoS addValue = addBooleanNoS("Add Value", "Adds Values. Enable this to add a value.", false);
+            addValue.addStringNoS("Name", "Name of this value", "Custom Value");
+            addValue.addChoiceNoS("Condition", "Condition of this value, when it happens", "always", "up", "down", "ground");
+            addValue.addIntegerNoS("EveryGround", "Every X amount of ground hits to do this.", 1, 1, 40);
+            addValue.addIntegerNoS("EveryTick", "Every X ticks to do this.", 1, 1, 40);
+            addValue.addIntegerNoS("TickGround", "Every X ticks after ground.", 1, 1, 40);
+        }
+        { //Add values to the "Ground" section.
+            Option ground = addBoolean("Ground", "Modifications when hitting ground", true);
+            ground.addDouble("VClip", "Teleport Up. Default: 0", 0, -2, 2, 0.01);
+            ground.addDouble("HClip", "Teleport forwards. Default: 0", 0, -2, 2, 0.01);
+            ground.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
+            ground.addDouble("VSet", "Sets the vertical motion. Default: 0.42", 0.42, -2, 2, 0.01);
+            ground.addDouble("HAdd", "Adds to the horizontal motion. Default: 0.2", 0.2, -2, 2, 0.01);
+            ground.addBoolean("HSet", "Sets the horizontal motion instead of adding to it. Default: false", false);
+            ground.addDouble("HMult", "Multiplies the horizontal motion. Default: 0.2", 1, -2, 2, 0.01);
+            ground.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
+        }
+        { //Add values to the "Up" section.
+            Option ground = addBoolean("Up", "Modifications when going up.", true);
+            ground.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
+            ground.addDouble("VAdd", "Adds to the vertical motion. Default: 0", 0, -2, 2, 0.01);
+            ground.addDouble("HAdd", "Adds to the horizontal motion. Default: 0.2", 0.2, -2, 2, 0.01);
+            ground.addDouble("HMult", "Multiplies the horizontal motion. Default: 0.2", 1, -2, 2, 0.01);
+            ground.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
+        }
+        { //Add values to the "Down" section.
+            Option ground = addBoolean("Down", "Modifications when coming back down.", true);
+            ground.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
+            ground.addDouble("VAdd", "Adds to the vertical motion. Default: 0", 0, -2, 2, 0.01);
+            ground.addDouble("HAdd", "Adds to the horizontal motion. Default: 0.2", 0.2, -2, 2, 0.01);
+            ground.addDouble("HMult", "Multiplies the horizontal motion. Default: 0.2", 1, -2, 2, 0.01);
+            ground.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
+        }
+        addOther("CustomValues", "Other values that you can add/remove");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 
@@ -101,7 +99,6 @@ public class Speed extends Module {
                 }
             } else if (eventOption.option.getTValue() instanceof ValueString) {
                 Option opt = options.get("customvalues").options.remove(eventOption.option.parents.get(0).name.toLowerCase().replaceAll(" ", ""));
-                // TODO: 2020-06-09 change name
                 opt.name = eventOption.changed;
                 options.get("customvalues").options.put(opt.name.toLowerCase().replaceAll(" ", ""), opt);
             }
@@ -120,24 +117,23 @@ public class Speed extends Module {
     }
 
     private Option generateOption(String name, int condition, int everyGround, int everyTick, int tickGround) {
-        return new Option(this, name, "Custom value.", new ValueBoolean(true), Option.Type.BOOLEAN,
-          new Option(this, "Name", "Name of module.", new ValueString(name), Option.Type.STRING),
-          new OptNoS(this, "Delete", "Enable this to delete module.", new ValueBoolean(false), Option.Type.BOOLEAN),
-          new Option(this, "Condition", "Condition of this value, when it happens", new ValueChoice(condition, "always", "up", "down", "ground"), Option.Type.CHOICE),
-          //new Option(this, "Condition1", "Extra conditions of this value, when it happens", new ValueChoice(condition1, "tick", "ground"), Option.Type.CHOICE,
-          new Option(this, "EveryGround", "Every X amount of ground hits to do this.", new ValueDouble(everyGround, new double[]{1, 40}, 1), Option.Type.NUMBER),
-          new Option(this, "EveryTick", "Every X ticks to do this.", new ValueDouble(tickGround, new double[]{1, 40}, 1), Option.Type.NUMBER),
-          new Option(this, "TickGround", "Every X ticks after ground.", new ValueDouble(everyTick, new double[]{1, 40}, 1), Option.Type.NUMBER),
-          new Option(this, "VClip", "Teleport Up. Default: 0", new ValueDouble(0, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-          new Option(this, "HClip", "Teleport infront. Default: 0", new ValueDouble(0, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-          new Option(this, "Timer", "Timer modifier. Default: 1", new ValueDouble(1, new double[]{0.1, 5}, 0.01), Option.Type.NUMBER),
-          new Option(this, "VAdd", "Vertical Add. Default: 0", new ValueDouble(0, new double[]{-1, 1}, 0.01), Option.Type.NUMBER),
-          new Option(this, "VSet", "Sets vertical instead of adding. Default: false", new ValueBoolean(false), Option.Type.BOOLEAN),
-          new Option(this, "VMult", "Vertical Multiply. Default: 1", new ValueDouble(1, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-          new Option(this, "HAdd", "Horizontal Add. Default: 0", new ValueDouble(0, new double[]{-1, 1}, 0.01), Option.Type.NUMBER),
-          new Option(this, "HSet", "Sets horizontal instead of adding. Default: 1", new ValueBoolean(false), Option.Type.BOOLEAN),
-          new Option(this, "HMult", "Horizontal Multiply. Default: 1", new ValueDouble(1, new double[]{-2, 2}, 0.01), Option.Type.NUMBER),
-          new Option(this, "Air Speed", "Air speed. Default: 0.02", new ValueDouble(0.02, new double[]{0, 0.5}, 0.001), Option.Type.NUMBER));
+        Option opt = new Option(this, name, "Custom value.", new ValueBoolean(true), Option.Type.BOOLEAN);
+        opt.addString("Name", "Name of module.", name);
+        opt.addBooleanNoS("Delete", "Enable to delete this module.", false);
+        opt.options.put("condition", new Option(this, "Condition", "Condition of this value, when it happens", new ValueChoice(condition, "always", "up", "down", "ground"), Option.Type.CHOICE));
+        opt.addInteger("EveryGround", "Every X amount of ground hits to do this.", everyGround, 1, 40);
+        opt.addInteger("EveryTick", "Every X ticks to do this.", everyTick, 1, 40);
+        opt.addInteger("TickGround", "Every X ticks after ground.", tickGround, 1, 40);
+        opt.addDouble("VClip", "Teleports up. Default: 0", 0, -2, 2, 0.01);
+        opt.addDouble("HClip", "Teleports forwards. Default: 0", 0, -2, 2, 0.01);
+        opt.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
+        opt.addDouble("VAdd", "Adds to the vertical motion. Default: 0", 0, -2, 2, 0.01);
+        opt.addBoolean("VSet", "Sets the vertical motion instead of adding to it. Default: false", false);
+        opt.addDouble("HAdd", "Adds to the horizontal motion. Default: 0.2", 0.2, -2, 2, 0.01);
+        opt.addBoolean("HSet", "Sets the horizontal motion instead of adding to it. Default: false", false);
+        opt.addDouble("HMult", "Multiplies the horizontal motion. Default: 0.2", 1, -2, 2, 0.01);
+        opt.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
+        return opt;
     }
 
     protected void onEvent(Event event) {
@@ -232,44 +228,4 @@ public class Speed extends Module {
         MUtil.hmult(hmult);
         //MUtil.moveAllTypes(vclip, hclip, timer, airSpeed, vadd, vmult, hadd, hmult);
     }
-
-    /*if (event instanceof EventPlayerMove) {
-            EventPlayerMove e = (EventPlayerMove) event;
-            if (e.type == Event.Type.PRE) {
-                if (!ncp) {
-                    e.x *= speed;
-                    e.z *= speed;
-                }
-            } else if (e.type == Event.Type.POST) {
-                if (ncp) {
-                    if (player().onGround && !mc().gameSettings.keyBindJump.getIsKeyPressed() && !player().isCollidedHorizontally && (player().moveForward != 0 || player().moveStrafing != 0) && !player().isSneaking()) {
-                        double val = (player().rotationYaw + 90 + (player().moveForward > 0 ? 0 + (player().moveStrafing > 0 ? -45 : player().moveStrafing < 0 ? 45 : 0) : player().moveForward < 0 ? 180 + (player().moveStrafing > 0 ? 45 : player().moveStrafing < 0 ? -45 : 0) : 0 + (player().moveStrafing > 0 ? -90 : player().moveStrafing < 0 ? 90 : 0))) * Math.PI / 180;
-
-                        double x = Math.cos(val) * (ncpMode.equalsIgnoreCase("fast") ? 0.27 : 0.2);
-                        double z = Math.sin(val) * (ncpMode.equalsIgnoreCase("fast") ? 0.27 : 0.2);
-
-                        player().motionX += x;
-                        player().motionY = ncpMode.equalsIgnoreCase("fast") ? 0.145 : 0.21;
-                        player().motionZ += z;
-
-                        mc().timer.timerSpeed = (float) ncpTimer;
-
-                        jumped = true;
-                    } else {
-                        mc().timer.timerSpeed = 1f;
-                    }
-                }
-            }
-        } else if (event instanceof EventPlayerUpdate) {
-            EventPlayerUpdate e = (EventPlayerUpdate) event;
-            if (e.type == Event.Type.POST) {
-                if (ncp) {
-                    if (jumped && !player().onGround && !mc().gameSettings.keyBindJump.getIsKeyPressed() && !player().isOnLadder()) {
-                        player().motionY = Math.min(ncpMode.equalsIgnoreCase("fast") ? -0.2 : 0, player().motionY);
-                        jumped = false;
-                    }
-                }
-            }
-        }*/
-
 }

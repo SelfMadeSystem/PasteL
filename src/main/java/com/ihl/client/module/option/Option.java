@@ -305,6 +305,39 @@ public class Option {
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
+    public OptNoS addBooleanNoS(String name, String description, boolean defaultValue) {
+        OptNoS opt = new OptNoS(this.module, name, description, new ValueBoolean(defaultValue), OptNoS.Type.BOOLEAN);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
+
+    public OptNoS addIntegerNoS(String name, String description, int defaultValue, int min, int max) {
+        return addDoubleNoS(name, description, defaultValue, min, max, 1);
+    }
+
+    public OptNoS addDoubleNoS(String name, String description, double defaultValue, double min, double max, double increments) {
+        OptNoS opt = new OptNoS(this.module, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), OptNoS.Type.NUMBER);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
+
+    public OptNoS addStringNoS(String name, String description, String defaultValue) {
+        OptNoS opt = new OptNoS(this.module, name, description, new ValueString(defaultValue), OptNoS.Type.STRING);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
+
+    public OptNoS addChoiceNoS(String name, String description, String... values) {
+        OptNoS opt = new OptNoS(this.module, name, description, new ValueChoice(0, values), OptNoS.Type.CHOICE);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
+
+    public OptNoS addOtherNoS(String name, String description) {
+        OptNoS opt = new OptNoS(this.module, name, description, new ValueString(""), OptNoS.Type.OTHER);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
 
     //Option Getters.
     // names
@@ -314,6 +347,8 @@ public class Option {
         Option currentOpt = options.get(names[0]);
         for (int i = 1; i < names.length; i++) {
             currentOpt = currentOpt.options.get(names[i]);
+            if (currentOpt == null)
+                throw new NullPointerException("Not value of name:" + names[i]);
         }
         return currentOpt.getValue();
     }
