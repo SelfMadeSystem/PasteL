@@ -59,9 +59,10 @@ public class Option {
     public static Option get(Map<String, Option> options, String... keys) {
         Option toReturn = options.get(keys[0]);
         for (int i = 1; i < keys.length; i++) {
-            if (toReturn.options != null)
-                if (toReturn.options.get(keys[i]) != null)
-                    toReturn = toReturn.options.get(keys[i]);
+            if (toReturn != null)
+                if (toReturn.options != null)
+                    if (toReturn.options.get(keys[i]) != null)
+                        toReturn = toReturn.options.get(keys[i]);
         }
         return toReturn;
     }
@@ -306,6 +307,7 @@ public class Option {
     public Object getValue(String option) {
         return options.get(option).getValue();
     }
+
     public Object getValue(String option, String value) {
         return options.get(option).getValue(value);
     }
