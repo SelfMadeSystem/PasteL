@@ -5,7 +5,7 @@ import com.ihl.client.comparator.StringLengthComparator;
 import com.ihl.client.gui.ring.PrevRing;
 import com.ihl.client.gui.ring.Ring;
 import com.ihl.client.gui.ring.RingCategory;
-import com.ihl.client.module.hacks.Category;
+import com.ihl.client.module.Category;
 import com.ihl.client.module.Module;
 import com.ihl.client.module.option.Option;
 import com.ihl.client.util.ColorUtil;

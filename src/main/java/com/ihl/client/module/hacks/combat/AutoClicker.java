@@ -2,7 +2,7 @@ package com.ihl.client.module.hacks.combat;
 
 import com.ihl.client.event.*;
 import com.ihl.client.module.Module;
-import com.ihl.client.module.hacks.Category;
+import com.ihl.client.module.Category;
 import com.ihl.client.module.option.*;
 import com.ihl.client.util.TimeUtils;
 import net.minecraft.client.settings.KeyBinding;

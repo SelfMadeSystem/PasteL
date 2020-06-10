@@ -1,9 +1,10 @@
-package com.ihl.client.module.hacks;
+package com.ihl.client.module.hacks.misc;
 
 import com.ihl.client.event.Event;
 import com.ihl.client.event.EventHandler;
 import com.ihl.client.event.EventPacket;
 import com.ihl.client.module.*;
+import com.ihl.client.module.Category;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
 
 @EventHandler(events = {EventPacket.class})

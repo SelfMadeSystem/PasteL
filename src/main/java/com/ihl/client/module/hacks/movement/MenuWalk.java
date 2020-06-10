@@ -3,7 +3,7 @@ package com.ihl.client.module.hacks.movement;
 import com.ihl.client.Helper;
 import com.ihl.client.event.EventHandler;
 import com.ihl.client.gui.GuiHandle;
-import com.ihl.client.module.hacks.Category;
+import com.ihl.client.module.Category;
 import com.ihl.client.module.Module;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.settings.KeyBinding;

@@ -42,7 +42,6 @@ public class BlockCactus extends Block
 
             for (var6 = 1; worldIn.getBlockState(pos.offsetDown(var6)).getBlock() == this; ++var6)
             {
-                ;
             }
 
             if (var6 < 3)
@@ -67,13 +66,13 @@ public class BlockCactus extends Block
     public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
     {
         float var4 = Module.get("anticactus").active ? 0 : 0.0625F;
-        return new AxisAlignedBB((double)((float)pos.getX() + var4), (double)pos.getY(), (double)((float)pos.getZ() + var4), (double)((float)(pos.getX() + 1) - var4), (double)((float)(pos.getY() + 1) - var4), (double)((float)(pos.getZ() + 1) - var4));
+        return new AxisAlignedBB((float)pos.getX() + var4, pos.getY(), (float)pos.getZ() + var4, (float)(pos.getX() + 1) - var4, (float)(pos.getY() + 1) - var4, (float)(pos.getZ() + 1) - var4);
     }
 
     public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
     {
         float var3 = 0.0625F;
-        return new AxisAlignedBB((double)((float)pos.getX() + var3), (double)pos.getY(), (double)((float)pos.getZ() + var3), (double)((float)(pos.getX() + 1) - var3), (double)(pos.getY() + 1), (double)((float)(pos.getZ() + 1) - var3));
+        return new AxisAlignedBB((float)pos.getX() + var3, pos.getY(), (float)pos.getZ() + var3, (float)(pos.getX() + 1) - var3, pos.getY() + 1, (float)(pos.getZ() + 1) - var3);
     }
 
     public boolean isFullCube()
@@ -88,7 +87,7 @@ public class BlockCactus extends Block
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos);
     }
 
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
@@ -148,6 +147,6 @@ public class BlockCactus extends Block
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {AGE_PROP});
+        return new BlockState(this, AGE_PROP);
     }
 }

@@ -1,7 +1,8 @@
-package com.ihl.client.module.hacks;
+package com.ihl.client.module.hacks.misc;
 
 import com.ihl.client.event.*;
 import com.ihl.client.module.Module;
+import com.ihl.client.module.Category;
 import com.ihl.client.module.option.*;
 import com.ihl.client.util.*;
 

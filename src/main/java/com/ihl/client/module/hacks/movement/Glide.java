@@ -4,7 +4,7 @@ import com.ihl.client.Helper;
 import com.ihl.client.event.Event;
 import com.ihl.client.event.EventHandler;
 import com.ihl.client.event.EventPlayerLiving;
-import com.ihl.client.module.hacks.Category;
+import com.ihl.client.module.Category;
 import com.ihl.client.module.Module;
 import com.ihl.client.module.option.Option;
 import com.ihl.client.module.option.ValueDouble;

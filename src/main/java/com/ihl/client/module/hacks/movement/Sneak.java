@@ -5,7 +5,7 @@ import com.ihl.client.event.Event;
 import com.ihl.client.event.EventHandler;
 import com.ihl.client.event.EventPacket;
 import com.ihl.client.event.EventPlayerMotion;
-import com.ihl.client.module.hacks.Category;
+import com.ihl.client.module.Category;
 import com.ihl.client.module.Module;
 import com.ihl.client.util.HelperUtil;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;

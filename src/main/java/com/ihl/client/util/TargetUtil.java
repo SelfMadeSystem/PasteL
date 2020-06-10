@@ -2,7 +2,7 @@ package com.ihl.client.util;
 
 import com.ihl.client.Helper;
 import com.ihl.client.comparator.*;
-import com.ihl.client.module.hacks.Friends;
+import com.ihl.client.module.hacks.misc.Friends;
 import com.ihl.client.module.hacks.combat.AntiBot;
 import net.minecraft.entity.*;
 

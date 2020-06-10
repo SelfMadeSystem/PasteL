@@ -1,10 +1,11 @@
-package com.ihl.client.module.hacks;
+package com.ihl.client.module.hacks.render;
 
 import com.ihl.client.Helper;
 import com.ihl.client.event.Event;
 import com.ihl.client.event.EventHandler;
 import com.ihl.client.event.EventRender;
 import com.ihl.client.module.*;
+import com.ihl.client.module.Category;
 import com.ihl.client.module.option.*;
 import com.ihl.client.util.*;
 import net.minecraft.client.renderer.GlStateManager;

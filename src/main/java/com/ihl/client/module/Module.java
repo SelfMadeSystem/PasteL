@@ -3,16 +3,17 @@ package com.ihl.client.module;
 import com.ihl.client.Helper;
 import com.ihl.client.commands.*;
 import com.ihl.client.event.*;
-import com.ihl.client.module.hacks.*;
 import com.ihl.client.module.hacks.combat.*;
-import com.ihl.client.module.hacks.misc.Debugger;
+import com.ihl.client.module.hacks.misc.*;
 import com.ihl.client.module.hacks.movement.*;
+import com.ihl.client.module.hacks.player.*;
+import com.ihl.client.module.hacks.render.*;
+import com.ihl.client.module.hacks.world.AntiCactus;
 import com.ihl.client.module.option.*;
 import com.ihl.client.util.*;
 import joptsimple.internal.Strings;
 import net.minecraft.util.ResourceLocation;
 
-import java.lang.annotation.Annotation;
 import java.util.*;
 
 public class Module extends Helper {

@@ -1,4 +1,4 @@
-package com.ihl.client.module.hacks;
+package com.ihl.client.module;
 
 import net.minecraft.util.ResourceLocation;
 

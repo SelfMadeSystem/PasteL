@@ -5,8 +5,8 @@ import java.nio.FloatBuffer;
 import java.util.Iterator;
 import java.util.List;
 
-import com.ihl.client.module.hacks.ESP;
-import com.ihl.client.module.hacks.Friends;
+import com.ihl.client.module.hacks.render.ESP;
+import com.ihl.client.module.hacks.misc.Friends;
 import com.ihl.client.module.option.Option;
 import com.ihl.client.util.ColorUtil;
 import com.ihl.client.util.EntityUtil;

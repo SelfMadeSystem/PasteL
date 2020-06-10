@@ -2,7 +2,7 @@ package com.ihl.client.module.hacks.movement;
 
 import com.ihl.client.Helper;
 import com.ihl.client.event.*;
-import com.ihl.client.module.hacks.Category;
+import com.ihl.client.module.Category;
 import com.ihl.client.module.Module;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;

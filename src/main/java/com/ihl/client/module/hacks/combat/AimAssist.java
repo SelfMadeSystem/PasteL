@@ -3,7 +3,7 @@ package com.ihl.client.module.hacks.combat;
 import com.ihl.client.Client;
 import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.hacks.Category;
+import com.ihl.client.module.Category;
 import com.ihl.client.module.hacks.combat.aimbases.*;
 import com.ihl.client.module.option.*;
 import com.ihl.client.util.*;
@@ -14,9 +14,7 @@ public class AimAssist extends Module {
     public AimAssist() {
         super("AimAssist", "Helps your aim at stuff", Category.COMBAT, "NONE");
         options.put("aimwhen", new Option(this, "Aim When", "Aim when", new ValueChoice(0, "always", "mouse"), Option.Type.CHOICE));
-        options.put("aimwhere", new Option(this, "Aim Where", "Aim where", new ValueChoice(0, "top", "head", "centre", "feet", "fromTop", "fromBottom", "auto"), Option.Type.CHOICE, new Option[]{
-          new Option(this, "Custom", "Value from  top for custom.", new ValueDouble(0.4, new double[]{0, 3}, 0.1), Option.Type.NUMBER)
-        }));
+        options.put("aimwhere", new Option(this, "Aim Where", "Aim where", new ValueChoice(0, "top", "head", "centre", "feet", "fromTop", "fromBottom", "auto"), Option.Type.CHOICE, new Option(this, "Custom", "Value from  top for custom.", new ValueDouble(0.4, new double[]{0, 3}, 0.1), Option.Type.NUMBER)));
         options.put("mousemode", new Option(this, "Mouse Mode", "How it overrides your mouse", new ValueChoice(0, "add", "complete"), Option.Type.CHOICE));
         options.put("priority", new Option(this, "Priority", "Switch target selection mode", new ValueChoice(0, "distance", "health", "direction"), Option.Type.CHOICE));
         options.put("distance", new Option(this, "Distance", "Distance to attack entities within", new ValueDouble(3.6, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
@@ -42,11 +40,8 @@ public class AimAssist extends Module {
 
     public void enable() {
         super.enable();
-        if (!HelperUtil.inGame())
-            return;
-
-        String aimWhere = Option.get(options, "aimwhere").CHOICE();
-        double custom = Option.get(options, "aimwhere", "custom").DOUBLE();
+//        if (!HelperUtil.inGame())
+//            return;
         //MouseAimBase.updateRotations(aimWhere, custom);
     }
 

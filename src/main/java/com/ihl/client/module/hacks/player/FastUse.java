@@ -1,8 +1,9 @@
-package com.ihl.client.module.hacks;
+package com.ihl.client.module.hacks.player;
 
 import com.ihl.client.Helper;
 import com.ihl.client.event.*;
 import com.ihl.client.module.*;
+import com.ihl.client.module.Category;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.network.play.client.C03PacketPlayer;

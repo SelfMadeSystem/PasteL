@@ -1,13 +1,12 @@
 package com.ihl.client.gui.ring;
 
 import com.ihl.client.gui.Gui;
-import com.ihl.client.module.hacks.Friends;
+import com.ihl.client.module.hacks.misc.Friends;
 import com.ihl.client.module.Module;
 import com.ihl.client.module.option.Option;
 import com.ihl.client.util.ColorUtil;
 import com.ihl.client.util.RenderUtil;
 import com.ihl.client.util.RenderUtil2D;
-import com.ihl.client.util.part.Settings;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
