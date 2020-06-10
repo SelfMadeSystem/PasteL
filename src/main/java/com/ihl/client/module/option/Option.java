@@ -345,6 +345,8 @@ public class Option {
         for (int i = 0; i < names.length; i++)
             names[i] = names[i].toLowerCase().replaceAll(" ", "").trim();
         Option currentOpt = options.get(names[0]);
+        if (currentOpt == null)
+            throw new NullPointerException("N0t value of name:" + names[0]);
         for (int i = 1; i < names.length; i++) {
             currentOpt = currentOpt.options.get(names[i]);
             if (currentOpt == null)

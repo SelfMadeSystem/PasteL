@@ -27,32 +27,36 @@ public class Speed extends Module {
             addValue.addIntegerNoS("EveryTick", "Every X ticks to do this.", 1, 1, 40);
             addValue.addIntegerNoS("TickGround", "Every X ticks after ground.", 1, 1, 40);
         }
+        // Nomral values.
+        Option normalValues = addOtherNoS("NormalValues", "Modification values when going up, down, and on ground");
         { //Add values to the "Ground" section.
-            Option ground = addBoolean("Ground", "Modifications when hitting ground", true);
+            Option ground = normalValues.addBoolean("Ground", "Modifications when hitting ground", true);
             ground.addDouble("VClip", "Teleport Up. Default: 0", 0, -2, 2, 0.01);
             ground.addDouble("HClip", "Teleport forwards. Default: 0", 0, -2, 2, 0.01);
             ground.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
             ground.addDouble("VSet", "Sets the vertical motion. Default: 0.42", 0.42, -2, 2, 0.01);
             ground.addDouble("HAdd", "Adds to the horizontal motion. Default: 0.2", 0.2, -2, 2, 0.01);
             ground.addBoolean("HSet", "Sets the horizontal motion instead of adding to it. Default: false", false);
-            ground.addDouble("HMult", "Multiplies the horizontal motion. Default: 0.2", 1, -2, 2, 0.01);
+            ground.addDouble("HMult", "Multiplies the horizontal motion. Default: 1", 1, -2, 2, 0.01);
             ground.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
         }
         { //Add values to the "Up" section.
-            Option ground = addBoolean("Up", "Modifications when going up.", true);
-            ground.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
-            ground.addDouble("VAdd", "Adds to the vertical motion. Default: 0", 0, -2, 2, 0.01);
-            ground.addDouble("HAdd", "Adds to the horizontal motion. Default: 0.2", 0.2, -2, 2, 0.01);
-            ground.addDouble("HMult", "Multiplies the horizontal motion. Default: 0.2", 1, -2, 2, 0.01);
-            ground.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
+            Option up = normalValues.addBoolean("Up", "Modifications when going up.", true);
+            up.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
+            up.addDouble("VAdd", "Adds to the vertical motion. Default: 0", 0, -2, 2, 0.01);
+            up.addDouble("VMult", "Multiplies the horizontal motion. Default: 1", 1, -2, 2, 0.01);
+            up.addDouble("HAdd", "Adds to the horizontal motion. Default: 0", 0, -2, 2, 0.01);
+            up.addDouble("HMult", "Multiplies the horizontal motion. Default: 1", 1, -2, 2, 0.01);
+            up.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
         }
         { //Add values to the "Down" section.
-            Option ground = addBoolean("Down", "Modifications when coming back down.", true);
-            ground.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
-            ground.addDouble("VAdd", "Adds to the vertical motion. Default: 0", 0, -2, 2, 0.01);
-            ground.addDouble("HAdd", "Adds to the horizontal motion. Default: 0.2", 0.2, -2, 2, 0.01);
-            ground.addDouble("HMult", "Multiplies the horizontal motion. Default: 0.2", 1, -2, 2, 0.01);
-            ground.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
+            Option down = normalValues.addBoolean("Down", "Modifications when coming back down.", true);
+            down.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
+            down.addDouble("VAdd", "Adds to the vertical motion. Default: 0", 0, -2, 2, 0.01);
+            down.addDouble("VMult", "Multiplies the horizontal motion. Default: 1", 1, -2, 2, 0.01);
+            down.addDouble("HAdd", "Adds to the horizontal motion. Default: 0", 0, -2, 2, 0.01);
+            down.addDouble("HMult", "Multiplies the horizontal motion. Default: 1", 1, -2, 2, 0.01);
+            down.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
         }
         addOther("CustomValues", "Other values that you can add/remove");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
@@ -129,9 +133,10 @@ public class Speed extends Module {
         opt.addDouble("Timer", "Speeds up or slows down the game. Default: 1", 1, 0.1, 5, 0.05);
         opt.addDouble("VAdd", "Adds to the vertical motion. Default: 0", 0, -2, 2, 0.01);
         opt.addBoolean("VSet", "Sets the vertical motion instead of adding to it. Default: false", false);
+        opt.addDouble("VMult", "Multiplies the horizontal motion. Default: 1", 1, -2, 2, 0.01);
         opt.addDouble("HAdd", "Adds to the horizontal motion. Default: 0.2", 0.2, -2, 2, 0.01);
         opt.addBoolean("HSet", "Sets the horizontal motion instead of adding to it. Default: false", false);
-        opt.addDouble("HMult", "Multiplies the horizontal motion. Default: 0.2", 1, -2, 2, 0.01);
+        opt.addDouble("HMult", "Multiplies the horizontal motion. Default: 1", 1, -2, 2, 0.01);
         opt.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
         return opt;
     }
