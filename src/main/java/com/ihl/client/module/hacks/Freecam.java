@@ -17,8 +17,8 @@ public class Freecam extends Module {
 
     private EntityOtherPlayerMP ghost;
 
-    public Freecam(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Freecam() {
+        super("Freecam", "Ghost through blocks client-side", Category.MOVEMENT, "NONE");
         options.put("noclip", new Option(this, "Noclip", "Ghost through blocks", new ValueBoolean(true), Option.Type.BOOLEAN));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }

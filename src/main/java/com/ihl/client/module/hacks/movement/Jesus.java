@@ -16,8 +16,8 @@ public class Jesus extends Module {
 
     private boolean dip;
 
-    public Jesus(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Jesus() {
+        super("Jesus", "Walk on water", Category.MOVEMENT, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

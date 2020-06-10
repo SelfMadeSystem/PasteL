@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL11;
 @EventHandler(events = {EventEntityRender.class})
 public class Chams extends Module {
 
-    public Chams(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Chams() {
+        super("Chams", "Render entities through blocks", Category.RENDER, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

@@ -17,6 +17,14 @@ import java.util.List;
 @EventHandler(events = {EventPlayerPickBlock.class})
 public class Friends extends Module {
 
+    public Friends() {
+        super("Friends", "Whitelist friends for combat mods", Category.MISC, "NONE");
+        options.put("friends", new Option(this, "Friends", "List of friends", new ValueList(new String[]{}), Option.Type.LIST));
+        options.put("middleclick", new Option(this, "Middle Click", "Allow middle clicking players to toggle them", new ValueBoolean(true), Option.Type.BOOLEAN));
+        options.put("color", new Option(this, "Color", "Render color override", new ValueString("ffffffff"), Option.Type.STRING));
+        initCommands(name.toLowerCase().replaceAll(" ", ""));
+    }
+
     public static boolean toggleFriend(String name) {
         Friends friends = (Friends) Module.get("friends");
         List<String> list = new ArrayList();
@@ -46,14 +54,6 @@ public class Friends extends Module {
 
         name = name.toLowerCase();
         return friends.active && list.contains(name);
-    }
-
-    public Friends(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
-        options.put("friends", new Option(this, "Friends", "List of friends", new ValueList(new String[]{}), Option.Type.LIST));
-        options.put("middleclick", new Option(this, "Middle Click", "Allow middle clicking players to toggle them", new ValueBoolean(true), Option.Type.BOOLEAN));
-        options.put("color", new Option(this, "Color", "Render color override", new ValueString("ffffffff"), Option.Type.STRING));
-        initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 
     protected void onEvent(Event event) {

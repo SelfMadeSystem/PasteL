@@ -24,8 +24,8 @@ import java.util.List;
 @EventHandler(events = {EventRender.class})
 public class Tracer extends Module {
 
-    public Tracer(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Tracer() {
+        super("Tracer", "Render lines to entities", Category.RENDER, "NONE");
         options.put("width", new Option(this, "Width", "Width of tracer lines", new ValueDouble(1, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
         options.put("players", new Option(this, "Players", "Trace players", new ValueBoolean(true), Option.Type.BOOLEAN, colors(0, 255, 255, 255, false)));
         options.put("animals", new Option(this, "Animals", "Trace animals", new ValueBoolean(false), Option.Type.BOOLEAN, colors(64, 255, 64, 255, false)));

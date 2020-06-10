@@ -10,8 +10,8 @@ import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 @EventHandler(events = {EventPacket.class})
 public class NoView extends Module {
 
-    public NoView(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public NoView() {
+        super("No View", "Prevent the server changing your view direction", Category.PLAYER, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

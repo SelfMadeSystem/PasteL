@@ -10,8 +10,8 @@ import org.lwjgl.input.Mouse;
 @EventHandler(events = {})
 public class Distance extends Module {
 
-    public Distance(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Distance() {
+        super("Distance", "Change the third person camera distance", Category.RENDER, "NONE");
         options.put("distance", new Option(this, "Distance", "Change the third person view distance", new ValueDouble(10, new double[]{4, 100}, 0.1), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }

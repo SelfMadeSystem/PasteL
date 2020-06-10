@@ -17,8 +17,8 @@ import java.util.List;
 @EventHandler(events = {EventRender.class})
 public class StorageESP extends Module {
 
-    public StorageESP(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public StorageESP() {
+        super("Storage ESP", "Render outlines around storage blocks", Category.RENDER, "NONE");
         options.put("width", new Option(this, "Width", "Width of the ESP outlines", new ValueDouble(1, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
         options.put("chests", new Option(this, "Chests", "Render chests and trapped chests", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 128, 0, 255)));
         options.put("enderchests", new Option(this, "Ender Chests", "Render ender chests", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 0, 255, 255)));

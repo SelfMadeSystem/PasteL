@@ -6,8 +6,8 @@ import com.ihl.client.module.*;
 @EventHandler(events = {})
 public class CameraClip extends Module {
 
-    public CameraClip(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public CameraClip() {
+        super("Camera Clip", "Allow third person camera to clip into blocks", Category.RENDER, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 }

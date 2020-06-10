@@ -9,8 +9,8 @@ import net.minecraft.network.play.client.C00PacketKeepAlive;
 @EventHandler(events = {EventPacket.class})
 public class Pinger extends Module {
 
-    public Pinger(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Pinger() {
+        super("Pinger", "Spoof a perfect ping of 0", Category.MISC, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

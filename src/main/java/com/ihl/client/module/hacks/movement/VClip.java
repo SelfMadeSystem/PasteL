@@ -11,8 +11,9 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 @EventHandler(events = {EventPlayerUpdate.class})
 public class VClip extends Module {
 
-    public VClip(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public VClip() {
+        super("VClip", "Clip vertically down through blocks", Category.MOVEMENT, "NONE");
+        // TODO: 2020-06-09 1: lol no 2: make `vclip` & `hclip` a command and make this just `clip`
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

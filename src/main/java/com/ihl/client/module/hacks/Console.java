@@ -6,8 +6,8 @@ import com.ihl.client.module.*;
 @EventHandler(events = {})
 public class Console extends Module {
 
-    public Console(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Console() {
+        super("Console", "Enable GUI console for command input", Category.MISC, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 }

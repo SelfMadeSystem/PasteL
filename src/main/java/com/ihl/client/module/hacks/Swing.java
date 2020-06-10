@@ -6,8 +6,8 @@ import com.ihl.client.module.*;
 @EventHandler(events = {})
 public class Swing extends Module {
 
-    public Swing(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Swing() {
+        super("Swing", "Reset the swing animation faster", Category.PLAYER, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

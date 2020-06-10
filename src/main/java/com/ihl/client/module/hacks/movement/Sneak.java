@@ -14,8 +14,8 @@ import net.minecraft.network.play.client.C0BPacketEntityAction;
 @EventHandler(events = {EventPacket.class, EventPlayerMotion.class})
 public class Sneak extends Module {
 
-    public Sneak(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Sneak() {
+        super("Sneak", "Enable server-side sneaking", Category.MOVEMENT, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

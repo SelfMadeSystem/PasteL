@@ -12,8 +12,8 @@ import org.lwjgl.input.Keyboard;
 @EventHandler(events = {})
 public class MenuWalk extends Module {
 
-    public MenuWalk(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public MenuWalk() {
+        super("Menu Walk", "Walk when in a GUI", Category.MOVEMENT, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

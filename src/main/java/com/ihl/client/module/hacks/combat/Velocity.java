@@ -13,9 +13,10 @@ import net.minecraft.network.play.server.S12PacketEntityVelocity;
 @EventHandler(events = {EventPacket.class})
 public class Velocity extends Module {
 
-    public Velocity(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Velocity() {
+        super("Velocity", "Change the knockback velocity", Category.COMBAT, "NONE");
         options.put("multiplier", new Option(this, "Multiplier", "Knockback multiplier", new ValueDouble(0, new double[]{0, 5}, 0.1), Option.Type.NUMBER));
+        // TODO: 2020-06-09 Make it a lot more like my custom wurst's velocity but better.
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

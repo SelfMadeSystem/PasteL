@@ -8,8 +8,8 @@ import com.ihl.client.module.*;
 @EventHandler(events = {})
 public class GUI extends Module {
 
-    public GUI(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public GUI() {
+        super("GUI", "Open the radial GUI", Category.RENDER, "RSHIFT");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

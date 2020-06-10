@@ -17,8 +17,8 @@ public class Blink extends Module {
 
     private List<Packet> buffer = new CopyOnWriteArrayList();
 
-    public Blink(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Blink() {
+        super("Blink", "Simulate lag", Category.PLAYER, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

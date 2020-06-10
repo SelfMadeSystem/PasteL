@@ -11,8 +11,8 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 
 public class FastUse extends Module {
 
-    public FastUse(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public FastUse() {
+        super("FastUse", "Finish using items faster", Category.PLAYER, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

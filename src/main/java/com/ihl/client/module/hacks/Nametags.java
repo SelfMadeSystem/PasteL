@@ -24,8 +24,8 @@ import java.util.List;
 @EventHandler(events = {EventRender.class})
 public class Nametags extends Module {
 
-    public Nametags(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Nametags() {
+        super("Nametags", "Render player nametags through blocks", Category.RENDER, "NONE");
         options.put("health", new Option(this, "Health", "Show the players health", new ValueBoolean(true), Option.Type.BOOLEAN));
         options.put("ping", new Option(this, "Ping", "Show the players connection latency", new ValueBoolean(true), Option.Type.BOOLEAN));
         options.put("inventory", new Option(this, "Inventory", "Show the players current equipment", new ValueBoolean(true), Option.Type.BOOLEAN));

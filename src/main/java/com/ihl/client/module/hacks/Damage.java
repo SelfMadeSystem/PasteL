@@ -10,8 +10,9 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 @EventHandler(events = {EventPlayerMove.class})
 public class Damage extends Module {
 
-    public Damage(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Damage() {
+        super("Damage", "Force yourself to take damage", Category.PLAYER, "NONE");
+        // TODO: 2020-06-09 Add tons of modes lol & damage amount.
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

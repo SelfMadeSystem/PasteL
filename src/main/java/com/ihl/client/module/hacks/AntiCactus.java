@@ -6,8 +6,8 @@ import com.ihl.client.module.*;
 @EventHandler(events = {})
 public class AntiCactus extends Module {
 
-    public AntiCactus(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public AntiCactus() {
+        super("Anti Cactus", "Don't get hurt when standing on a cactus", Category.WORLD, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 }

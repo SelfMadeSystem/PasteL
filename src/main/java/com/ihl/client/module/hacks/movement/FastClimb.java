@@ -10,8 +10,8 @@ import com.ihl.client.module.option.ValueDouble;
 
 public class FastClimb extends Module {
 
-    public FastClimb(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public FastClimb() {
+        super("FastClimb", "Climb ladders and vines faster", Category.MOVEMENT, "NONE");
         options.put("speed", new Option(this, "Speed", "Climbing speed multiplier", new ValueDouble(1.5, new double[] {0.1, 5}, 0.1), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }

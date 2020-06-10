@@ -7,8 +7,8 @@ import com.ihl.client.module.*;
 
 public class Fullbright extends Module {
 
-    public Fullbright(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Fullbright() {
+        super("Fullbright", "Brighten up the world", Category.RENDER, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 }

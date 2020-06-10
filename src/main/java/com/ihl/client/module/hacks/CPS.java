@@ -13,8 +13,8 @@ public class CPS extends Module {
     public static double cps;
     private final Set<Long> cpsList = new HashSet<>();
 
-    public CPS(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public CPS() {
+        super("CPS", "Monitor your clicks-per-second", Category.MISC, "NONE");
         options.put("floatlimit", new Option(this, "Float Limit", "Decimal places to see.", new ValueDouble(1, new double[]{0, 16}, 1), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }

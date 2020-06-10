@@ -24,8 +24,8 @@ import java.util.List;
 @EventHandler(events = {EventRender.class})
 public class ESP extends Module {
 
-    public ESP(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public ESP() {
+        super("ESP", "Render outlines around entities", Category.RENDER, "NONE");
         options.put("mode", new Option(this, "Mode", "Entity render mode", new ValueChoice(2, "normal", "wireframe", "outline"), Option.Type.CHOICE));
         options.put("width", new Option(this, "Width", "Width of the ESP outlines", new ValueDouble(2, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
         options.put("players", new Option(this, "Players", "Render players", new ValueBoolean(true), Option.Type.BOOLEAN, colors(0, 255, 255, 255)));

@@ -23,8 +23,8 @@ public class Plugins extends Module {
     private boolean scan;
     private TimerUtil timer = new TimerUtil();
 
-    public Plugins(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Plugins() {
+        super("Plugins", "Get a list of server plugins", Category.MISC, "NONE");
         options.put("timeout", new Option(this, "Timeout", "Period before timing out and cancelling request", new ValueDouble(5, new double[] {0, 10}, 0.1), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }

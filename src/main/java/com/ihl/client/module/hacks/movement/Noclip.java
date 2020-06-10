@@ -15,8 +15,8 @@ public class Noclip extends Module {
 
     private boolean noClip;
 
-    public Noclip(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Noclip() {
+        super("Noclip", "Clip through all blocks", Category.MOVEMENT, "NONE");
         options.put("speed", new Option(this, "Speed", "Movement speed", new ValueDouble(0.23, new double[] {0, 4}, 0.01), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }

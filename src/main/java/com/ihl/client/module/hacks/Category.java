@@ -8,7 +8,8 @@ public enum Category {
     MISC(1, "Misc", 0xFFFFFF00),
     MOVEMENT(2, "Movement", 0xFF00FFFF),
     PLAYER(3, "Player", 0xFF00FF00),
-    RENDER(4, "Render", 0xFFFF00FF);
+    RENDER(4, "Render", 0xFFFF00FF),
+    WORLD(5, "World", 0xFF0000FF);
 
     public int id;
     public String display;

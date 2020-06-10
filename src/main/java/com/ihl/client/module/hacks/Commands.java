@@ -11,8 +11,8 @@ import com.ihl.client.module.option.ValueString;
 @EventHandler(events = {EventChatSend.class})
 public class Commands extends Module {
 
-    public Commands(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Commands() {
+        super("Commands", "Enable in-game chat commands", Category.MISC, "NONE");
         options.put("prefix", new Option(this, "Prefix", "Chat command prefix", new ValueString("."), Option.Type.STRING));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }

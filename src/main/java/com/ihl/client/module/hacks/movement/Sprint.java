@@ -12,8 +12,8 @@ import com.ihl.client.module.option.ValueBoolean;
 @EventHandler(events = {EventPlayerLiving.class})
 public class Sprint extends Module {
 
-    public Sprint(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Sprint() {
+        super("Sprint", "Automatically force sprinting", Category.MOVEMENT, "NONE");
         options.put("directional", new Option(this, "Directional", "Sprint in all directions", new ValueBoolean(true), Option.Type.BOOLEAN));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }

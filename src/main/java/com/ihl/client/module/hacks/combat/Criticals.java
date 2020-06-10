@@ -14,8 +14,8 @@ public class Criticals extends Module {
 
     private int crit;
 
-    public Criticals(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public Criticals() {
+        super("Criticals", "Deal critical hits", Category.COMBAT, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

@@ -15,8 +15,8 @@ import net.minecraft.util.EnumFacing;
 @EventHandler(events = {EventPacket.class, EventPlayerUpdate.class})
 public class NoSlow extends Module {
 
-    public NoSlow(String name, String desc, Category category, String keybind) {
-        super(name, desc, category, keybind);
+    public NoSlow() {
+        super("No Slow", "Prevent slowing down when using items", Category.MOVEMENT, "NONE");
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 
