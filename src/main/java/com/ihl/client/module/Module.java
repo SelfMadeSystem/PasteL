@@ -42,6 +42,7 @@ public class Module extends Helper {
         new Debugger();
         new Distance();
         new ESP();
+        new Example();
         new FastClimb();
         new FastUse();
         new Fly();
