@@ -15,8 +15,8 @@ public class Example extends Module {
         addBoolean("ABool", "A Bool", false); //Get using BOOLEAN("abool")
         addDouble("ADouble", "A Double", 2, 0, 5, 0.5); //Get using DOUBLE("adouble")
         addInteger("AnInt", "An Int", 5, 0, 10); //Get using INTEGER("anint")
-        addChoice("AChoice", "A Choice", "choice1", "choice2", "choice3"); //Will return String
-        addString("AString", "A String", "Hello World!"); //Get using
+        addChoice("AChoice", "A Choice", "choice1", "choice2", "choice3"); //Get using STRING("AString")
+        addString("AString", "A String", "Hello World!"); //Get using STRING("AString")
         Option other = addOther("Other", "O t h e r"); //Has no value.
         other.addBoolean("OtherBool", "An Other Bool", false); //Get using BOOLEAN("other", "otherbool")
         other.addDouble("OtherDouble", "An Other Double", 2, 0, 5, 0.5); //Get using BOOLEAN("other", "otherdouble")
