@@ -42,6 +42,7 @@ public class Module extends Helper {
         new Debugger();
         new Distance();
         new ESP();
+        new Example();
         new FastClimb();
         new FastUse();
         new Fly();
@@ -74,7 +75,7 @@ public class Module extends Helper {
     }
 
     public static Module get(String key) {
-        Module module =  modules.get(key);
+        Module module = modules.get(key);
         if (module == null)
             module = new Module();
         return module;
@@ -237,5 +238,74 @@ public class Module extends Helper {
     }
 
     public void optionChanged(EventOption eventOption) {
+    }
+
+    // Option Setters
+    // name, description, defaultValue
+    // Returns created option.
+    public Option addBoolean(String name, String description, boolean defaultValue) {
+        Option opt = new Option(this, name, description, new ValueBoolean(defaultValue), Option.Type.BOOLEAN);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
+
+    public Option addInteger(String name, String description, int defaultValue, int min, int max) {
+        return addDouble(name, description, defaultValue, min, max, 1);
+    }
+
+    public Option addDouble(String name, String description, double defaultValue, double min, double max, double increments) {
+        Option opt = new Option(this, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), Option.Type.NUMBER);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
+
+    public Option addString(String name, String description, String defaultValue) {
+        Option opt = new Option(this, name, description, new ValueString(defaultValue), Option.Type.STRING);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
+
+    public Option addChoice(String name, String description, String... values) {
+        Option opt = new Option(this, name, description, new ValueChoice(0, values), Option.Type.CHOICE);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
+
+    public Option addOther(String name, String description) {
+        Option opt = new Option(this, name, description, new ValueString(""), Option.Type.OTHER);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
+    }
+
+    //Option Getters.
+    // names
+    public Object OBJECT(String... names) {
+        for (int i = 0; i < names.length; i++)
+            names[i] = names[i].toLowerCase().replaceAll(" ", "").trim();
+        Option currentOpt = options.get(names[0]);
+        for (int i = 1; i < names.length; i++) {
+            currentOpt = currentOpt.options.get(names[i]);
+        }
+        return currentOpt.getValue();
+    }
+
+    public boolean BOOLEAN(String... names) {
+        return (boolean) OBJECT(names);
+    }
+
+    public int INTEGER(String... names) {
+        return ((Double) OBJECT(names)).intValue();
+    }
+
+    public float FLOAT(String... names) {
+        return (float) OBJECT(names);
+    }
+
+    public double DOUBLE(String... names) {
+        return (double) OBJECT(names);
+    }
+
+    public String STRING(String... names) {
+        return (String) OBJECT(names);
     }
 }

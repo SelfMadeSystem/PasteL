@@ -269,37 +269,72 @@ public class Option {
         return (List<String>) value.getValue();
     }
 
-    public boolean BOOLEAN(String opt) {
-        return options.get(opt).BOOLEAN();
+    // Option Setters
+    // name, description, defaultValue
+    // Returns created option.
+    public Option addBoolean(String name, String description, boolean defaultValue) {
+        Option opt = new Option(this.module, name, description, new ValueBoolean(defaultValue), Option.Type.BOOLEAN);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
     }
 
-    public double DOUBLE(String opt) {
-        return options.get(opt).DOUBLE();
+    public Option addInteger(String name, String description, int defaultValue, int min, int max) {
+        return addDouble(name, description, defaultValue, min, max, 1);
     }
 
-    public int INTEGER(String opt) {
-        return (int) options.get(opt).DOUBLE();
+    public Option addDouble(String name, String description, double defaultValue, double min, double max, double increments) {
+        Option opt = new Option(this.module, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), Option.Type.NUMBER);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
     }
 
-    public String STRING(String opt) {
-        return options.get(opt).STRING();
+    public Option addString(String name, String description, String defaultValue) {
+        Option opt = new Option(this.module, name, description, new ValueString(defaultValue), Option.Type.STRING);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
     }
 
-    public String CHOICE(String opt) {
-        return options.get(opt).STRING();
+    public Option addChoice(String name, String description, String... values) {
+        Option opt = new Option(this.module, name, description, new ValueChoice(0, values), Option.Type.CHOICE);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
     }
 
-    public List<String> LIST(String opt) {
-        return (List<String>) options.get(opt).getValue();
+    public Option addOther(String name, String description) {
+        Option opt = new Option(this.module, name, description, new ValueString(""), Option.Type.OTHER);
+        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        return opt;
     }
 
-    @Override
-    public String toString() {
-        return name + ":" + STRING();
+    //Option Getters.
+    // names
+    public Object OBJECT(String... names) {
+        for (int i = 0; i < names.length; i++)
+            names[i] = names[i].toLowerCase().replaceAll(" ", "").trim();
+        Option currentOpt = options.get(names[0]);
+        for (int i = 1; i < names.length; i++) {
+            currentOpt = currentOpt.options.get(names[i]);
+        }
+        return currentOpt.getValue();
     }
+    public boolean BOOLEAN(String... names) {
+        return (boolean) OBJECT(names);
+    }
+    public int INTEGER(String... names) {
+        return ((Double) OBJECT(names)).intValue();
+    }
+    public float FLOAT(String... names) {
+        return (float) OBJECT(names);
+    }
+    public double DOUBLE(String... names) {
+        return (double) OBJECT(names);
+    }
+    public String STRING(String... names) {
+        return (String) OBJECT(names);
+    }
+
 
     /*---------------------------------------------------------------*/
-
     public Option getOption(String name) {
         return options.get(name);
     }
@@ -331,5 +366,10 @@ public class Option {
 
     public void setTValue(Value value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return name + ":" + STRING();
     }
 }
