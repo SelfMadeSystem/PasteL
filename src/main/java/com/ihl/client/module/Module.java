@@ -24,11 +24,17 @@ public class Module extends Helper {
 
     public static void init() {
         rUtils = new RUtils();
+        //MOVEMENT
+        new Longjump();
+        //COMBAT
+        //MISC
+        //PLAYER
+        //RENDER
+        //WORLD
         new AimAssist();
         new AimBot();
         new AntiBot();
         new AntiCactus();
-        //new Aura("Aura", "Kill everything near you", Category.COMBAT, "NONE");
         new AutoClicker();
         new AutoPotion();
         new Blink();
