@@ -18,9 +18,7 @@ import java.util.*;
 
 public class Module extends Helper {
 
-    public @interface Hack {}
-
-    public static Map<String, Module> modules = new LinkedHashMap();
+    public static Map<String, Module> modules = new LinkedHashMap<>();
     protected static int currentId = 1;
     protected static RUtils rUtils;
 
@@ -136,9 +134,11 @@ public class Module extends Helper {
     }
 
     public static void optionChange(EventOption eventOption) {
+        event(eventOption, false);
         for (String key : modules.keySet()) {
             Module module = modules.get(key);
-            module.optionChanged(eventOption);
+            if (eventOption.module.name.equals(module.name))
+                module.optionChanged(eventOption);
         }
     }
 
@@ -150,7 +150,7 @@ public class Module extends Helper {
     //        name     option   Note: Name also refers to the icon.
     public Map<String, Option> options = new LinkedHashMap<>();
     public ResourceLocation icon;
-    protected Class[] events = new Class[]{};
+    //protected Class[] events = new Class[]{};
 
     private Module() {
         this.name = "";

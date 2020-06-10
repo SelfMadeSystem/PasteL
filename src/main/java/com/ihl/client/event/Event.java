@@ -2,7 +2,7 @@ package com.ihl.client.event;
 
 public class Event {
 
-    public static enum Type {
+    public enum Type {
         PRE,
         POST,
         SEND,

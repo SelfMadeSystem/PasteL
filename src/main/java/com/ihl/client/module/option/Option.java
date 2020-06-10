@@ -172,6 +172,7 @@ public class Option {
         this.value = value;
         this.type = type;
         this.parents = parents;
+        this.value.option = this;
         if (options != null) {
             for (Option option : options) {
                 this.options.put(option.name.toLowerCase().replaceAll(" ", ""), option);
@@ -298,8 +299,15 @@ public class Option {
 
     /*---------------------------------------------------------------*/
 
-    public Object getValue(String value) {
-        return options.get(value).getValue();
+    public Option getOption(String name) {
+        return options.get(name);
+    }
+
+    public Object getValue(String option) {
+        return options.get(option).getValue();
+    }
+    public Object getValue(String option, String value) {
+        return options.get(option).getValue(value);
     }
 
     public Object getValue() {

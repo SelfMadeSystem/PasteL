@@ -4,6 +4,8 @@ public class Value {
 
     protected Object value;
 
+    public Option option;
+
     public Value(Object value) {
         this.value = value;
     }
