@@ -21,13 +21,11 @@ public class Antivoid extends Module {
             String mode = STRING("Mode");
             switch (mode) {
                 case "Ncp" : {
-
-
-                    if (mc().thePlayer.fallDistance > 6 && !isBlockUnder.isBlockUnder()) {
-                        mc().thePlayer.motionY = 5;
+                    if (mc().thePlayer.fallDistance > 8 && !isBlockUnder.isBlockUnder() && mc().thePlayer.motionY < -0.1) {
+                        mc().thePlayer.motionY = 10;
                     }
-                    else if (mc().thePlayer.motionY  == 5){
-                        mc().thePlayer.motionY = 0;
+                    else if (mc().thePlayer.motionY > 9){
+                        mc().thePlayer.motionY = 5;
                     }
 
 

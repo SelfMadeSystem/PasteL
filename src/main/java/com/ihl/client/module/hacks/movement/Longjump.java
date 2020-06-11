@@ -24,17 +24,21 @@ public class Longjump extends Module {
             switch (mode) {
                 case "Hypixel" : {
                     if (MUtil.isMoving() && player().onGround) {
-                        MUtil.strafe(0.44);
-                        timerSpeed(1.45F);
+                        MUtil.strafe(0.3);
+                        timerSpeed(1.5F);
                         player().jump();
                     }
                     else if (player().motionY < 0.1 && player().motionY > -0.1) {
-                        MUtil.strafe(0.62);
+                        MUtil.strafe(0.5);
                         timerSpeed(0.8F);
                     }
                     else if (player().fallDistance > 0.0 && player().fallDistance < 0.8) {
-                        timerSpeed(0.9F);
-                        MUtil.strafe(0.32);
+                        timerSpeed(0.6F);
+                        MUtil.strafe(0.3);
+                        mc().thePlayer.motionY *= 1;
+                        if (mc().thePlayer.onGround){
+                            this.disable();
+                        }
                     }
                     break;
                 }
