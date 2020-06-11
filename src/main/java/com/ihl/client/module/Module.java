@@ -27,15 +27,17 @@ public class Module extends Helper {
         //MOVEMENT
         new Longjump();
         //COMBAT
-        //MISC
-        //PLAYER
-        //RENDER
-        //WORLD
         new AimAssist();
         new AimBot();
         new AntiBot();
-        new AntiCactus();
         new AutoClicker();
+        //MISC
+        //PLAYER
+        new Antivoid();
+        new Nofall();
+        //RENDER
+        //WORLD
+        new AntiCactus();
         new AutoPotion();
         new Blink();
         new CameraClip();
