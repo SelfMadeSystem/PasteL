@@ -3,10 +3,9 @@ package com.ihl.client.module.hacks.movement;
 import com.ihl.client.event.*;
 import com.ihl.client.gui.Gui;
 import com.ihl.client.gui.ring.RingString;
-import com.ihl.client.module.Module;
-import com.ihl.client.module.Category;
+import com.ihl.client.module.*;
 import com.ihl.client.module.option.*;
-import com.ihl.client.util.*;
+import com.ihl.client.util.MUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +28,7 @@ public class Speed extends Module {
         }
         // Nomral values.
         Option normalValues = addOtherNoS("NormalValues", "Modification values when going up, down, and on ground");
+        normalValues.addBoolean("Strafe", "Strafes all the time (instantly moves in direction). Default: false", false);
         { //Add values to the "Ground" section.
             Option ground = normalValues.addBoolean("Ground", "Modifications when hitting ground", true);
             ground.addDouble("VClip", "Teleport Up. Default: 0", 0, -2, 2, 0.01);
@@ -39,6 +39,7 @@ public class Speed extends Module {
             ground.addBoolean("HSet", "Sets the horizontal motion instead of adding to it. Default: false", false);
             ground.addDouble("HMult", "Multiplies the horizontal motion. Default: 1", 1, -2, 2, 0.01);
             ground.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
+            ground.addBoolean("Strafe", "Strafes when on ground (instantly moves in direction). Default: false", false);
         }
         { //Add values to the "Up" section.
             Option up = normalValues.addBoolean("Up", "Modifications when going up.", true);
@@ -71,7 +72,7 @@ public class Speed extends Module {
         super.disable();
         if (player() == null)
             return;
-        mc().timer.timerSpeed = 1f;
+        timerSpeed(1f);
         player().speedInAir = 0.02F;
     }
 
@@ -102,6 +103,7 @@ public class Speed extends Module {
                     }
                 }
             } else if (eventOption.option.getTValue() instanceof ValueString) {
+                // TODO: 2020-06-10 changing name of addValue causes NPE. Add check to make sure that it's only customvalues to change.
                 Option opt = options.get("customvalues").options.remove(eventOption.option.parents.get(0).name.toLowerCase().replaceAll(" ", ""));
                 opt.name = eventOption.changed;
                 options.get("customvalues").options.put(opt.name.toLowerCase().replaceAll(" ", ""), opt);
@@ -162,6 +164,7 @@ public class Speed extends Module {
                             double hmult = option.DOUBLE("hmult");
                             MUtil.vset(vset);
                             MUtil.moveAllTypes(vclip, hclip, timer, airSpeed, 0, 1, hadd, hmult);
+                            if (option.BOOLEAN("strafe")) MUtil.strafe();
                         }
                     } else {
                         groundTick++;
@@ -197,6 +200,7 @@ public class Speed extends Module {
                     }
                 }
             }
+            if (BOOLEAN("normalvalues", "strafe")) MUtil.strafe();
         }
     }
 

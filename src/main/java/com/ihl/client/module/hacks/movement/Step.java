@@ -2,11 +2,8 @@ package com.ihl.client.module.hacks.movement;
 
 import com.ihl.client.Helper;
 import com.ihl.client.event.*;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.Module;
+import com.ihl.client.module.*;
 import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueDouble;
-import com.ihl.client.module.option.ValueString;
 import com.ihl.client.util.HelperUtil;
 import net.minecraft.client.entity.EntityPlayerSP;
 
@@ -15,36 +12,30 @@ public class Step extends Module {
 
     public Step() {
         super("Step", "Step up blocks like stairs", Category.MOVEMENT, "NONE");
-        options.put("start", new Option(this, "Start", "Values when starting step", new ValueString(""), Option.Type.OTHER, new Option[]{
-          new Option(this, "Timer", "Timer modifier. Default: 1", new ValueDouble(1, new double[]{0.1, 5}, 0.01), Option.Type.NUMBER),
-          new Option(this, "Clip", "Your initial jump clip. Default: 0", new ValueDouble(0, new double[]{0, 2}, 0.00001), Option.Type.NUMBER),
-          new Option(this, "Vertical", "Your initial jump motion. Default: 0.42", new ValueDouble(0.42, new double[]{0, 2}, 0.00001), Option.Type.NUMBER),
-        }));
-        options.put("during", new Option(this, "During", "Values during step", new ValueString(""), Option.Type.OTHER, new Option[]{
-          new Option(this, "Multiplier", "Multiplier for vertical motion. Default: 1", new ValueDouble(1, new double[]{0.1, 10}, 0.00001), Option.Type.NUMBER),
-          new Option(this, "Add", "Add for vertical motion. Default: 0", new ValueDouble(0, new double[]{0, 1}, 0.00001), Option.Type.NUMBER),
-        }));
-        options.put("againStart", new Option(this, "AgainStart", "Values when starting step again in air", new ValueString(""), Option.Type.OTHER, new Option[]{
-          new Option(this, "Again", "Distance from last starting point. Default: 0", new ValueDouble(0, new double[]{0, 2}, 0.1), Option.Type.NUMBER),
-          new Option(this, "Timer", "Timer modifier. Default: 1", new ValueDouble(1, new double[]{0.1, 5}, 0.01), Option.Type.NUMBER),
-          new Option(this, "Clip", "Your initial jump clip. Default: 0", new ValueDouble(0, new double[]{0, 2}, 0.00001), Option.Type.NUMBER),
-          new Option(this, "Vertical", "Your initial jump motion. Default: 0", new ValueDouble(0.42, new double[]{0, 2}, 0.00001), Option.Type.NUMBER),
-        }));
-        options.put("againDuring", new Option(this, "AgainDuring", "Values during step after starting again", new ValueString(""), Option.Type.OTHER, new Option[]{
-          new Option(this, "Multiplier", "Multiplier for vertical motion. Default: 1", new ValueDouble(1, new double[]{0.1, 10}, 0.00001), Option.Type.NUMBER),
-          new Option(this, "Add", "Add for vertical motion. Default: 0", new ValueDouble(0, new double[]{0, 1}, 0.00001), Option.Type.NUMBER),
-        }));
-        options.put("done", new Option(this, "Done", "Values when finished step", new ValueString(""), Option.Type.OTHER, new Option[]{
-          new Option(this, "Timer", "Timer modifier. Default: 1", new ValueDouble(1, new double[]{0.1, 5}, 0.01), Option.Type.NUMBER),
-          new Option(this, "Minus", "Minus for vertical motion. Default: 0", new ValueDouble(0, new double[]{0, 1}, 0.00001), Option.Type.NUMBER),
-          new Option(this, "Add", "Add to speed. Default: 0", new ValueDouble(0, new double[]{0, 1}, 0.00001), Option.Type.NUMBER),
-        }));
-        options.put("after", new Option(this, "After", "Values when after finishing step but before landing", new ValueString(""), Option.Type.OTHER, new Option[]{
-          new Option(this, "Timer", "Timer modifier. Default: 1", new ValueDouble(1, new double[]{0.1, 5}, 0.01), Option.Type.NUMBER),
-          new Option(this, "Minus", "Minus for vertical motion. Default: 0", new ValueDouble(0, new double[]{0, 1}, 0.00001), Option.Type.NUMBER),
-          new Option(this, "Multiplier", "Multiplier for vertical motion. Default: 1", new ValueDouble(1, new double[]{0.1, 10}, 0.00001), Option.Type.NUMBER),
-          new Option(this, "Add", "Add to speed. Default: 0", new ValueDouble(0, new double[]{0, 1}, 0.00001), Option.Type.NUMBER),
-        }));
+        Option start = addOther("Start", "Values when starting step");
+        start.addDouble("Timer", "Timer modifier. Default: 1", 1, 0.1, 5, 0.01);
+        start.addDouble("Clip", "Your initial jump clip. Default: 0", 0, 0, 2, 0.00001);
+        start.addDouble("Vertical", "Your initial jump motion. Default: 0.42", 0.42, 0, 2, 0.00001);
+        Option during = addOther("During", "Values during step");
+        during.addDouble("Multiplier", "Multiplier for vertical motion. Default: 1", 1, 0.1, 10, 0.00001);
+        during.addDouble("Add", "Add for vertical motion. Default: 0", 0, 0, 1, 0.00001);
+        Option againStart = addOther("AgainStart", "Values when starting step again in air");
+        againStart.addDouble("Again", "Distance from last starting point. Default: 0", 0, 0, 2, 0.1);
+        againStart.addDouble("Timer", "Timer modifier. Default: 1", 1, 0.1, 5, 0.01);
+        againStart.addDouble("Clip", "Your initial jump clip. Default: 0", 0, 0, 2, 0.00001);
+        againStart.addDouble("Vertical", "Your initial jump motion. Default: 0", 0.42, 0, 2, 0.00001);
+        Option againDuring = addOther("AgainDuring", "Values during step after starting again");
+        againDuring.addDouble("Multiplier", "Multiplier for vertical motion. Default: 1", 1, 0.1, 10, 0.00001);
+        againDuring.addDouble("Add", "Add for vertical motion. Default: 0", 0, 0, 1, 0.00001);
+        Option done = addOther("Done", "Values when finished step");
+        done.addDouble("Timer", "Timer modifier. Default: 1", 1, 0.1, 5, 0.01);
+        done.addDouble("Minus", "Minus for vertical motion. Default: 0", 0, 0, 1, 0.00001);
+        done.addDouble("Add", "Add to speed. Default: 0", 0, 0, 1, 0.00001);
+        Option after = addOther("After", "Values when after finishing step but before landing");
+        after.addDouble("Timer", "Timer modifier. Default: 1", 1, 0.1, 5, 0.01);
+        after.addDouble("Minus", "Minus for vertical motion. Default: 0", 0, 0, 1, 0.00001);
+        after.addDouble("Multiplier", "Multiplier for vertical motion. Default: 1", 1, 0.1, 10, 0.00001);
+        after.addDouble("Add", "Add to speed. Default: 0", 0, 0, 1, 0.00001);
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

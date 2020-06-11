@@ -25,11 +25,14 @@ public class MUtil {
     }
 
     public static void hmult(double amount) {
-        strafe(getSpeed()* amount);
+        player().motionX *= amount;
+        player().motionZ *= amount;
     }
 
     public static void hadd(double amount) {
-        strafe(getSpeed() + amount);
+        final double yaw = getDirection();
+        player().motionX += -Math.sin(yaw) * amount;
+        player().motionZ += Math.cos(yaw) * amount;
         /*
         player().motionX += Math.cos(Math.toRadians(player().rotationYaw + 90.0)) * amount;
         player().motionZ += Math.sin(Math.toRadians(player().rotationYaw + 90.0)) * amount;*/
