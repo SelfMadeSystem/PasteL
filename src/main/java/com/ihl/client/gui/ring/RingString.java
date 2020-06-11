@@ -3,11 +3,9 @@ package com.ihl.client.gui.ring;
 import com.ihl.client.gui.Gui;
 import com.ihl.client.module.Module;
 import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueString;
 import com.ihl.client.util.ColorUtil;
 import com.ihl.client.util.RenderUtil;
 import com.ihl.client.util.RenderUtil2D;
-import com.ihl.client.util.part.Settings;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
@@ -28,7 +26,7 @@ public class RingString extends Ring {
 
     @Override
     public void tick() {
-        if (list.isEmpty()) {
+        if (visibleList.isEmpty()) {
             List<String> list = Arrays.asList(module.options.keySet().toArray(new String[0]));
             if (!list.isEmpty()) {
                 Gui.changeRing(new RingOption(list, module));
@@ -66,12 +64,12 @@ public class RingString extends Ring {
 
         RenderUtil2D.string(RenderUtil.fontLarge[1], option.STRING()+((System.currentTimeMillis()%1000) < 500 ? "_" : "  "), x, y, ColorUtil.transparency(white, alpha[1]), 0, 0, false);
 
-        for (int i = 0; i < list.size(); i++) {
-            double iX = x + Math.cos(((360f / (list.size() * 2)) * ((i + 0.5) * 2)) * Math.PI / 180) * (sizeR - (width / 2));
-            double iY = y + Math.sin(((360f / (list.size() * 2)) * ((i + 0.5) * 2)) * Math.PI / 180) * (sizeR - (width / 2));
+        for (int i = 0; i < visibleList.size(); i++) {
+            double iX = x + Math.cos(((360f / (visibleList.size() * 2)) * ((i + 0.5) * 2)) * Math.PI / 180) * (sizeR - (width / 2));
+            double iY = y + Math.sin(((360f / (visibleList.size() * 2)) * ((i + 0.5) * 2)) * Math.PI / 180) * (sizeR - (width / 2));
             iY-= RenderUtil.fontTiny[0].getHeight()/2;
 
-            RenderUtil2D.string(RenderUtil.fontSmall[1], StringUtils.capitalize(""+list.get(i)), iX, iY, ColorUtil.transparency(selected == i && mouseOver ? white : guicolor, alpha[1]), 0, 0, false);
+            RenderUtil2D.string(RenderUtil.fontSmall[1], StringUtils.capitalize(""+ visibleList.get(i)), iX, iY, ColorUtil.transparency(selected == i && mouseOver ? white : guicolor, alpha[1]), 0, 0, false);
         }
     }
 

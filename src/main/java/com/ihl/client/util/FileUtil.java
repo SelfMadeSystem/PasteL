@@ -152,7 +152,7 @@ public class FileUtil {
                             if (option.type == Option.Type.LIST) {
                                 String[] splitter = value.split(",");
                                 if (splitter.length > 0) {
-                                    option.setValueNoTrigger(Arrays.asList(splitter));
+                                    option.setValue(Arrays.asList(splitter));
                                 }
                             } else {
                                 try {

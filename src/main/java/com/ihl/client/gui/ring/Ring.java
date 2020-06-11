@@ -4,11 +4,7 @@ import com.ihl.client.Helper;
 import com.ihl.client.gui.Component;
 import com.ihl.client.gui.GuiHandle;
 import com.ihl.client.input.InputUtil;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.util.ColorUtil;
-import com.ihl.client.util.MathUtil;
-import com.ihl.client.util.RenderUtil2D;
-import com.ihl.client.util.part.Settings;
+import com.ihl.client.util.*;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.Display;
 
@@ -38,11 +34,13 @@ public class Ring extends Component {
     protected ResourceLocation settingsIcon = new ResourceLocation("client/icons/settings.png");
 
     protected double[] alpha = new double[]{0, 0};
+    protected List<Object> visibleList;
     protected List<Object> list;
 
     protected double sizeR;
 
     public Ring(List list) {
+        this.visibleList = list;
         this.list = list;
         x = Display.getWidth() / 2;
         y = Display.getHeight() / 2;
@@ -55,8 +53,8 @@ public class Ring extends Component {
         x = Display.getWidth() / 2;
         y = Display.getHeight() / 2;
         sizeR = size + width;
-        settingSlider = new double[list.size()];
-        hasSettings = new boolean[list.size()];
+        settingSlider = new double[visibleList.size()];
+        hasSettings = new boolean[visibleList.size()];
         alpha = new double[]{0, 0};
         settingsIcon = new ResourceLocation("client/icons/settings.png");
         selected = -1;
@@ -70,8 +68,8 @@ public class Ring extends Component {
         double dist = MathUtil.distTo(x, y, InputUtil.mouse[0], InputUtil.mouse[1]);
         if (dist > size - width) {
             double mang = MathUtil.dirTo(x, y, InputUtil.mouse[0], InputUtil.mouse[1]) + 180;
-            if(!list.isEmpty())
-                selected = (int) Math.floor((list.size() / 360D) * mang) % list.size();
+            if(!visibleList.isEmpty())
+                selected = (int) Math.floor((visibleList.size() / 360D) * mang) % visibleList.size();
             else
                 selected = -1;
             mouseOver = true;
@@ -93,7 +91,7 @@ public class Ring extends Component {
             settingSlider[i]+= ((mouseOverSettings && selected == i && hasSettings[i] ? 1 : 0)-settingSlider[i])/a;
         }
 
-        selectedR += (((((selected - selectedR) % list.size()) + (list.size() * 1.5D)) % list.size()) - (list.size() * 0.5D)) / b;
+        selectedR += (((((selected - selectedR) % visibleList.size()) + (visibleList.size() * 1.5D)) % visibleList.size()) - (visibleList.size() * 0.5D)) / b;
         sizeR += (size - sizeR) / c;
         alpha[0] += (mouseOver ? d : -d);
         alpha[1] += ((Helper.mc().currentScreen instanceof GuiHandle ? 1 : 0) - alpha[1]) / b;
@@ -124,19 +122,19 @@ public class Ring extends Component {
         RenderUtil2D.circleOutline(x, y, sizeR+1, ColorUtil.transparency(borderColor, alpha[1]), 2f);
         RenderUtil2D.circleOutline(x, y, sizeR - width - 1, ColorUtil.transparency(borderColor, alpha[1]), 2f);
 
-        for(int i = 0; i < list.size(); i++) {
-            RenderUtil2D.donutSeg(x, y, sizeR + (settingSlider[i] * settingSliderWidth)+2, sizeR, i, list.size(), settingsPadding - ((1 / (360D / list.size())) * 5.5), ColorUtil.transparency(borderColor, alpha[1]));
+        for(int i = 0; i < visibleList.size(); i++) {
+            RenderUtil2D.donutSeg(x, y, sizeR + (settingSlider[i] * settingSliderWidth)+2, sizeR, i, visibleList.size(), settingsPadding - ((1 / (360D / visibleList.size())) * 5.5), ColorUtil.transparency(borderColor, alpha[1]));
         }
 
         RenderUtil2D.donut(x, y, sizeR, sizeR - width, ColorUtil.transparency(centerColor, alpha[1] / 2));
-        RenderUtil2D.donutSeg(x, y, sizeR, sizeR - width, selectedR, list.size(), segPadding, ColorUtil.transparency(guicolor, alpha[0] * alpha[1]));
+        RenderUtil2D.donutSeg(x, y, sizeR, sizeR - width, selectedR, visibleList.size(), segPadding, ColorUtil.transparency(guicolor, alpha[0] * alpha[1]));
         RenderUtil2D.circle(x, y, sizeR - width, ColorUtil.transparency(borderColor, alpha[1] / 2));
 
         double iconSize = 20;
-        for(int i = 0; i < list.size(); i++) {
-            RenderUtil2D.donutSeg(x, y, sizeR + (settingSlider[i] * settingSliderWidth), sizeR, i, list.size(), settingsPadding-((1/(360D/list.size()))*5), ColorUtil.transparency(guicolor, alpha[1]));
+        for(int i = 0; i < visibleList.size(); i++) {
+            RenderUtil2D.donutSeg(x, y, sizeR + (settingSlider[i] * settingSliderWidth), sizeR, i, visibleList.size(), settingsPadding-((1/(360D/ visibleList.size()))*5), ColorUtil.transparency(guicolor, alpha[1]));
 
-            double ang = ((360D/list.size())*(i+0.5));
+            double ang = ((360D/ visibleList.size())*(i+0.5));
             double rad = (sizeR + (settingSlider[i] * (settingSliderWidth/2)));
             double iX = x + Math.cos(ang * Math.PI / 180D) * rad;
             double iY = y + Math.sin(ang * Math.PI / 180D) * rad;

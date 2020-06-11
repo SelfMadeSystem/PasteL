@@ -24,7 +24,7 @@ public class RingModule extends Ring {
 
     @Override
     public void tick() {
-        if (list.isEmpty()) {
+        if (visibleList.isEmpty()) {
             Gui.changeRing(new RingCategory(Arrays.asList(Category.values())));
             return;
         }
@@ -34,7 +34,7 @@ public class RingModule extends Ring {
     @Override
     public void mouseClicked(int button) {
         if (mouseOver && button == 0) {
-            String key = (String) list.get(selected);
+            String key = (String) visibleList.get(selected);
             Module module = Module.get(key);
             if (mouseOverSettings) {
                 List<String> list = Arrays.asList(module.options.keySet().toArray(new String[0]));
@@ -54,17 +54,17 @@ public class RingModule extends Ring {
         super.render();
         double iconSize = 40;
 
-        for (int i = 0; i < list.size(); i++) {
-            String key = (String) list.get(i);
+        for (int i = 0; i < visibleList.size(); i++) {
+            String key = (String) visibleList.get(i);
             Module module = Module.get(key);
 
-            double ang = ((360f / (list.size() * 2)) * ((i + 0.5) * 2)) * Math.PI / 180;
+            double ang = ((360f / (visibleList.size() * 2)) * ((i + 0.5) * 2)) * Math.PI / 180;
             double inc = (sizeR - (width / 2));
             double iX = x + Math.cos(ang) * inc;
             double iY = y + Math.sin(ang) * inc;
             iY -= RenderUtil.fontTiny[0].getHeight() / 2;
             if (module.active) {
-                RenderUtil2D.donutSeg(x, y, sizeR + (settingSlider[i] * settingSliderWidth) + 20, sizeR + (settingSlider[i] * settingSliderWidth) + 10, i, list.size(), modulePadding, ColorUtil.transparency(module.color, alpha[1]));
+                RenderUtil2D.donutSeg(x, y, sizeR + (settingSlider[i] * settingSliderWidth) + 20, sizeR + (settingSlider[i] * settingSliderWidth) + 10, i, visibleList.size(), modulePadding, ColorUtil.transparency(module.color, alpha[1]));
             }
 
             Helper.mc().getTextureManager().bindTexture(module.icon);
@@ -73,7 +73,7 @@ public class RingModule extends Ring {
         }
 
         if (selected != -1) {
-            Module module = Module.get((String) list.get((int) Math.floor(selected)));
+            Module module = Module.get((String) visibleList.get((int) Math.floor(selected)));
             RenderUtil2D.string(RenderUtil.fontLarge[1], module.name, x, y, ColorUtil.transparency(white, alpha[0] * alpha[1]), 0, 0, false);
             RenderUtil2D.string(RenderUtil.fontTiny[1], module.desc, x, y + (RenderUtil.fontLarge[1].getHeight() / 2) + 2, ColorUtil.transparency(0xFFCCCCCC, alpha[0] * alpha[1]), 0, 1, false);
         }

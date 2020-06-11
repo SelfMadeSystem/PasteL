@@ -19,7 +19,7 @@ public class RingCategory extends Ring {
     @Override
     public void mouseClicked(int button) {
         if (mouseOver && button == 0) {
-            Category category = (Category) list.get(selected);
+            Category category = (Category) visibleList.get(selected);
             List<String> list = Module.category(category);
             if (!list.isEmpty()) {
                 Gui.changeRing(new RingModule(list));
@@ -32,10 +32,10 @@ public class RingCategory extends Ring {
         super.render();
         double iconSize = 40;
 
-        for (int i = 0; i < list.size(); i++) {
-            Category category = (Category) list.get(i);
+        for (int i = 0; i < visibleList.size(); i++) {
+            Category category = (Category) visibleList.get(i);
 
-            double rot = ((360f / (list.size() * 2)) * ((i + 0.5) * 2));
+            double rot = ((360f / (visibleList.size() * 2)) * ((i + 0.5) * 2));
             double rad = Math.PI / 180;
             double ang = (rot * rad) % 360;
             double inc = (sizeR - (width / 2));
@@ -49,7 +49,7 @@ public class RingCategory extends Ring {
         }
 
         if (selected != -1) {
-            Category category = (Category) list.get((int) Math.floor(selected));
+            Category category = (Category) visibleList.get((int) Math.floor(selected));
             RenderUtil2D.string(RenderUtil.fontLarge[1], category.display, x, y, ColorUtil.transparency(white, alpha[0] * alpha[1]), 0, 0, true);
         }
     }

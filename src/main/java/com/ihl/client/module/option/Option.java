@@ -153,6 +153,7 @@ public class Option {
     public ResourceLocation icon;
     public Map<String, Option> options = new LinkedHashMap<>();
     public int color;
+    public boolean visible = true;
 
     public Option(Module module, String name, String desc, Value value, Type type) {
         this(module, name, desc, value, type, new ArrayList<>(), new ArrayList<>());

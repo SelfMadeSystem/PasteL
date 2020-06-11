@@ -6,6 +6,7 @@ import com.ihl.client.gui.ring.RingString;
 import com.ihl.client.module.*;
 import com.ihl.client.module.option.*;
 import com.ihl.client.util.MUtil;
+import net.minecraft.block.Block;
 
 import java.util.*;
 import java.util.stream.Collectors;
