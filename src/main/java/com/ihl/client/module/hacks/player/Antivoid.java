@@ -37,7 +37,7 @@ public class Antivoid extends Module {
             String mode = STRING("Mode");
             double fallDistance = DOUBLE("fallDistance");
             boolean onlyVoid = BOOLEAN("onlyVoid");
-            if (!player().capabilities.allowFlying && player().fallDistance > fallDistance && (!onlyVoid || !BlockUtils.isBlockUnder())) {
+            if (!player().capabilities.allowFlying && !player().capabilities.isCreativeMode && player().fallDistance > fallDistance && (!onlyVoid || !BlockUtils.isBlockUnder())) {
                 switch (mode) {
                     case "TeleportBack": {
                         player().setPositionAndUpdate(Math.round(lastGround.get(2).xCoord), lastGround.get(2).yCoord, Math.round(lastGround.get(2).zCoord));

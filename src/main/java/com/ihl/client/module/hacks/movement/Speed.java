@@ -5,11 +5,9 @@ import com.ihl.client.gui.Gui;
 import com.ihl.client.gui.ring.RingString;
 import com.ihl.client.module.*;
 import com.ihl.client.module.option.*;
-import com.ihl.client.util.MUtil;
-import net.minecraft.block.Block;
+import com.ihl.client.util.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @EventHandler(events = {EventPlayerMove.class, EventPlayerUpdate.class})
 public class Speed extends Module {
@@ -78,8 +76,6 @@ public class Speed extends Module {
     }
 
     public void optionChanged(EventOption eventOption) {
-        System.out.println(eventOption.module.name + "  " + eventOption.option.name + " " +
-          eventOption.option.parents.stream().map(option -> option.name).collect(Collectors.toList()) + "  " + eventOption.changed);
         if (eventOption.module.name.equalsIgnoreCase("speed")) {
             if (eventOption.option.getTValue() instanceof ValueBoolean) {
                 if (eventOption.changed.equalsIgnoreCase("true")) {
@@ -94,20 +90,21 @@ public class Speed extends Module {
                         int ground = option.options.get("everyground").INTEGER();
                         int tick = option.options.get("everytick").INTEGER();
                         int tickground = option.options.get("tickground").INTEGER();
-                        options.get("customvalues").options.put(name.toLowerCase().replaceAll(" ", ""), generateOption(name, condition, ground, tick, tickground));
+                        options.get("customvalues").addOption(generateOption(name, condition, ground, tick, tickground));
 
                     } else if (eventOption.option.name.replaceAll(" ", "").toLowerCase().equalsIgnoreCase("delete")) {
-                        Option option = options.get("customvalues").options.remove(eventOption.option.parents.get(0).name.toLowerCase().replaceAll(" ", ""));
-                        option.name = eventOption.changed;
-                        options.get("customvalues").options.put(eventOption.changed.toLowerCase().replaceAll(" ", ""), option);
-                        Gui.components.put("ring", new RingString(this, option.options.get("name"), Arrays.asList(option.name)));
+                        options.get("customvalues").removeOption(eventOption.option.parent.name);
+                        Gui.prevRing();
                     }
                 }
             } else if (eventOption.option.getTValue() instanceof ValueString) {
-                // TODO: 2020-06-10 changing name of addValue causes NPE. Add check to make sure that it's only customvalues to change.
-                Option opt = options.get("customvalues").options.remove(eventOption.option.parents.get(0).name.toLowerCase().replaceAll(" ", ""));
-                opt.name = eventOption.changed;
-                options.get("customvalues").options.put(opt.name.toLowerCase().replaceAll(" ", ""), opt);
+                if (eventOption.option.name.equalsIgnoreCase("name")) {
+                    if (eventOption.option.parent != null && eventOption.option.parent.parent != null) {
+                        Option opt = options.get("customvalues").removeOption(eventOption.option.parent.name);
+                        opt.name = eventOption.changed;
+                        options.get("customvalues").addOption(opt);
+                    }
+                }
             }
         }
     }

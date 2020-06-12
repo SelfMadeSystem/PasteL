@@ -18,8 +18,8 @@ public class OptNoS extends Option {
         super(module, name, desc, value, type, options);
     }
 
-    public OptNoS(Module module, String name, String desc, Value value, Type type, List<Option> options, List<Option> parents) {
-        super(module, name, desc, value, type, options, parents);
+    public OptNoS(Module module, String name, String desc, Value value, Type type, List<Option> options, Option parent) {
+        super(module, name, desc, value, type, options, parent);
     }
 
     @Override

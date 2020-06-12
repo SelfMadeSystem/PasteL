@@ -134,31 +134,28 @@ public class FileUtil {
                 } else if (split.length >= 3) {
                     List<String> strings = new ArrayList<>(Arrays.asList(split));
                     Module module = Module.get(strings.get(0));
-                    if (module != null) {
-                        String value = strings.get(strings.size() - 1);
-                        strings.remove(0);
-                        strings.remove(strings.size() - 1);
-                        Option option = Option.get(module.options, strings);
-                        if (module.name.equalsIgnoreCase("speed"))
-                            System.out.println(option + " " + strings + " " + value);
-                        if (strings.get(0).equalsIgnoreCase("customvalues") && strings.size() > 1){
-                            module.options.get("customvalues").options.putIfAbsent(strings.get(1).toLowerCase().replaceAll(" ", ""),
-                              ((Speed) module).generateOption(strings.get(1)));
-                            if (strings.size() > 2 && strings.get(2).equalsIgnoreCase("name")) {
-                                module.options.get("customvalues").options.get(strings.get(1)).name = value;
-                            }
+                    String value = strings.get(strings.size() - 1);
+                    strings.remove(0);
+                    strings.remove(strings.size() - 1);
+                    Option option = Option.get(module.options, strings);
+                    if (module.name.equalsIgnoreCase("speed"))
+                        //System.out.println(option + " " + strings + " " + value);
+                    if (strings.get(0).equalsIgnoreCase("customvalues") && strings.size() > 1){
+                        module.options.get("customvalues").addOptionIfAbsent(((Speed) module).generateOption(strings.get(1)));
+                        if (strings.size() > 2 && strings.get(2).equalsIgnoreCase("name")) {
+                            module.options.get("customvalues").options.get(strings.get(1)).name = value;
                         }
-                        if (option != null) {
-                            if (option.type == Option.Type.LIST) {
-                                String[] splitter = value.split(",");
-                                if (splitter.length > 0) {
-                                    option.setValue(Arrays.asList(splitter));
-                                }
-                            } else {
-                                try {
-                                    Option.setOptionValue(option, value, true);
-                                } catch (Exception ignored) {
-                                }
+                    }
+                    if (option != null) {
+                        if (option.type == Option.Type.LIST) {
+                            String[] splitter = value.split(",");
+                            if (splitter.length > 0) {
+                                option.setValue(Arrays.asList(splitter));
+                            }
+                        } else {
+                            try {
+                                Option.setOptionValue(option, value, true);
+                            } catch (Exception ignored) {
                             }
                         }
                     }

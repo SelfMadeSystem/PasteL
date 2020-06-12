@@ -248,6 +248,9 @@ public class Module extends Helper {
     public void optionChanged(EventOption eventOption) {
     }
 
+    public void rendeRing(EventRing ring) {
+    }
+
     // Option Setters
     // name, description, defaultValue
     // Returns created option.

@@ -1,6 +1,7 @@
 package com.ihl.client.gui.ring;
 
 import com.ihl.client.Helper;
+import com.ihl.client.event.EventRing;
 import com.ihl.client.gui.Gui;
 import com.ihl.client.module.Module;
 import com.ihl.client.module.option.*;
@@ -90,9 +91,10 @@ public class RingSubOption extends Ring {
 
     @Override
     public Ring reset() {
+        module.rendeRing(new EventRing(this, option));
         this.visibleList = new ArrayList<>(this.list);
         for (Object obj : this.list) {
-            if (!(module.options.get(String.valueOf(obj))).visible)
+            if ((option.options.get(String.valueOf(obj))) != null && !(option.options.get(String.valueOf(obj))).visible)
                 this.visibleList.remove(obj);
         }
         return super.reset();
@@ -109,6 +111,11 @@ public class RingSubOption extends Ring {
         for (int i = 0; i < visibleList.size(); i++) {
             String key = (String) visibleList.get(i);
             Option subOption = Option.get(option.options, key);
+
+            if (subOption == null) {
+                Gui.prevRing();
+                return;
+            }
 
             double iX = x + Math.cos(((360f / (visibleList.size() * 2)) * ((i + 0.5) * 2)) * Math.PI / 180) * (sizeR - (width / 2));
             double iY = y + Math.sin(((360f / (visibleList.size() * 2)) * ((i + 0.5) * 2)) * Math.PI / 180) * (sizeR - (width / 2));

@@ -1,6 +1,7 @@
 package com.ihl.client.gui.ring;
 
 import com.ihl.client.Helper;
+import com.ihl.client.event.EventRing;
 import com.ihl.client.gui.Gui;
 import com.ihl.client.module.Module;
 import com.ihl.client.module.option.*;
@@ -35,6 +36,7 @@ public class RingOption extends Ring {
 
     @Override
     public Ring reset() {
+        module.rendeRing(new EventRing(this));
         this.visibleList = new ArrayList<>(this.list);
         for (Object obj : this.list) {
             if (!(module.options.get(String.valueOf(obj))).visible)
