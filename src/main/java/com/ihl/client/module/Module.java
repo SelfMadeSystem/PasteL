@@ -322,6 +322,26 @@ public class Module extends Helper {
         return opt;
     }
 
+    public void addOption(Option option) {
+        option.parent = null;
+        options.put(option.name.toLowerCase().replaceAll(" ", ""), option);
+        resetOptionMap();
+    }
+
+    public void addOptionIfAbsent(Option option) {
+        option.parent = null;
+        options.putIfAbsent(option.name.toLowerCase().replaceAll(" ", ""), option);
+        resetOptionMap();
+    }
+
+    public void resetOptionMap() {
+        Map<String, Option> optionMap = new HashMap<>();
+        for (Map.Entry<String, Option> entry : options.entrySet()) {
+            optionMap.put(entry.getValue().name.toLowerCase().replaceAll(" ", ""), entry.getValue());
+        }
+        options = optionMap;
+    }
+
     //Option Getters.
     // names
     public Object OBJECT(String... names) {

@@ -3,13 +3,12 @@ package com.ihl.client.module.hacks.combat;
 import com.ihl.client.event.*;
 import com.ihl.client.module.*;
 import com.ihl.client.module.hacks.combat.aimbases.RenderBase;
-import com.ihl.client.module.option.Option;
+import com.ihl.client.module.option.*;
 import com.ihl.client.util.*;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.util.*;
+import net.minecraft.network.play.client.*;
+import net.minecraft.util.MovingObjectPosition;
 
 @EventHandler(events = {EventPlayerUpdate.class, EventRender.class, EventPacket.class})
 public class Aura extends Module {
@@ -28,6 +27,26 @@ public class Aura extends Module {
         addDouble("Turn Speed Yaw Random", "Speed alters", 5, 0, 180, 1);
         addDouble("Turn Speed Pitch", "Speed to aim towards the target", 30, 0, 180, 1);
         addDouble("Turn Speed  PitchRandom", "Speed alters", 5, 0, 180, 1);
+        Option cps = addOther("Click", "Clicks per second and toggle when attack.");
+        cps.addBoolean("Look", "Only attacks when looking at entity.", true);
+        cps.addOption(new Option(this, "Min", "Min Delay", new ValueDouble(7, new double[]{1, 20}, 1), Option.Type.NUMBER) {
+            @Override
+            public void setValueNoTrigger(Object value) {
+                double max = module.DOUBLE("click", "max");
+                if ((Double) value > max)
+                    value = max;
+                super.setValueNoTrigger(value);
+            }
+        });
+        cps.addOption(new Option(this, "Max", "Max Delay", new ValueDouble(9, new double[]{1, 20}, 1), Option.Type.NUMBER) {
+            @Override
+            public void setValueNoTrigger(Object value) {
+                double min = module.DOUBLE("click", "min");
+                if ((Double) value < min)
+                    value = min;
+                super.setValueNoTrigger(value);
+            }
+        });
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 
@@ -46,6 +65,10 @@ public class Aura extends Module {
             CustomMouser.instance.fromPlayer();
         }
     }
+
+    private long delay;
+    private long lastSwing;
+    private boolean attack;
 
     protected void onEvent(Event event) {
         String aimWhere = Option.get(options, "aimwhere").CHOICE();
@@ -77,9 +100,12 @@ public class Aura extends Module {
                 return;
             }
             p.active = true;
-            if (mouseMode.equalsIgnoreCase("silent"))
+            if (mouseMode.equalsIgnoreCase("silent")) { // TODO: 2020-06-12 Rotation Strafe
+                mc().mouseHelper.overrideMode = 0;
+                mc().mouseHelper.overrideX = 0;
+                mc().mouseHelper.overrideY = 0;
                 p.toPlayer = 0;
-            else if (mouseMode.equalsIgnoreCase("add")) {
+            } else if (mouseMode.equalsIgnoreCase("add")) {
                 p.toPlayer = 2;
                 p.fromPlayer();
             } else if (mouseMode.equalsIgnoreCase("complete"))
@@ -110,13 +136,8 @@ public class Aura extends Module {
             }
             float[] rotations = RUtils.limitAngleChange(new float[]{p.rotationYaw, p.rotationPitch}, to, turnSpeedYaw, turnSpeedPitch);
 
-            /*final float f = mc().gameSettings.mouseSensitivity * 0.6F + 0.2F;
-            final float gcd = f * f * f * 1.2F;*/
-
             int[] changeMouse = new int[]{(int) RUtils.angleDifference(p.rotationYaw, rotations[0]),
               (int) RUtils.angleDifference(p.rotationPitch, rotations[1])};
-
-            //System.out.println(Arrays.toString(changeMouse) + "|" + mc().gameSettings.mouseSensitivity);
 
             if (invertYaw)
                 changeMouse[0] *= -1;
@@ -128,41 +149,37 @@ public class Aura extends Module {
 
             p.mouseChange();
 
-            //ChatUtil.send(p.deltaX + "  " + p.deltaY + "  " + p.toPlayer + " " + p.active);
-
-            /*
-            todo:
-            if (cps is finished thingy) {
-              if (mop.entity thingy lol) {
-                hit() kthx;
-              }
+            if (attack) {
+                player().swingItem();
+                mc().getNetHandler().addToSendQueue(new C02PacketUseEntity(TargetUtil.target, C02PacketUseEntity.Action.ATTACK));
+                attack = false;
             }
-             */
-
-            MovingObjectPosition mop = RaycastUtils.getMouseOver(1, distance, 5);
-
-            ChatUtil.send(String.valueOf(mop));
-
-            /*float[] rotations = RUtils.limitAngleChange(new float[]{p.rotationYaw, p.rotationPitch}, to, turnSpeedYaw, turnSpeedPitch);
-
-            final float f = mc().gameSettings.mouseSensitivity * 0.6F + 0.2F;
-            final float gcd = f * f * f * 1.2F;
-
-            rotations[0] -= rotations[0] % gcd;
-            rotations[1] -= rotations[1] % gcd;*/
-
-            //System.out.printf("%s|%s%n", Arrays.toString(to), Arrays.toString(rotations));
-
-            //p.rotationYaw = rotations[0];
-            //p.rotationPitch = rotations[1];
         } else if (event instanceof EventRender) {
             RenderBase.render((EventRender) event);
+            if (System.currentTimeMillis() - lastSwing >= delay) {
+                if (!BOOLEAN("click", "look")) {
+                    if (TargetUtil.target != null) {
+                        attack = true;
+                        lastSwing = System.currentTimeMillis();
+                        delay = TimeUtils.randomClickDelay(INTEGER("click", "min"), INTEGER("click", "max"));
+                    }
+                } else {
+                    MovingObjectPosition mop = RaycastUtils.getMouseOver(1, distance, 5);
+                    if (mop != null && mop.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY)) {
+                        if (TargetUtil.target != null) {
+                            attack = true;
+                            lastSwing = System.currentTimeMillis();
+                            delay = TimeUtils.randomClickDelay(INTEGER("click", "min"), INTEGER("click", "max"));
+                        }
+                    }
+                }
+            }
         } else if (event instanceof EventPacket) {
             if (event.type.equals(Event.Type.SEND)) {
                 Packet packet = ((EventPacket) event).packet;
                 if (packet instanceof C03PacketPlayer) {
                     C03PacketPlayer c03 = (C03PacketPlayer) packet;
-                    if (c03.getRotating()) {
+                    if (c03.getRotating() && STRING("Mouse Mode").equalsIgnoreCase("silent")) {
                         c03.yaw = CustomMouser.instance.rotationYaw;
                         c03.pitch = CustomMouser.instance.rotationPitch;
                         ((EventPacket) event).packet = c03;
