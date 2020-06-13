@@ -30,6 +30,7 @@ public class Module extends Helper {
         new AimAssist();
         new AimBot();
         new AntiBot();
+        new Aura();
         new AutoClicker();
         //MISC
         //PLAYER

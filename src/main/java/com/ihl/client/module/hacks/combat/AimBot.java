@@ -14,20 +14,19 @@ public class AimBot extends Module {
 
     public AimBot() {
         super("AimBot", "Aims at stuff", Category.COMBAT, "NONE");
-        options.put("aimwhen", new Option(this, "Aim When", "Aim when", new ValueChoice(0, "always", "mouse"), Option.Type.CHOICE));
-        options.put("aimwhere", new Option(this, "Aim Where", "Aim where", new ValueChoice(0, "top", "head", "centre", "feet", "fromTop", "fromBottom", "auto"), Option.Type.CHOICE, new Option[]{
-          new Option(this, "Custom", "Value from  top for custom.", new ValueDouble(0.4, new double[]{0, 3}, 0.1), Option.Type.NUMBER)
-        }));
-        options.put("mousemode", new Option(this, "Mouse Mode", "How it overrides your mouse", new ValueChoice(0, "add", "complete"), Option.Type.CHOICE));
-        options.put("priority", new Option(this, "Priority", "Switch target selection mode", new ValueChoice(0, "distance", "health", "direction"), Option.Type.CHOICE));
-        options.put("distance", new Option(this, "Distance", "Distance to attack entities within", new ValueDouble(3.6, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
-        options.put("range", new Option(this, "Range", "View range to attack entities within", new ValueDouble(180, new double[]{0, 180}, 1), Option.Type.NUMBER));
-        options.put("invertyaw", new Option(this, "Invert yaw", "Enable or Disable if turning the wrong way.", new ValueBoolean(true), Option.Type.BOOLEAN));
-        options.put("invertpitch", new Option(this, "Invert pitch", "Enable or Disable if turning the wrong way.", new ValueBoolean(false), Option.Type.BOOLEAN));
-        options.put("turnspeedyaw", new Option(this, "Turn Speed Yaw", "Speed to aim towards the target", new ValueDouble(30, new double[]{0, 180}, 1), Option.Type.NUMBER));
-        options.put("turnspeedyawrandom", new Option(this, "Turn Speed Yaw Random", "Speed alters", new ValueDouble(5, new double[]{0, 180}, 1), Option.Type.NUMBER));
-        options.put("turnspeedpitch", new Option(this, "Turn Speed Pitch", "Speed to aim towards the target", new ValueDouble(30, new double[]{0, 180}, 1), Option.Type.NUMBER));
-        options.put("turnspeedpitchrandom", new Option(this, "Turn Speed  PitchRandom", "Speed alters", new ValueDouble(5, new double[]{0, 180}, 1), Option.Type.NUMBER));
+        addChoice("Aim When", "Aim when", "always", "mouse");
+        Option aW = addChoice("Aim Where", "Aim where", "top", "head", "centre", "feet", "fromTop", "fromBottom", "auto");
+        aW.addDouble("Custom", "Value from  top for custom.", 0.4, 0, 3, 0.1);
+        addChoice("Mouse Mode", "How it overrides your mouse", "silent", "add", "complete");
+        addChoice("Priority", "Switch target selection mode", "distance", "health", "direction");
+        addDouble("Distance", "Distance to attack entities within", 3.6, 0, 10, 0.1);
+        addDouble("Range", "View range to attack entities within", 180, 0, 180, 1);
+        addBoolean("Invert yaw", "Enable or Disable if turning the wrong way.", true);
+        addBoolean("Invert pitch", "Enable or Disable if turning the wrong way.", false);
+        addDouble("Turn Speed Yaw", "Speed to aim towards the target", 30, 0, 180, 1);
+        addDouble("Turn Speed Yaw Random", "Speed alters", 5, 0, 180, 1);
+        addDouble("Turn Speed Pitch", "Speed to aim towards the target", 30, 0, 180, 1);
+        addDouble("Turn Speed  PitchRandom", "Speed alters", 5, 0, 180, 1);
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

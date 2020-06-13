@@ -13,11 +13,12 @@ public class CustomMouser extends MouseHelper {
     private Minecraft mc;
 
     public CustomMouser() {
+        mc = Minecraft.getMinecraft();
         instance = this;
     }
 
     public float rotationYaw, rotationPitch, prevRotationYaw, prevRotationPitch;
-    public boolean toPlayer = false;
+    public int toPlayer = 0; //0 none 1 set 2 add
     public boolean got, active;
 
     @Override
@@ -65,8 +66,15 @@ public class CustomMouser extends MouseHelper {
         this.rotationPitch = MathHelper.clamp_float(this.rotationPitch, -90.0F, 90.0F);
         this.prevRotationPitch += this.rotationPitch - var3;
         this.prevRotationYaw += this.rotationYaw - var4;
-        if (active && toPlayer) toPlayer();
+        if (active && toPlayer == 1) toPlayer();
+        if (active && toPlayer == 2) addToPlayer();
         if (active) RUtils.setTargetRotation(this.rotationYaw, this.rotationPitch);
+    }
+
+    public void addToPlayer() {
+        mc.mouseHelper.overrideX = deltaX;
+        mc.mouseHelper.overrideY = deltaY;
+        mc.mouseHelper.overrideMode = 2;
     }
 
     public void toPlayer() {
@@ -74,5 +82,12 @@ public class CustomMouser extends MouseHelper {
         mc.thePlayer.rotationPitch = rotationPitch;
         mc.thePlayer.prevRotationYaw = prevRotationYaw;
         mc.thePlayer.prevRotationPitch = prevRotationPitch;
+    }
+
+    public void fromPlayer() {
+        rotationYaw = mc.thePlayer.rotationYaw;
+        rotationPitch = mc.thePlayer.rotationPitch;
+        prevRotationYaw = mc.thePlayer.prevRotationYaw;
+        prevRotationPitch = mc.thePlayer.prevRotationPitch;
     }
 }

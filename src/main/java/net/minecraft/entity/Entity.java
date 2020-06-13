@@ -1483,7 +1483,7 @@ public abstract class Entity implements ICommandSender
         }
     }
 
-    protected final Vec3 func_174806_f(float p_174806_1_, float p_174806_2_)
+    public final Vec3 func_174806_f(float p_174806_1_, float p_174806_2_)
     {
         float var3 = MathHelper.cos(-p_174806_2_ * 0.017453292F - (float)Math.PI);
         float var4 = MathHelper.sin(-p_174806_2_ * 0.017453292F - (float)Math.PI);
@@ -1507,11 +1507,11 @@ public abstract class Entity implements ICommandSender
         }
     }
 
-    public MovingObjectPosition rayTrace(double p_174822_1_, float p_174822_3_)
+    public MovingObjectPosition rayTrace(double reach, float partialTicksQuestionMark)
     {
-        Vec3 var4 = this.func_174824_e(p_174822_3_);
-        Vec3 var5 = this.getLook(p_174822_3_);
-        Vec3 var6 = var4.addVector(var5.xCoord * p_174822_1_, var5.yCoord * p_174822_1_, var5.zCoord * p_174822_1_);
+        Vec3 var4 = this.func_174824_e(partialTicksQuestionMark);
+        Vec3 var5 = this.getLook(partialTicksQuestionMark);
+        Vec3 var6 = var4.addVector(var5.xCoord * reach, var5.yCoord * reach, var5.zCoord * reach);
         return this.worldObj.rayTraceBlocks(var4, var6, false, false, true);
     }
 
