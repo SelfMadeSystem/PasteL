@@ -25,11 +25,11 @@ public class MouseAimBase {
         mc.mouseHelper.overrideMode = 0;
     }
 
-    public static void enable(String aimWhere, double custom) {
+    public static void enable(String aimWhere, double custom, double predict) {
         if (!HelperUtil.inGame())
             return;
 
-        updateRotations(aimWhere, custom);
+        updateRotations(aimWhere, custom, predict);
     }
 
     public static void write(double absAmount) {
@@ -48,7 +48,7 @@ public class MouseAimBase {
         }
     }
 
-    public static int[] getNextRotations(String priority, double distance, double range, String aimWhere, double custom, String mode, boolean invertYaw, boolean invertPitch, int maxOvershoot) {
+    public static int[] getNextRotations(String priority, double distance, double range, String aimWhere, double custom, String mode, boolean invertYaw, boolean invertPitch, int maxOvershoot, double predict) {
         int turnSpeedYaw;
         int turnSpeedPitch;
 
@@ -69,11 +69,11 @@ public class MouseAimBase {
             prev++;
         }
         EntityPlayerSP p = mc.thePlayer;
-        return getNextRotations(priority, distance, range, aimWhere, custom, invertYaw, invertPitch, maxOvershoot, turnSpeedYaw, turnSpeedPitch, new float[]{p.rotationYaw, p.rotationPitch});
+        return getNextRotations(priority, distance, range, aimWhere, custom, invertYaw, invertPitch, maxOvershoot, turnSpeedYaw, turnSpeedPitch, new float[]{p.rotationYaw, p.rotationPitch}, predict);
     }
 
     public static int[] getNextRotations(String priority, double distance, double range, String aimWhere,
-                                         double custom, boolean invertYaw, boolean invertPitch, double maxOvershoot, int turnSpeedYaw, int turnSpeedPitch, float[] from) {
+                                         double custom, boolean invertYaw, boolean invertPitch, double maxOvershoot, int turnSpeedYaw, int turnSpeedPitch, float[] from, double predict) {
         TargetUtil.targetEntity(priority, distance, range);
         EntityLivingBase target = TargetUtil.target;
         if (target == null) {
@@ -104,7 +104,7 @@ public class MouseAimBase {
         changeMouse[0] *= (double) turnSpeedYaw / 100;
         changeMouse[1] *= (double) turnSpeedPitch / 100;
 
-        float[] fts0 = BasicAimBase.getAimTo(360, aimWhere, custom, from);
+        float[] fts0 = BasicAimBase.getAimTo(360, aimWhere, custom, from, predict);
         //float[] fts1 = new float[]{RUtils.angleDifference(mc.thePlayer.rotationYaw, fts0[0]), RUtils.angleDifference(mc.thePlayer.rotationPitch, fts0[1])};
         if (Math.abs(fts0[0]) + maxOvershoot < Math.abs(changeMouse[0]))
             changeMouse[0] = (int) (Math.abs(fts0[0]) * (changeMouse[0] > 0 ? 1 : -1));
@@ -127,7 +127,7 @@ public class MouseAimBase {
         //p.rotationPitch = rotations[1];
     }
 
-    public static void updateRotations(String aimWhere, double custom) {
-        rotations = BasicAimBase.getAimTo(1, aimWhere, custom);
+    public static void updateRotations(String aimWhere, double custom, double predict) {
+        rotations = BasicAimBase.getAimTo(1, aimWhere, custom, predict);
     }
 }

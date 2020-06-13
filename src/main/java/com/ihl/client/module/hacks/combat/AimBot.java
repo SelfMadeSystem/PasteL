@@ -23,6 +23,7 @@ public class AimBot extends Module {
         addDouble("Range", "View range to attack entities within", 180, 0, 180, 1);
         addBoolean("Invert yaw", "Enable or Disable if turning the wrong way.", true);
         addBoolean("Invert pitch", "Enable or Disable if turning the wrong way.", false);
+        addDouble("Predict", "Amount to predict. 0 is none, 1 is motion, 2 double that, and so on.", 1, 0, 10, 0.1);
         addDouble("Turn Speed Yaw", "Speed to aim towards the target", 30, 0, 180, 1);
         addDouble("Turn Speed Yaw Random", "Speed alters", 5, 0, 180, 1);
         addDouble("Turn Speed Pitch", "Speed to aim towards the target", 30, 0, 180, 1);
@@ -50,6 +51,7 @@ public class AimBot extends Module {
         String priority = Option.get(options, "priority").CHOICE();
         double distance = Option.get(options, "distance").DOUBLE();
         double custom = Option.get(options, "aimwhere", "custom").DOUBLE();
+        double predict = DOUBLE("predict");
         int range = Option.get(options, "range").INTEGER();
         int turnSpeedYaw = (int)
           ((Math.random() * Option.get(options, "turnspeedyaw").INTEGER()) - Option.get(options, "turnspeedyawrandom").INTEGER() / 2);
@@ -81,25 +83,25 @@ public class AimBot extends Module {
             float[] to;
             switch (aimWhere) {
                 case "top":
-                    to = RUtils.getNeededRotations(RUtils.getTop(target.getEntityBoundingBox()), true);
+                    to = RUtils.getNeededRotations(RUtils.getTop(target.getEntityBoundingBox()), predict);
                     break;
                 case "head":
-                    to = RUtils.getNeededRotations(RUtils.getHead(target), true);
+                    to = RUtils.getNeededRotations(RUtils.getHead(target), predict);
                     break;
                 case "center":
-                    to = RUtils.getNeededRotations(RUtils.getCenter(target.getEntityBoundingBox()), true);
+                    to = RUtils.getNeededRotations(RUtils.getCenter(target.getEntityBoundingBox()), predict);
                     break;
                 case "feet":
-                    to = RUtils.getNeededRotations(RUtils.getBottom(target.getEntityBoundingBox()), true);
+                    to = RUtils.getNeededRotations(RUtils.getBottom(target.getEntityBoundingBox()), predict);
                     break;
                 case "fromTop":
-                    to = RUtils.getNeededRotations(RUtils.getFromTop(target.getEntityBoundingBox(), custom), true);
+                    to = RUtils.getNeededRotations(RUtils.getFromTop(target.getEntityBoundingBox(), custom), predict);
                     break;
                 case "auto":
-                    to = RUtils.getNeededRotations(RUtils.searchCenter(target.getEntityBoundingBox(), false, false, true, false).getVec(), true);
+                    to = RUtils.getNeededRotations(RUtils.searchCenter(target.getEntityBoundingBox(), false, false, predict, false).getVec(), predict);
                     break;
                 default:
-                    to = RUtils.getNeededRotations(RUtils.getFromBottom(target.getEntityBoundingBox(), custom), true);
+                    to = RUtils.getNeededRotations(RUtils.getFromBottom(target.getEntityBoundingBox(), custom), predict);
             }
             float[] rotations = RUtils.limitAngleChange(new float[]{p.rotationYaw, p.rotationPitch}, to, turnSpeedYaw, turnSpeedPitch);
 

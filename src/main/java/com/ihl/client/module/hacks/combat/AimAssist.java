@@ -23,6 +23,7 @@ public class AimAssist extends Module {
         options.put("invertpitch", new Option(this, "Invert pitch", "Enable or Disable if turning the wrong way.", new ValueBoolean(false), Option.Type.BOOLEAN));
         options.put("modeType", new Option(this, "Mode Type", "The mode of how it selects values", new ValueChoice(0, "list", "random", "write"), Option.Type.CHOICE));
         options.put("absAmount", new Option(this, "Absolute Amount", "The amount of values to make absolute (positive) when recording.", new ValueDouble(30, new double[]{0, 100}, 1), Option.Type.NUMBER));
+        addDouble("Predict", "Amount to predict. 0 is none, 1 is motion, 2 double that, and so on.", 1, 0, 10, 0.1);
         options.put("turntime", new Option(this, "Turn Time", "Time between stuff", new ValueDouble(30, new double[]{1, 200}, 1), Option.Type.NUMBER));
         options.put("turnspeedyaw", new Option(this, "Turn Speed Yaw", "Speed to aim towards the target", new ValueDouble(30, new double[]{0, 200}, 1), Option.Type.NUMBER));
         //options.put("turnspeedyawrandom", new Option(this, "Turn Speed Yaw Random", "Speed alters", new ValueDouble(5, new double[]{0, 180}, 1), Option.Type.NUMBER));
@@ -71,6 +72,7 @@ public class AimAssist extends Module {
             String aimWhere = Option.get(options, "aimwhere").CHOICE();
             double distance = Option.get(options, "distance").DOUBLE();
             double custom = Option.get(options, "aimwhere", "custom").DOUBLE();
+            double predict = DOUBLE("predict");
             int turnTime = Option.get(options, "turntime").INTEGER();
             int range = Option.get(options, "range").INTEGER();
             int maxOvershoot = Option.get(options, "maxovershoot").INTEGER();
@@ -150,8 +152,8 @@ public class AimAssist extends Module {
 //                changeMouse[0] = (int) (Math.abs(fts0[0]) * (changeMouse[0] > 0 ? 1 : -1));
 //            if (Math.abs(fts0[1]) + maxOvershoot < Math.abs(changeMouse[1]))
 //                changeMouse[1] = (int) (Math.abs(fts0[1]) * (changeMouse[1] > 0 ? 1 : -1));
-            if (player().ticksExisted % turnTime == 0) MouseAimBase.updateRotations(aimWhere, custom);
-            int[] changeMouse = MouseAimBase.getNextRotations(priority, distance, range, aimWhere, custom, mode, invertYaw, invertPitch, maxOvershoot);
+            if (player().ticksExisted % turnTime == 0) MouseAimBase.updateRotations(aimWhere, custom, predict);
+            int[] changeMouse = MouseAimBase.getNextRotations(priority, distance, range, aimWhere, custom, mode, invertYaw, invertPitch, maxOvershoot, predict);
 
 
             mc().mouseHelper.overrideX = changeMouse[0];

@@ -129,9 +129,9 @@ public class MathHelper
      * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
      * third parameters.
      */
-    public static int clamp_int(int p_76125_0_, int p_76125_1_, int p_76125_2_)
+    public static int clamp_int(int val, int min, int max)
     {
-        return p_76125_0_ < p_76125_1_ ? p_76125_1_ : (p_76125_0_ > p_76125_2_ ? p_76125_2_ : p_76125_0_);
+        return val < min ? min : (Math.min(val, max));
     }
 
     /**
@@ -140,12 +140,12 @@ public class MathHelper
      */
     public static float clamp_float(float p_76131_0_, float p_76131_1_, float p_76131_2_)
     {
-        return p_76131_0_ < p_76131_1_ ? p_76131_1_ : (p_76131_0_ > p_76131_2_ ? p_76131_2_ : p_76131_0_);
+        return p_76131_0_ < p_76131_1_ ? p_76131_1_ : (Math.min(p_76131_0_, p_76131_2_));
     }
 
     public static double clamp_double(double p_151237_0_, double p_151237_2_, double p_151237_4_)
     {
-        return p_151237_0_ < p_151237_2_ ? p_151237_2_ : (p_151237_0_ > p_151237_4_ ? p_151237_4_ : p_151237_0_);
+        return p_151237_0_ < p_151237_2_ ? p_151237_2_ : (Math.min(p_151237_0_, p_151237_4_));
     }
 
     public static double denormalizeClamp(double p_151238_0_, double p_151238_2_, double p_151238_4_)

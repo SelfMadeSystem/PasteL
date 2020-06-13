@@ -188,26 +188,26 @@ public final class RUtils {
         return looking;
     }*/
 
-    public static boolean isYawLookingAtTarget(Entity target, boolean predict) {
+    public static boolean isYawLookingAtTarget(Entity target, double predict) {
         float[] rotation = new float[]{Minecraft.getMinecraft().thePlayer.rotationYaw, Minecraft.getMinecraft().thePlayer.rotationPitch};
         return isYawLookingAtTarget(rotation, target, predict);
     }
 
-    public static boolean isPitchLookingAtTarget(Entity target, boolean predict) {
+    public static boolean isPitchLookingAtTarget(Entity target, double predict) {
         float[] rotation = new float[]{Minecraft.getMinecraft().thePlayer.rotationYaw, Minecraft.getMinecraft().thePlayer.rotationPitch};
         return isPitchLookingAtTarget(rotation, target, predict);
     }
 
-    public static boolean isLookingAtTarget(Entity target, boolean predict) {
+    public static boolean isLookingAtTarget(Entity target, double predict) {
         float[] rotation = new float[]{Minecraft.getMinecraft().thePlayer.rotationYaw, Minecraft.getMinecraft().thePlayer.rotationPitch};
         return isPitchLookingAtTarget(rotation, target, predict) && isYawLookingAtTarget(rotation, target, predict);
     }
 
-    public static boolean isLookingAtTarget(float[] rotation, Entity target, boolean predict) {
+    public static boolean isLookingAtTarget(float[] rotation, Entity target, double predict) {
         return isPitchLookingAtTarget(rotation, target, predict) && isYawLookingAtTarget(rotation, target, predict);
     }
 
-    public static boolean isPitchLookingAtTarget(float[] rotation, Entity target, boolean predict) {
+    public static boolean isPitchLookingAtTarget(float[] rotation, Entity target, double predict) {
         boolean looking = false;
         AxisAlignedBB bb = target.getEntityBoundingBox();
         Vec3 eyesPos = getEyesPos();
@@ -312,7 +312,7 @@ public final class RUtils {
         return looking;
     }
 
-    public static boolean isYawLookingAtTarget(float[] rotation, Entity target, boolean predict) {
+    public static boolean isYawLookingAtTarget(float[] rotation, Entity target, double predict) {
         boolean looking = false;
         AxisAlignedBB bb = target.getEntityBoundingBox();
         EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
@@ -404,15 +404,13 @@ public final class RUtils {
 
     public static float[] getTargetRotation(Entity entity) {
         EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
-        return entity != null && p != null ? getNeededRotations(getRandomCenter(entity.getEntityBoundingBox(), false), true) : null;
+        return entity != null && p != null ? getNeededRotations(getRandomCenter(entity.getEntityBoundingBox(), false), 1) : null;
     }
 
-    public static float[] getNeededRotations(Vec3 vec, boolean predict) {
+    public static float[] getNeededRotations(Vec3 vec, double predict) {
         EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
         Vec3 eyesPos = getEyesPos();
-        if (predict) {
-            eyesPos.addVector(p.motionX, p.motionY, p.motionZ);
-        }
+        eyesPos.addVector(p.motionX * predict, p.motionY * predict, p.motionZ * predict);
 
         double diffX = vec.xCoord - eyesPos.xCoord;
         double diffY = vec.yCoord - eyesPos.yCoord;
@@ -452,7 +450,7 @@ public final class RUtils {
         return outBorder ? new Vec3(bb.minX + (bb.maxX - bb.minX) * (x * 0.3D + 1.0D), bb.minY + (bb.maxY - bb.minY) * (y * 0.3D + 1.0D), bb.minZ + (bb.maxZ - bb.minZ) * (z * 0.3D + 1.0D)) : new Vec3(bb.minX + (bb.maxX - bb.minX) * x * 0.8D, bb.minY + (bb.maxY - bb.minY) * y * 0.8D, bb.minZ + (bb.maxZ - bb.minZ) * z * 0.8D);
     }
 
-    public static VecRotation searchCenter(final AxisAlignedBB bb, final boolean outborder, final boolean random, final boolean predict, final boolean throughWalls) {
+    public static VecRotation searchCenter(final AxisAlignedBB bb, final boolean outborder, final boolean random, final double predict, final boolean throughWalls) {
         if(outborder) {
             final Vec3 vec3 = new Vec3(bb.minX + (bb.maxX - bb.minX) * (x * 0.3 + 1.0), bb.minY + (bb.maxY - bb.minY) * (y * 0.3 + 1.0), bb.minZ + (bb.maxZ - bb.minZ) * (z * 0.3 + 1.0));
             return new VecRotation(vec3, toRotation(vec3, predict));
@@ -484,13 +482,13 @@ public final class RUtils {
         return vecRotation;
     }
 
-    public static float[] toRotation(final Vec3 vec, final boolean predict) {
+    public static float[] toRotation(final Vec3 vec, final double predict) {
         EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
 
         final Vec3 eyesPos = new Vec3(p.posX, p.getEntityBoundingBox().minY +
           p.getEyeHeight(), p.posZ);
 
-        if(predict) eyesPos.addVector(p.motionX, p.motionY, p.motionZ);
+        eyesPos.addVector(p.motionX * predict, p.motionY * predict, p.motionZ * predict);
 
         final double diffX = vec.xCoord - eyesPos.xCoord;
         final double diffY = vec.yCoord - eyesPos.yCoord;
