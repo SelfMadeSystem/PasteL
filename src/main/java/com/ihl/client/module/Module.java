@@ -334,6 +334,12 @@ public class Module extends Helper {
         return opt;
     }
 
+    public void addOptions(Option... options) {
+        for (Option option : options) {
+            addOption(option);
+        }
+    }
+
     public Option addOption(Option option) {
         option.module = this;
         option.parent = null;

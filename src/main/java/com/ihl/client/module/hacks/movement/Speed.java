@@ -4,10 +4,11 @@ import com.ihl.client.event.*;
 import com.ihl.client.gui.Gui;
 import com.ihl.client.module.*;
 import com.ihl.client.module.option.*;
-import com.ihl.client.module.option.options.OptNoS;
-import com.ihl.client.util.*;
+import com.ihl.client.module.option.options.*;
+import com.ihl.client.util.MUtil;
+import net.minecraft.util.MathHelper;
 
-import java.util.*;
+import java.util.Map;
 
 @EventHandler(events = {EventPlayerMove.class, EventPlayerUpdate.class})
 public class Speed extends Module {
@@ -17,8 +18,27 @@ public class Speed extends Module {
 
     public Speed() {
         super("Speed", "Apply a movement multiplier", Category.MOVEMENT, "NONE");
+        addChoice("Mode", "Bypass mode for speed.", "Custom", "NCP", "AAC");
+        {//AAC Options
+            Option aac = addOption(new CustomOption("AACOptions", "Options for mode \"AAC\"", "AAC"));
+            aac.addChoice("AACMode", "Mode for \"AAC\"", "3.5.0", "3.3.13", "3.6.4", "4.2", "4.2Hop");
+        }
+        {//NCP Options
+            Option ncp = addOption(new CustomOption("NCPOptions", "Options for mode \"NCP\"", "NCP"));
+            ncp.addChoice("NCPMode", "Mode for \"NCP\"", "Hop", "YPort");
+        }
         { //Add values to the AddValue section.
-            OptNoS addValue = addBooleanNoS("Add Value", "Adds Values. Enable this to add a value.", false);
+            Option addValue = addOption(new OptBol("Add Value", "Adds Values. Enable this to add a value.", false) {
+                @Override
+                public boolean visible() {
+                    return module.STRING("mode").equalsIgnoreCase("custom");
+                }
+
+                @Override
+                public boolean save() {
+                    return false;
+                }
+            });
             addValue.addStringNoS("Name", "Name of this value", "Custom Value");
             addValue.addChoiceNoS("Condition", "Condition of this value, when it happens", "always", "up", "down", "ground");
             addValue.addIntegerNoS("EveryGround", "Every X amount of ground hits to do this.", 1, 1, 40);
@@ -26,7 +46,7 @@ public class Speed extends Module {
             addValue.addIntegerNoS("TickGround", "Every X ticks after ground.", 1, 1, 40);
         }
         // Nomral values.
-        Option normalValues = addOtherNoS("NormalValues", "Modification values when going up, down, and on ground");
+        Option normalValues = addOption(new CustomOption("NormalValues", "Modification values when going up, down, and on ground"));
         normalValues.addBoolean("Strafe", "Strafes all the time (instantly moves in direction). Default: false", false);
         { //Add values to the "Ground" section.
             Option ground = normalValues.addBoolean("Ground", "Modifications when hitting ground", true);
@@ -58,8 +78,26 @@ public class Speed extends Module {
             down.addDouble("HMult", "Multiplies the horizontal motion. Default: 1", 1, -2, 2, 0.01);
             down.addDouble("AirSpeed", "Sets the AirSpeed of the player. Default: 0.02", 0.02, -2, 2, 0.01);
         }
-        addOther("CustomValues", "Other values that you can add/remove");
+        addOption(new CustomOption("CustomValues", "Other values that you can add/remove"));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
+    }
+
+    class CustomOption extends OptOtr {
+        String visible;
+
+        public CustomOption(String name, String description) {
+            this(name, description, "custom");
+        }
+
+        public CustomOption(String name, String description, String visible) {
+            super(name, description);
+            this.visible = visible;
+        }
+
+        @Override
+        public boolean visible() {
+            return module.STRING("mode").equalsIgnoreCase(visible);
+        }
     }
 
     public void enable() {
@@ -145,60 +183,167 @@ public class Speed extends Module {
         if (event instanceof EventPlayerUpdate) {
             EventPlayerUpdate e = (EventPlayerUpdate) event;
             if (e.type == Event.Type.PRE) {
-                if (!mc().gameSettings.keyBindJump.getIsKeyPressed() &&
-                  (player().moveForward != 0 || player().moveStrafing != 0) &&
-                  !player().isOnLadder() && !player().isSneaking()) {
-                    if (player().onGround) {
-                        ++jumps;
-                        groundTick = 1;
-                        if (Option.get(options, "normalvalues", "ground").BOOLEAN()) {
-                            Option option = options.get("normalvalues").options.get("ground");
-                            double vclip = option.DOUBLE("vclip");
-                            double hclip = option.DOUBLE("hclip");
-                            float timer = (float) option.DOUBLE("timer");
-                            float airSpeed = (float) option.DOUBLE("airspeed");
-                            double vset = option.DOUBLE("vset");
-                            double hadd = option.DOUBLE("hadd");
-                            double hmult = option.DOUBLE("hmult");
-                            MUtil.vset(vset);
-                            MUtil.moveAllTypes(vclip, hclip, timer, airSpeed, 0, 1, hadd, hmult);
-                            if (option.BOOLEAN("strafe")) MUtil.strafe();
-                        }
-                    } else {
-                        groundTick++;
-                        if (player().motionY > 0) {
-                            if (Option.get(options, "normalvalues", "up").BOOLEAN()) {
-                                Option option = options.get("normalvalues").options.get("up");
-                                doAction(option, false, false);
+                if (player().onGround) {
+                    ++jumps;
+                    groundTick = 1;
+                } else {
+                    groundTick++;
+                }
+                switch (STRING("mode")) {
+                    case "Custom": {
+                        if (!mc().gameSettings.keyBindJump.getIsKeyPressed() &&
+                          (player().moveForward != 0 || player().moveStrafing != 0) &&
+                          !player().isOnLadder() && !player().isSneaking()) {
+                            if (player().onGround) {
+                                if (Option.get(options, "normalvalues", "ground").BOOLEAN()) {
+                                    Option option = options.get("normalvalues").options.get("ground");
+                                    double vclip = option.DOUBLE("vclip");
+                                    double hclip = option.DOUBLE("hclip");
+                                    float timer = (float) option.DOUBLE("timer");
+                                    float airSpeed = (float) option.DOUBLE("airspeed");
+                                    double vset = option.DOUBLE("vset");
+                                    double hadd = option.DOUBLE("hadd");
+                                    double hmult = option.DOUBLE("hmult");
+                                    MUtil.vset(vset);
+                                    MUtil.moveAllTypes(vclip, hclip, timer, airSpeed, 0, 1, hadd, hmult);
+                                    if (option.BOOLEAN("strafe")) MUtil.strafe();
+                                }
+                            } else {
+                                if (player().motionY > 0) {
+                                    if (Option.get(options, "normalvalues", "up").BOOLEAN()) {
+                                        Option option = options.get("normalvalues").options.get("up");
+                                        doAction(option, false, false);
+                                    }
+                                }
+                                if (player().motionY < 0) {
+                                    if (Option.get(options, "normalvalues", "down").BOOLEAN()) {
+                                        Option option = options.get("normalvalues").options.get("down");
+                                        doAction(option, false, false);
+                                    }
+                                }
                             }
-                        }
-                        if (player().motionY < 0) {
-                            if (Option.get(options, "normalvalues", "down").BOOLEAN()) {
-                                Option option = options.get("normalvalues").options.get("down");
-                                doAction(option, false, false);
-                            }
-                        }
-                    }
-                    for (Map.Entry<String, Option> set : options.get("customvalues").options.entrySet()) {
-                        Option option = set.getValue();
-                        if (option.BOOLEAN()) {
-                            String condition = (String) option.getValue("condition");
-                            int everyGround = option.INTEGER("everyground");
-                            int everyTick = option.INTEGER("everytick");
-                            int tickGround = option.INTEGER("tickground");
-                            if (everyGround <= 0) everyGround = 1;
-                            if (everyTick <= 0) everyTick = 1;
+                            for (Map.Entry<String, Option> set : options.get("customvalues").options.entrySet()) {
+                                Option option = set.getValue();
+                                if (option.BOOLEAN()) {
+                                    String condition = (String) option.getValue("condition");
+                                    int everyGround = option.INTEGER("everyground");
+                                    int everyTick = option.INTEGER("everytick");
+                                    int tickGround = option.INTEGER("tickground");
+                                    if (everyGround <= 0) everyGround = 1;
+                                    if (everyTick <= 0) everyTick = 1;
 
-                            if ((condition.equalsIgnoreCase("always") || (condition.equalsIgnoreCase("up") && player().motionY > 0) ||
-                              (condition.equalsIgnoreCase("down") && player().motionY < 0) || (condition.equalsIgnoreCase("ground") && player().onGround)) &&
-                              (player().ticksExisted % everyTick == 0) && (jumps % everyGround == 0) && (groundTick % tickGround == 0)) {
-                                doAction(option, true, true);
+                                    if ((condition.equalsIgnoreCase("always") || (condition.equalsIgnoreCase("up") && player().motionY > 0) ||
+                                      (condition.equalsIgnoreCase("down") && player().motionY < 0) || (condition.equalsIgnoreCase("ground") && player().onGround)) &&
+                                      (player().ticksExisted % everyTick == 0) && (jumps % everyGround == 0) && (groundTick % tickGround == 0)) {
+                                        doAction(option, true, true);
+                                    }
+                                }
                             }
+                        }
+                        if (BOOLEAN("normalvalues", "strafe")) MUtil.strafe();
+                        break;
+                    }
+                    case "NCP": {
+                        String ncpMode = STRING("ncpOptions", "ncpMode");
+                        player().setSprinting(true);
+                        if (MUtil.isMoving() && !player().isSneaking()) {
+                            switch (ncpMode) {
+                                case "Hop": { //LiquidBounce Skid :)
+                                    timerSpeed(1.0865F);
+                                    if (player().onGround) {
+                                        player().jump();
+                                        player().speedInAir = 0.0223F;
+                                    }
+                                    MUtil.strafe();
+                                    break;
+                                }
+                                case "YPort": { //LiquidBounce Skid :)
+                                    if (jumps >= 4 && player().onGround)
+                                        jumps = 0;
+
+                                    if (player().onGround) {
+                                        player().motionY = jumps <= 1 ? 0.42F : 0.4F;
+                                        float f = player().rotationYaw * 0.017453292F;
+
+                                        player().motionX -= MathHelper.sin(f) * 0.2F;
+                                        player().motionZ += MathHelper.cos(f) * 0.2F;
+                                    } else if (jumps <= 1)
+                                        player().motionY = -5D;
+
+                                    MUtil.strafe();
+                                    break;
+                                }
+                            }
+                        } else {
+                            MUtil.hmult(0);
+                        }
+                        break;
+                    }
+                    case "AAC": {
+                        String aacMode = STRING("aacOptions", "aacMode");
+                        player().setSprinting(true);
+
+                        if (MUtil.isMoving() && !player().isSneaking()) {
+                            switch (aacMode) {// "3.5.0", "3.3.13", "3.6.4", "4.2", "4.2Hop"
+                                case "3.3.13": { //LiquidBounce Skid :)
+                                    if (player().onGround && player().isCollidedVertically) {
+                                        // MotionXYZ
+                                        float yawRad = player().rotationYaw * 0.017453292F;
+                                        player().motionX -= MathHelper.sin(yawRad) * 0.202F;
+                                        player().motionZ += MathHelper.cos(yawRad) * 0.202F;
+                                        player().motionY = 0.405F;
+                                        MUtil.strafe();
+                                    } else if (player().fallDistance < 0.31F) {
+                                        // Motion XZ
+                                        player().jumpMovementFactor = player().moveStrafing == 0F ? 0.027F : 0.021F;
+                                        player().motionX *= 1.001;
+                                        player().motionZ *= 1.001;
+
+                                        // Motion Y
+                                        if (!player().isCollidedHorizontally)
+                                            player().motionY -= 0.014999993F;
+                                    } else
+                                        player().jumpMovementFactor = 0.02F;
+                                    break;
+                                }
+                                case "3.5.0": { //LiquidBounce Skid :)
+                                    player().jumpMovementFactor += 0.00208F;
+                                    if (player().onGround) {
+                                        player().jump();
+                                        player().motionX *= 1.0118F;
+                                        player().motionZ *= 1.0118F;
+                                    } else {
+                                        player().motionY -= 0.0147F;
+
+                                        player().motionX *= 1.00138F;
+                                        player().motionZ *= 1.00138F;
+                                    }
+                                    break;
+                                }
+                                case "3.6.4": { //LiquidBounce Skid :)
+                                    player().setSprinting(true);
+                                    if (player().onGround) {
+                                        if (!mc().gameSettings.keyBindJump.getIsKeyPressed()) {
+                                            player().jump();
+                                        }
+                                        player().motionZ *= 1.01;
+                                        player().motionX *= 1.01;
+                                    }
+                                    player().motionY -= 0.0149;
+                                    break;
+                                }
+                                case "4.2": { //My Custom Wurst :)
+                                    break;
+                                }
+                                case "4.2Hop": { //My Custom Wurst :)
+                                    break;
+                                }
+                            }
+                            break;
                         }
                     }
                 }
             }
-            if (BOOLEAN("normalvalues", "strafe")) MUtil.strafe();
         }
     }
 

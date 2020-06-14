@@ -361,6 +361,12 @@ public class Option {
         return opt;
     }
 
+    public void addOptions(Option... options) {
+        for (Option option : options) {
+            addOption(option);
+        }
+    }
+
     public OptNoS addOtherNoS(String name, String description) {
         Option parent = this;
         OptNoS opt = new OptNoS(this.module, name, description, new ValueString(""), OptNoS.Type.OTHER, new ArrayList<>(), parent);
