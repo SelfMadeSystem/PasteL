@@ -18,10 +18,10 @@ public class Settings {
     public static Map<String, Option> options = new HashMap();
 
     public static void init() {
-        options.put("guicolor", new Option(null, "GUI Color", "Color of the GUI", new ValueString("00B3FF"), Option.Type.STRING));
-        options.put("arraylist", new Option(null, "Array List", "List of active mods", new ValueBoolean(true), Option.Type.BOOLEAN,
-          new Option(null, "Color", "List coloring mode", new ValueChoice(0, "rainbow", "categorical"), Option.Type.CHOICE),
-          new Option(null, "Sort", "List ordering mode", new ValueChoice(1, "alphabetical", "length"), Option.Type.CHOICE)));
+        options.put("guicolor", new Option("GUI Color", "Color of the GUI", new ValueString("00B3FF"), Option.Type.STRING));
+        options.put("arraylist", new Option("Array List", "List of active mods", new ValueBoolean(true), Option.Type.BOOLEAN,
+          new Option("Color", "List coloring mode", new ValueChoice(0, "rainbow", "categorical"), Option.Type.CHOICE),
+          new Option("Sort", "List ordering mode", new ValueChoice(1, "alphabetical", "length"), Option.Type.CHOICE)));
 
         for(String key : options.keySet()) {
             List<String> usages = new ArrayList();

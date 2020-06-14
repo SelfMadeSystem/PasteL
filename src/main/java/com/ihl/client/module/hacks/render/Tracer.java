@@ -28,17 +28,17 @@ public class Tracer extends Module {
 
     public Tracer() {
         super("Tracer", "Render lines to entities", Category.RENDER, "NONE");
-        options.put("width", new Option(this, "Width", "Width of tracer lines", new ValueDouble(1, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
-        options.put("players", new Option(this, "Players", "Trace players", new ValueBoolean(true), Option.Type.BOOLEAN, colors(0, 255, 255, 255, false)));
-        options.put("animals", new Option(this, "Animals", "Trace animals", new ValueBoolean(false), Option.Type.BOOLEAN, colors(64, 255, 64, 255, false)));
-        options.put("monsters", new Option(this, "Monsters", "Trace monsters", new ValueBoolean(false), Option.Type.BOOLEAN, colors(255, 64, 64, 255, false)));
-        options.put("neutrals", new Option(this, "Neutrals", "Trace neutral mobs", new ValueBoolean(false), Option.Type.BOOLEAN, colors(255, 64, 255, 255, false)));
+        options.put("width", new Option("Width", "Width of tracer lines", new ValueDouble(1, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
+        options.put("players", new Option("Players", "Trace players", new ValueBoolean(true), Option.Type.BOOLEAN, colors(0, 255, 255, 255, false)));
+        options.put("animals", new Option("Animals", "Trace animals", new ValueBoolean(false), Option.Type.BOOLEAN, colors(64, 255, 64, 255, false)));
+        options.put("monsters", new Option("Monsters", "Trace monsters", new ValueBoolean(false), Option.Type.BOOLEAN, colors(255, 64, 64, 255, false)));
+        options.put("neutrals", new Option("Neutrals", "Trace neutral mobs", new ValueBoolean(false), Option.Type.BOOLEAN, colors(255, 64, 255, 255, false)));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 
     private List<Option> colors(int r, int g, int b, int a, boolean rainbow) {
         List<Option> list = new ArrayList();
-        list.add(new Option(this, "Color", "Can be HEX (00FF00) or 'rainbow'", new ValueString(ColorUtil.hexFromInt(new Color(r, g, b, a))), Option.Type.STRING));
+        list.add(new Option("Color", "Can be HEX (00FF00) or 'rainbow'", new ValueString(ColorUtil.hexFromInt(new Color(r, g, b, a))), Option.Type.STRING));
         return list;
     }
 

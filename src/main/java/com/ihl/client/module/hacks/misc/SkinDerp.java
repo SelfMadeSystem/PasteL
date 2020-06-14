@@ -22,8 +22,8 @@ public class SkinDerp extends Module {
 
     public SkinDerp() {
         super("Skin Derp", "Make your clothing layers toggle", Category.MISC, "NONE");
-        options.put("delay", new Option(this, "Delay", "Delay between toggling new part", new ValueDouble(0.2, new double[]{0, 2}, 0.01), Option.Type.NUMBER));
-        options.put("mode", new Option(this, "Mode", "Skin derp mode", new ValueChoice(2, new String[]{"toggle", "random", "spin", "slide"}), Option.Type.CHOICE));
+        options.put("delay", new Option("Delay", "Delay between toggling new part", new ValueDouble(0.2, new double[]{0, 2}, 0.01), Option.Type.NUMBER));
+        options.put("mode", new Option("Mode", "Skin derp mode", new ValueChoice(2, new String[]{"toggle", "random", "spin", "slide"}), Option.Type.CHOICE));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

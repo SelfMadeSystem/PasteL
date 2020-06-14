@@ -22,8 +22,8 @@ public class AutoPotion extends Module {
 
     public AutoPotion() {
         super("Auto Potion", "Splash health potions when needed", Category.COMBAT, "NONE");
-        options.put("health", new Option(this, "Health", "Health to drop potions below", new ValueDouble(5, new double[]{0, 10}, 0.5), Option.Type.NUMBER));
-        options.put("delay", new Option(this, "Delay", "Potion drop delay period (s)", new ValueDouble(0.5, new double[]{0, 2}, 0.01), Option.Type.NUMBER));
+        options.put("health", new Option("Health", "Health to drop potions below", new ValueDouble(5, new double[]{0, 10}, 0.5), Option.Type.NUMBER));
+        options.put("delay", new Option("Delay", "Potion drop delay period (s)", new ValueDouble(0.5, new double[]{0, 2}, 0.01), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

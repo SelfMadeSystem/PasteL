@@ -34,7 +34,7 @@ public class Aura extends Module {
         addDouble("Turn Speed PitchRandom", "Speed alters", 5, 0, 50, 1);
         Option cps = addOther("Click", "Clicks per second and toggle when attack.");
         cps.addBoolean("Look", "Only attacks when looking at entity.", true);
-        cps.addOption(new Option(this, "Min", "Min Delay", new ValueDouble(7, new double[]{1, 20}, 1), Option.Type.NUMBER) {
+        cps.addOption(new Option("Min", "Min Delay", new ValueDouble(7, new double[]{1, 20}, 1), Option.Type.NUMBER) {
             @Override
             public void setValueNoTrigger(Object value) {
                 double max = module.DOUBLE("click", "max");
@@ -43,7 +43,7 @@ public class Aura extends Module {
                 super.setValueNoTrigger(value);
             }
         });
-        cps.addOption(new Option(this, "Max", "Max Delay", new ValueDouble(9, new double[]{1, 20}, 1), Option.Type.NUMBER) {
+        cps.addOption(new Option("Max", "Max Delay", new ValueDouble(9, new double[]{1, 20}, 1), Option.Type.NUMBER) {
             @Override
             public void setValueNoTrigger(Object value) {
                 double min = module.DOUBLE("click", "min");

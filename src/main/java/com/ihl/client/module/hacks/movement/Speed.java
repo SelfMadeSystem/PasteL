@@ -2,9 +2,9 @@ package com.ihl.client.module.hacks.movement;
 
 import com.ihl.client.event.*;
 import com.ihl.client.gui.Gui;
-import com.ihl.client.gui.ring.RingString;
 import com.ihl.client.module.*;
 import com.ihl.client.module.option.*;
+import com.ihl.client.module.option.options.OptNoS;
 import com.ihl.client.util.*;
 
 import java.util.*;
@@ -121,10 +121,10 @@ public class Speed extends Module {
     }
 
     private Option generateOption(String name, int condition, int everyGround, int everyTick, int tickGround) {
-        Option opt = new Option(this, name, "Custom value.", new ValueBoolean(true), Option.Type.BOOLEAN);
+        Option opt = new Option(name, "Custom value.", new ValueBoolean(true), Option.Type.BOOLEAN);
         opt.addString("Name", "Name of module.", name);
         opt.addBooleanNoS("Delete", "Enable to delete this module.", false);
-        opt.options.put("condition", new Option(this, "Condition", "Condition of this value, when it happens", new ValueChoice(condition, "always", "up", "down", "ground"), Option.Type.CHOICE));
+        opt.options.put("condition", new Option("Condition", "Condition of this value, when it happens", new ValueChoice(condition, "always", "up", "down", "ground"), Option.Type.CHOICE));
         opt.addInteger("EveryGround", "Every X amount of ground hits to do this.", everyGround, 1, 40);
         opt.addInteger("EveryTick", "Every X ticks to do this.", everyTick, 1, 40);
         opt.addInteger("TickGround", "Every X ticks after ground.", tickGround, 1, 40);

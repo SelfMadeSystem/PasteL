@@ -3,6 +3,7 @@ package com.ihl.client.module.option;
 import com.ihl.client.commands.exceptions.ArgumentException;
 import com.ihl.client.event.EventOption;
 import com.ihl.client.module.Module;
+import com.ihl.client.module.option.options.OptNoS;
 import com.ihl.client.util.*;
 import joptsimple.internal.Strings;
 import net.minecraft.util.ResourceLocation;
@@ -153,23 +154,21 @@ public class Option {
     public ResourceLocation icon;
     public Map<String, Option> options = new LinkedHashMap<>();
     public int color;
-    public boolean visible = true;
 
-    public Option(Module module, String name, String desc, Value value, Type type) {
-        this(module, name, desc, value, type, new ArrayList<>(), null);
+    public Option(String name, String desc, Value value, Type type) {
+        this(name, desc, value, type, new ArrayList<>(), null);
     }
 
-    public Option(Module module, String name, String desc, Value value, Type type, Option... options) {
-        this(module, name, desc, value, type, Arrays.asList(options), null);
+    public Option(String name, String desc, Value value, Type type, Option... options) {
+        this(name, desc, value, type, Arrays.asList(options), null);
     }
 
-    public Option(Module module, String name, String desc, Value value, Type type, List<Option> options) {
-        this(module, name, desc, value, type, options, null);
+    public Option(String name, String desc, Value value, Type type, List<Option> options) {
+        this(name, desc, value, type, options, null);
     }
 
     // TODO: 2020-06-12 make this shit private.
-    public Option(Module module, String name, String desc, Value value, Type type, List<Option> options, Option parent) {
-        this.module = module;
+    public Option(String name, String desc, Value value, Type type, List<Option> options, Option parent) {
         this.name = name;
         this.desc = desc;
         this.value = value;
@@ -204,7 +203,7 @@ public class Option {
     public boolean save() {
         return true;
     }
-
+    public boolean visible() {return true;}
     public List<String> getAll() {
         return getAll(" ");
     }
@@ -284,7 +283,8 @@ public class Option {
     // Returns created option.
     public Option addBoolean(String name, String description, boolean defaultValue) {
         Option parent = this;
-        Option opt = new Option(this.module, name, description, new ValueBoolean(defaultValue), Option.Type.BOOLEAN, new ArrayList<>(), parent);
+        Option opt = new Option(name, description, new ValueBoolean(defaultValue), Option.Type.BOOLEAN, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
@@ -295,21 +295,24 @@ public class Option {
 
     public Option addDouble(String name, String description, double defaultValue, double min, double max, double increments) {
         Option parent = this;
-        Option opt = new Option(this.module, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), Option.Type.NUMBER, new ArrayList<>(), parent);
+        Option opt = new Option(name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), Option.Type.NUMBER, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public Option addString(String name, String description, String defaultValue) {
         Option parent = this;
-        Option opt = new Option(this.module, name, description, new ValueString(defaultValue), Option.Type.STRING, new ArrayList<>(), parent);
+        Option opt = new Option(name, description, new ValueString(defaultValue), Option.Type.STRING, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public Option addChoice(String name, String description, String... values) {
         Option parent = this;
-        Option opt = new Option(this.module, name, description, new ValueChoice(0, values), Option.Type.CHOICE, new ArrayList<>(), parent);
+        Option opt = new Option(name, description, new ValueChoice(0, values), Option.Type.CHOICE, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
@@ -317,6 +320,7 @@ public class Option {
     public Option addOther(String name, String description) {
         Option parent = this;
         Option opt = new OptNoS(this.module, name, description, new ValueString(""), Option.Type.OTHER, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
@@ -324,18 +328,19 @@ public class Option {
     public OptNoS addBooleanNoS(String name, String description, boolean defaultValue) {
         Option parent = this;
         OptNoS opt = new OptNoS(this.module, name, description, new ValueBoolean(defaultValue), OptNoS.Type.BOOLEAN, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public OptNoS addIntegerNoS(String name, String description, int defaultValue, int min, int max) {
-        Option parent = this;
         return addDoubleNoS(name, description, defaultValue, min, max, 1);
     }
 
     public OptNoS addDoubleNoS(String name, String description, double defaultValue, double min, double max, double increments) {
         Option parent = this;
         OptNoS opt = new OptNoS(this.module, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), OptNoS.Type.NUMBER, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
@@ -343,6 +348,7 @@ public class Option {
     public OptNoS addStringNoS(String name, String description, String defaultValue) {
         Option parent = this;
         OptNoS opt = new OptNoS(this.module, name, description, new ValueString(defaultValue), OptNoS.Type.STRING, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
@@ -350,6 +356,7 @@ public class Option {
     public OptNoS addChoiceNoS(String name, String description, String... values) {
         Option parent = this;
         OptNoS opt = new OptNoS(this.module, name, description, new ValueChoice(0, values), OptNoS.Type.CHOICE, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
@@ -357,25 +364,29 @@ public class Option {
     public OptNoS addOtherNoS(String name, String description) {
         Option parent = this;
         OptNoS opt = new OptNoS(this.module, name, description, new ValueString(""), OptNoS.Type.OTHER, new ArrayList<>(), parent);
+        opt.module = this.module;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public Option removeOption(String optionName) {
-        resetOptionMap();
         return options.remove(optionName.toLowerCase().replaceAll(" ", ""));
     }
 
-    public void addOption(Option option) {
+    public Option addOption(Option option) {
         option.parent = this;
+        option.module = this.module;
         options.put(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
+        return option;
     }
 
-    public void addOptionIfAbsent(Option option) {
+    public Option addOptionIfAbsent(Option option) {
         option.parent = this;
+        option.module = this.module;
         options.putIfAbsent(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
+        return option;
     }
 
     public void resetOptionMap() {

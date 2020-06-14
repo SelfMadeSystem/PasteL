@@ -20,7 +20,7 @@ public class Freecam extends Module {
 
     public Freecam() {
         super("Freecam", "Ghost through blocks client-side", Category.MOVEMENT, "NONE");
-        options.put("noclip", new Option(this, "Noclip", "Ghost through blocks", new ValueBoolean(true), Option.Type.BOOLEAN));
+        options.put("noclip", new Option("Noclip", "Ghost through blocks", new ValueBoolean(true), Option.Type.BOOLEAN));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

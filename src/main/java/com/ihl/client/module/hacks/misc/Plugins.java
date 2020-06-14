@@ -26,7 +26,7 @@ public class Plugins extends Module {
 
     public Plugins() {
         super("Plugins", "Get a list of server plugins", Category.MISC, "NONE");
-        options.put("timeout", new Option(this, "Timeout", "Period before timing out and cancelling request", new ValueDouble(5, new double[] {0, 10}, 0.1), Option.Type.NUMBER));
+        options.put("timeout", new Option("Timeout", "Period before timing out and cancelling request", new ValueDouble(5, new double[] {0, 10}, 0.1), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

@@ -39,7 +39,7 @@ public class RingOption extends Ring {
         module.rendeRing(new EventRing(this));
         this.visibleList = new ArrayList<>(this.list);
         for (Object obj : this.list) {
-            if (!(module.options.get(String.valueOf(obj))).visible)
+            if (!(module.options.get(String.valueOf(obj))).visible())
                 this.visibleList.remove(obj);
         }
         return super.reset();

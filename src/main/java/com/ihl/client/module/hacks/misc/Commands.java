@@ -14,7 +14,7 @@ public class Commands extends Module {
 
     public Commands() {
         super("Commands", "Enable in-game chat commands", Category.MISC, "NONE");
-        options.put("prefix", new Option(this, "Prefix", "Chat command prefix", new ValueString("."), Option.Type.STRING));
+        options.put("prefix", new Option("Prefix", "Chat command prefix", new ValueString("."), Option.Type.STRING));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

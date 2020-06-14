@@ -15,7 +15,7 @@ public class Glide extends Module {
 
     public Glide() {
         super("Glide", "Slowly decent to the ground", Category.MOVEMENT, "NONE");
-        options.put("speed", new Option(this, "Speed", "Glide decent speed", new ValueDouble(0.05, new double[] {0, 2}, 0.01), Option.Type.NUMBER));
+        options.put("speed", new Option("Speed", "Glide decent speed", new ValueDouble(0.05, new double[] {0, 2}, 0.01), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

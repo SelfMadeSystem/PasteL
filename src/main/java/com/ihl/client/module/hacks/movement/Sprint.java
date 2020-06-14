@@ -14,7 +14,7 @@ public class Sprint extends Module {
 
     public Sprint() {
         super("Sprint", "Automatically force sprinting", Category.MOVEMENT, "NONE");
-        options.put("directional", new Option(this, "Directional", "Sprint in all directions", new ValueBoolean(true), Option.Type.BOOLEAN));
+        options.put("directional", new Option("Directional", "Sprint in all directions", new ValueBoolean(true), Option.Type.BOOLEAN));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

@@ -13,23 +13,23 @@ public class AimAssist extends Module {
 
     public AimAssist() {
         super("AimAssist", "Helps your aim at stuff", Category.COMBAT, "NONE");
-        options.put("aimwhen", new Option(this, "Aim When", "Aim when", new ValueChoice(0, "always", "mouse"), Option.Type.CHOICE));
-        options.put("aimwhere", new Option(this, "Aim Where", "Aim where", new ValueChoice(0, "top", "head", "centre", "feet", "fromTop", "fromBottom", "auto"), Option.Type.CHOICE, new Option(this, "Custom", "Value from  top for custom.", new ValueDouble(0.4, new double[]{0, 3}, 0.1), Option.Type.NUMBER)));
-        options.put("mousemode", new Option(this, "Mouse Mode", "How it overrides your mouse", new ValueChoice(0, "add", "complete"), Option.Type.CHOICE));
-        options.put("priority", new Option(this, "Priority", "Switch target selection mode", new ValueChoice(0, "distance", "health", "direction"), Option.Type.CHOICE));
-        options.put("distance", new Option(this, "Distance", "Distance to attack entities within", new ValueDouble(3.6, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
-        options.put("range", new Option(this, "Range", "View range to attack entities within", new ValueDouble(180, new double[]{0, 180}, 1), Option.Type.NUMBER));
-        options.put("invertyaw", new Option(this, "Invert yaw", "Enable or Disable if turning the wrong way.", new ValueBoolean(true), Option.Type.BOOLEAN));
-        options.put("invertpitch", new Option(this, "Invert pitch", "Enable or Disable if turning the wrong way.", new ValueBoolean(false), Option.Type.BOOLEAN));
-        options.put("modeType", new Option(this, "Mode Type", "The mode of how it selects values", new ValueChoice(0, "list", "random", "write"), Option.Type.CHOICE));
-        options.put("absAmount", new Option(this, "Absolute Amount", "The amount of values to make absolute (positive) when recording.", new ValueDouble(30, new double[]{0, 100}, 1), Option.Type.NUMBER));
+        options.put("aimwhen", new Option("Aim When", "Aim when", new ValueChoice(0, "always", "mouse"), Option.Type.CHOICE));
+        options.put("aimwhere", new Option("Aim Where", "Aim where", new ValueChoice(0, "top", "head", "centre", "feet", "fromTop", "fromBottom", "auto"), Option.Type.CHOICE, new Option("Custom", "Value from  top for custom.", new ValueDouble(0.4, new double[]{0, 3}, 0.1), Option.Type.NUMBER)));
+        options.put("mousemode", new Option("Mouse Mode", "How it overrides your mouse", new ValueChoice(0, "add", "complete"), Option.Type.CHOICE));
+        options.put("priority", new Option("Priority", "Switch target selection mode", new ValueChoice(0, "distance", "health", "direction"), Option.Type.CHOICE));
+        options.put("distance", new Option("Distance", "Distance to attack entities within", new ValueDouble(3.6, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
+        options.put("range", new Option("Range", "View range to attack entities within", new ValueDouble(180, new double[]{0, 180}, 1), Option.Type.NUMBER));
+        options.put("invertyaw", new Option("Invert yaw", "Enable or Disable if turning the wrong way.", new ValueBoolean(true), Option.Type.BOOLEAN));
+        options.put("invertpitch", new Option("Invert pitch", "Enable or Disable if turning the wrong way.", new ValueBoolean(false), Option.Type.BOOLEAN));
+        options.put("modeType", new Option("Mode Type", "The mode of how it selects values", new ValueChoice(0, "list", "random", "write"), Option.Type.CHOICE));
+        options.put("absAmount", new Option("Absolute Amount", "The amount of values to make absolute (positive) when recording.", new ValueDouble(30, new double[]{0, 100}, 1), Option.Type.NUMBER));
         addDouble("Predict", "Amount to predict. 0 is none, 1 is motion, 2 double that, and so on.", 1, 0, 10, 0.1);
-        options.put("turntime", new Option(this, "Turn Time", "Time between stuff", new ValueDouble(30, new double[]{1, 200}, 1), Option.Type.NUMBER));
-        options.put("turnspeedyaw", new Option(this, "Turn Speed Yaw", "Speed to aim towards the target", new ValueDouble(30, new double[]{0, 200}, 1), Option.Type.NUMBER));
-        //options.put("turnspeedyawrandom", new Option(this, "Turn Speed Yaw Random", "Speed alters", new ValueDouble(5, new double[]{0, 180}, 1), Option.Type.NUMBER));
-        options.put("turnspeedpitch", new Option(this, "Turn Speed Pitch", "Speed to aim towards the target", new ValueDouble(30, new double[]{0, 200}, 1), Option.Type.NUMBER));
-        options.put("maxovershoot", new Option(this, "Maximum overshoot", "Maximum turn the aimassist is allowed to overshoot", new ValueDouble(10, new double[]{0, 180}, 1), Option.Type.NUMBER));
-        //options.put("turnspeedpitchrandom", new Option(this, "Turn Speed  PitchRandom", "Speed alters", new ValueDouble(5, new double[]{0, 180}, 1), Option.Type.NUMBER));
+        options.put("turntime", new Option("Turn Time", "Time between stuff", new ValueDouble(30, new double[]{1, 200}, 1), Option.Type.NUMBER));
+        options.put("turnspeedyaw", new Option("Turn Speed Yaw", "Speed to aim towards the target", new ValueDouble(30, new double[]{0, 200}, 1), Option.Type.NUMBER));
+        //options.put("turnspeedyawrandom", new Option("Turn Speed Yaw Random", "Speed alters", new ValueDouble(5, new double[]{0, 180}, 1), Option.Type.NUMBER));
+        options.put("turnspeedpitch", new Option("Turn Speed Pitch", "Speed to aim towards the target", new ValueDouble(30, new double[]{0, 200}, 1), Option.Type.NUMBER));
+        options.put("maxovershoot", new Option("Maximum overshoot", "Maximum turn the aimassist is allowed to overshoot", new ValueDouble(10, new double[]{0, 180}, 1), Option.Type.NUMBER));
+        //options.put("turnspeedpitchrandom", new Option("Turn Speed  PitchRandom", "Speed alters", new ValueDouble(5, new double[]{0, 180}, 1), Option.Type.NUMBER));
 
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }

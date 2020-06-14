@@ -1,8 +1,7 @@
 package com.ihl.client.module.hacks.combat;
 
 import com.ihl.client.event.*;
-import com.ihl.client.module.Module;
-import com.ihl.client.module.Category;
+import com.ihl.client.module.*;
 import com.ihl.client.module.option.*;
 import com.ihl.client.util.TimeUtils;
 import net.minecraft.client.settings.KeyBinding;
@@ -14,44 +13,44 @@ public class AutoClicker extends Module {
 
     public AutoClicker() {
         super("AutoClicker", "Clicks", Category.COMBAT, "NONE");
-        options.put("left", new Option(this, "Left", "Left", new ValueBoolean(true), Option.Type.BOOLEAN,
-          new Option(this, "Min", "Min Delay", new ValueDouble(7, new double[]{0, 20}, 1), Option.Type.NUMBER) {
-              @Override
-              public void setValueNoTrigger(Object value) {
-                  double max = module.options.get("left").DOUBLE("max");
-                  if ((Double) value > max)
-                      value = max;
-                  super.setValueNoTrigger(value);
-              }
-          },
-          new Option(this, "Max", "Max Delay", new ValueDouble(7, new double[]{0, 20}, 1), Option.Type.NUMBER) {
-              @Override
-              public void setValueNoTrigger(Object value) {
-                  double min =  module.options.get("left").DOUBLE("min");
-                  if ((Double) value < min)
-                      value = min;
-                  super.setValueNoTrigger(value);
-              }
-          }));
-        options.put("right", new Option(this, "Right", "Right", new ValueBoolean(true), Option.Type.BOOLEAN,
-          new Option(this, "Min", "Min Delay", new ValueDouble(7, new double[]{0, 20}, 1), Option.Type.NUMBER) {
-              @Override
-              public void setValueNoTrigger(Object value) {
-                  double max = module.options.get("right").DOUBLE("max");
-                  if ((Double) value > max)
-                      value = max;
-                  super.setValueNoTrigger(value);
-              }
-          },
-          new Option(this, "Max", "Max Delay", new ValueDouble(7, new double[]{0, 20}, 1), Option.Type.NUMBER) {
-              @Override
-              public void setValueNoTrigger(Object value) {
-                  double min =  module.options.get("right").DOUBLE("min");
-                  if ((Double) value < min)
-                      value = min;
-                  super.setValueNoTrigger(value);
-              }
-          }));
+        Option left = addOption(new Option("Left", "Left", new ValueBoolean(true), Option.Type.BOOLEAN));
+        left.addOption(new Option("Min", "Min Delay", new ValueDouble(7, new double[]{0, 20}, 1), Option.Type.NUMBER) {
+            @Override
+            public void setValueNoTrigger(Object value) {
+                double max = module.DOUBLE("left", "max");
+                if ((Double) value > max)
+                    value = max;
+                super.setValueNoTrigger(value);
+            }
+        });
+        left.addOption(new Option("Max", "Max Delay", new ValueDouble(7, new double[]{0, 20}, 1), Option.Type.NUMBER) {
+            @Override
+            public void setValueNoTrigger(Object value) {
+                double min = module.DOUBLE("left", "min");
+                if ((Double) value < min)
+                    value = min;
+                super.setValueNoTrigger(value);
+            }
+        });
+        Option right = addOption(new Option("Right", "Right", new ValueBoolean(true), Option.Type.BOOLEAN));
+        right.addOption(new Option("Min", "Min Delay", new ValueDouble(7, new double[]{0, 20}, 1), Option.Type.NUMBER) {
+            @Override
+            public void setValueNoTrigger(Object value) {
+                double max = module.DOUBLE("right", "max");
+                if ((Double) value > max)
+                    value = max;
+                super.setValueNoTrigger(value);
+            }
+        });
+        right.addOption(new Option("Max", "Max Delay", new ValueDouble(7, new double[]{0, 20}, 1), Option.Type.NUMBER) {
+            @Override
+            public void setValueNoTrigger(Object value) {
+                double min = module.DOUBLE("right", "min");
+                if ((Double) value < min)
+                    value = min;
+                super.setValueNoTrigger(value);
+            }
+        });
     }
 
     @Override

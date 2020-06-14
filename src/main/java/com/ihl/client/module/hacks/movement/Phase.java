@@ -17,7 +17,7 @@ public class Phase extends Module {
 
     public Phase() {
         super("Phase", "Clip through non-solid blocks", Category.MOVEMENT, "NONE");
-        options.put("sneak", new Option(this, "Sneak", "Phase only when sneaking", new ValueBoolean(true), Option.Type.BOOLEAN));
+        options.put("sneak", new Option("Sneak", "Phase only when sneaking", new ValueBoolean(true), Option.Type.BOOLEAN));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

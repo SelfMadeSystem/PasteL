@@ -20,17 +20,17 @@ public class StorageESP extends Module {
 
     public StorageESP() {
         super("Storage ESP", "Render outlines around storage blocks", Category.RENDER, "NONE");
-        options.put("width", new Option(this, "Width", "Width of the ESP outlines", new ValueDouble(1, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
-        options.put("chests", new Option(this, "Chests", "Render chests and trapped chests", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 128, 0, 255)));
-        options.put("enderchests", new Option(this, "Ender Chests", "Render ender chests", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 0, 255, 255)));
-        options.put("mobspawners", new Option(this, "Mob Spawners", "Render mob spawners", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 0, 0, 255)));
-        options.put("other", new Option(this, "Other", "Render all other storage blocks", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 255, 255, 255)));
+        options.put("width", new Option("Width", "Width of the ESP outlines", new ValueDouble(1, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
+        options.put("chests", new Option("Chests", "Render chests and trapped chests", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 128, 0, 255)));
+        options.put("enderchests", new Option("Ender Chests", "Render ender chests", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 0, 255, 255)));
+        options.put("mobspawners", new Option("Mob Spawners", "Render mob spawners", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 0, 0, 255)));
+        options.put("other", new Option("Other", "Render all other storage blocks", new ValueBoolean(true), Option.Type.BOOLEAN, colors(255, 255, 255, 255)));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 
     private List<Option> colors(int r, int g, int b, int a) {
         List<Option> list = new ArrayList();
-        list.add(new Option(this, "Color", "Can be HEX (00FF00) or 'rainbow'", new ValueString(ColorUtil.hexFromInt(new Color(r, g, b, a))), Option.Type.STRING));
+        list.add(new Option("Color", "Can be HEX (00FF00) or 'rainbow'", new ValueString(ColorUtil.hexFromInt(new Color(r, g, b, a))), Option.Type.STRING));
         return list;
     }
 

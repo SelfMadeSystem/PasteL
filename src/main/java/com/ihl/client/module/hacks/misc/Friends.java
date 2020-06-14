@@ -20,9 +20,9 @@ public class Friends extends Module {
 
     public Friends() {
         super("Friends", "Whitelist friends for combat mods", Category.MISC, "NONE");
-        options.put("friends", new Option(this, "Friends", "List of friends", new ValueList(new String[]{}), Option.Type.LIST));
-        options.put("middleclick", new Option(this, "Middle Click", "Allow middle clicking players to toggle them", new ValueBoolean(true), Option.Type.BOOLEAN));
-        options.put("color", new Option(this, "Color", "Render color override", new ValueString("ffffffff"), Option.Type.STRING));
+        options.put("friends", new Option("Friends", "List of friends", new ValueList(new String[]{}), Option.Type.LIST));
+        options.put("middleclick", new Option("Middle Click", "Allow middle clicking players to toggle them", new ValueBoolean(true), Option.Type.BOOLEAN));
+        options.put("color", new Option("Color", "Render color override", new ValueString("ffffffff"), Option.Type.STRING));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

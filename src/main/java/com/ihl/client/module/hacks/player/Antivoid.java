@@ -2,6 +2,7 @@ package com.ihl.client.module.hacks.player;
 
 import com.ihl.client.event.*;
 import com.ihl.client.module.*;
+import com.ihl.client.module.option.options.*;
 import com.ihl.client.util.*;
 import net.minecraft.util.Vec3;
 
@@ -14,13 +15,30 @@ public class Antivoid extends Module {
     public Antivoid() {
         super("Antivoid", "Teleports you back when you fall in to the void.", Category.PLAYER, "NONE");
         addChoice("Mode", "Teleports you back when you fall in to the void.",
-          "TeleportBack", "Flag");
-        addBoolean("OnlyVoid", "Only goes back if above void.", true);
+          "TeleportBack", "Flag", "Hypixel");
+        addOption(new OptBol("OnlyVoid", "Only goes back if above void.",true){
+            @Override
+            public boolean visible() {
+                String st = module.STRING("mode");
+                return st.equalsIgnoreCase("TeleportBack") || st.equalsIgnoreCase("Flag");
+            }
+        });
         addDouble("FallDistance", "FallDistance to set back", 10, 0, 256, 1);
-        addDouble("HClip", "Amount to hClip", 0, -20, 20, 1);
-        addDouble("VClip", "Amount to vClip", 0, -20, 20, 1);
-        addDouble("VAdd", "Amount to add to vertical motion", 0, -20, 20, 1);
-        addDouble("HAdd", "Amount to add to horizontal motion", 0, -20, 20, 1);
+        addOption(new CustomOption("HClip", "Amount to hClip"));
+        addOption(new CustomOption("VClip", "Amount to vClip"));
+        addOption(new CustomOption("HAdd", "Amount to hAdd"));
+        addOption(new CustomOption("VAdd", "Amount to vAdd"));
+    }
+
+    class CustomOption extends OptDbl {
+        public CustomOption(String name, String description) {
+            super(name, description, 0, -20, 20, 1);
+        }
+        @Override
+        public boolean visible() {
+            String st = module.STRING("mode");
+            return st.equalsIgnoreCase("Flag");
+        }
     }
 
     private final List<Vec3> lastGround = new ArrayList<>();
@@ -48,6 +66,14 @@ public class Antivoid extends Module {
                         MUtil.vclip(DOUBLE("vclip"));
                         MUtil.vadd(DOUBLE("vadd"));
                         MUtil.hadd(DOUBLE("hadd"));
+                        break;
+                    }
+                    case "Hypixel": {
+                        if (player().fallDistance > fallDistance && !BlockUtils.isBlockUnder() && player().motionY < -0.1) {
+                            MUtil.vset(10);
+                        } else if (player().motionY > 9) {
+                            MUtil.vset(5);
+                        }
                     }
                 }
             }

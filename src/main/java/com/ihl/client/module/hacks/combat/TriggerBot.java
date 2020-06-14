@@ -13,7 +13,7 @@ public class TriggerBot extends Module {
     public TriggerBot() {
         super("TriggerBot", "Hits stuff", Category.COMBAT, "NONE");
 
-        addOption(new Option(this, "Min", "Min Delay", new ValueDouble(7, new double[]{1, 20}, 1), Option.Type.NUMBER) {
+        addOption(new Option("Min", "Min Delay", new ValueDouble(7, new double[]{1, 20}, 1), Option.Type.NUMBER) {
             @Override
             public void setValueNoTrigger(Object value) {
                 double max = module.options.get("max").DOUBLE();
@@ -22,7 +22,7 @@ public class TriggerBot extends Module {
                 super.setValueNoTrigger(value);
             }
         });
-        addOption(new Option(this, "Max", "Max Delay", new ValueDouble(9, new double[]{1, 20}, 1), Option.Type.NUMBER) {
+        addOption(new Option("Max", "Max Delay", new ValueDouble(9, new double[]{1, 20}, 1), Option.Type.NUMBER) {
             @Override
             public void setValueNoTrigger(Object value) {
                 double min = module.options.get("min").DOUBLE();

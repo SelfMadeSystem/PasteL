@@ -94,7 +94,7 @@ public class RingSubOption extends Ring {
         module.rendeRing(new EventRing(this, option));
         this.visibleList = new ArrayList<>(this.list);
         for (Object obj : this.list) {
-            if ((option.options.get(String.valueOf(obj))) != null && !(option.options.get(String.valueOf(obj))).visible)
+            if ((option.options.get(String.valueOf(obj))) != null && !(option.options.get(String.valueOf(obj))).visible())
                 this.visibleList.remove(obj);
         }
         return super.reset();

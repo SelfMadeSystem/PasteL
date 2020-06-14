@@ -17,7 +17,7 @@ public class Noclip extends Module {
 
     public Noclip() {
         super("Noclip", "Clip through all blocks", Category.MOVEMENT, "NONE");
-        options.put("speed", new Option(this, "Speed", "Movement speed", new ValueDouble(0.23, new double[] {0, 4}, 0.01), Option.Type.NUMBER));
+        options.put("speed", new Option("Speed", "Movement speed", new ValueDouble(0.23, new double[] {0, 4}, 0.01), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

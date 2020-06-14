@@ -10,6 +10,7 @@ import com.ihl.client.module.hacks.player.*;
 import com.ihl.client.module.hacks.render.*;
 import com.ihl.client.module.hacks.world.AntiCactus;
 import com.ihl.client.module.option.*;
+import com.ihl.client.module.option.options.OptNoS;
 import com.ihl.client.util.*;
 import joptsimple.internal.Strings;
 import net.minecraft.util.ResourceLocation;
@@ -174,7 +175,7 @@ public class Module extends Helper {
         this.desc = desc;
         this.category = category;
 
-        options.put("keybind", new Option(this, "Keybind", "Module toggle keybind", new ValueString(keybind), Option.Type.KEYBIND));
+        options.put("keybind", new Option("Keybind", "Module toggle keybind", new ValueString(keybind), Option.Type.KEYBIND));
 
         String base = name.toLowerCase().replaceAll(" ", "");
         modules.put(base, this);
@@ -256,7 +257,8 @@ public class Module extends Helper {
     // name, description, defaultValue
     // Returns created option.
     public Option addBoolean(String name, String description, boolean defaultValue) {
-        Option opt = new Option(this, name, description, new ValueBoolean(defaultValue), Option.Type.BOOLEAN);
+        Option opt = new Option(name, description, new ValueBoolean(defaultValue), Option.Type.BOOLEAN);
+        opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
@@ -266,31 +268,37 @@ public class Module extends Helper {
     }
 
     public Option addDouble(String name, String description, double defaultValue, double min, double max, double increments) {
-        Option opt = new Option(this, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), Option.Type.NUMBER);
+        Option opt = new Option(name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), Option.Type.NUMBER);
+        opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public Option addString(String name, String description, String defaultValue) {
-        Option opt = new Option(this, name, description, new ValueString(defaultValue), Option.Type.STRING);
+        Option opt = new Option(name, description, new ValueString(defaultValue), Option.Type.STRING);
+        opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public Option addChoice(String name, String description, String... values) {
-        Option opt = new Option(this, name, description, new ValueChoice(0, values), Option.Type.CHOICE);
+        Option opt = new Option(name, description, new ValueChoice(0, values), Option.Type.CHOICE);
+        opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public Option addOther(String name, String description) {
         Option opt = new OptNoS(this, name, description, new ValueString(""), Option.Type.OTHER);
+        opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
+
     public OptNoS addBooleanNoS(String name, String description, boolean defaultValue) {
         OptNoS opt = new OptNoS(this, name, description, new ValueBoolean(defaultValue), OptNoS.Type.BOOLEAN);
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.module = this;
         return opt;
     }
 
@@ -300,38 +308,46 @@ public class Module extends Helper {
 
     public OptNoS addDoubleNoS(String name, String description, double defaultValue, double min, double max, double increments) {
         OptNoS opt = new OptNoS(this, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), OptNoS.Type.NUMBER);
+        opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public OptNoS addStringNoS(String name, String description, String defaultValue) {
         OptNoS opt = new OptNoS(this, name, description, new ValueString(defaultValue), OptNoS.Type.STRING);
+        opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public OptNoS addChoiceNoS(String name, String description, String... values) {
         OptNoS opt = new OptNoS(this, name, description, new ValueChoice(0, values), OptNoS.Type.CHOICE);
+        opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
     public OptNoS addOtherNoS(String name, String description) {
         OptNoS opt = new OptNoS(this, name, description, new ValueString(""), OptNoS.Type.OTHER);
+        opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         return opt;
     }
 
-    public void addOption(Option option) {
+    public Option addOption(Option option) {
+        option.module = this;
         option.parent = null;
         options.put(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
+        return option;
     }
 
-    public void addOptionIfAbsent(Option option) {
+    public Option addOptionIfAbsent(Option option) {
+        option.module = this;
         option.parent = null;
         options.putIfAbsent(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
+        return option;
     }
 
     public void resetOptionMap() {
