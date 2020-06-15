@@ -2,8 +2,7 @@ package com.ihl.client.input;
 
 import com.ihl.client.module.Module;
 import com.ihl.client.module.option.Option;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
+import org.lwjgl.input.*;
 import org.lwjgl.opengl.Display;
 
 public class InputUtil {

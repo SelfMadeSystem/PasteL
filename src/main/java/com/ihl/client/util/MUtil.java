@@ -40,7 +40,7 @@ public class MUtil {
 
     public static void hclip(double amount) {
         player().setPositionAndUpdate(player().posX += Math.cos(Math.toRadians(player().rotationYaw + 90.0)) * amount, player().posY,
-        player().posZ += Math.sin(Math.toRadians(player().rotationYaw + 90.0)) * amount);
+          player().posZ += Math.sin(Math.toRadians(player().rotationYaw + 90.0)) * amount);
     }
 
     public static void vmult(double amount) {
@@ -82,7 +82,7 @@ public class MUtil {
     }
 
     public static void strafe(final double speed) {
-        if(!isMoving())
+        if (!isMoving())
             return;
 
         final double yaw = getDirection();
@@ -98,19 +98,19 @@ public class MUtil {
     public static double getDirection() {
         float rotationYaw = player().rotationYaw;
 
-        if(player().moveForward < 0F)
+        if (player().moveForward < 0F)
             rotationYaw += 180F;
 
         float forward = 1F;
-        if(player().moveForward < 0F)
+        if (player().moveForward < 0F)
             forward = -0.5F;
-        else if(player().moveForward > 0F)
+        else if (player().moveForward > 0F)
             forward = 0.5F;
 
-        if(player().moveStrafing > 0F)
+        if (player().moveStrafing > 0F)
             rotationYaw -= 90F * forward;
 
-        if(player().moveStrafing < 0F)
+        if (player().moveStrafing < 0F)
             rotationYaw += 90F * forward;
 
         return Math.toRadians(rotationYaw);

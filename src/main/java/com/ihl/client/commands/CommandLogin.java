@@ -1,8 +1,7 @@
 package com.ihl.client.commands;
 
 import com.ihl.client.Auth;
-import com.ihl.client.commands.exceptions.CommandException;
-import com.ihl.client.commands.exceptions.SyntaxException;
+import com.ihl.client.commands.exceptions.*;
 import com.ihl.client.util.ChatUtil;
 
 import java.util.List;

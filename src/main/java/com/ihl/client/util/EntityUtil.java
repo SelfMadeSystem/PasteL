@@ -3,27 +3,16 @@ package com.ihl.client.util;
 import com.ihl.client.Helper;
 import com.ihl.client.module.Module;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.monster.EntityGolem;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.*;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EntityUtil {
 
@@ -51,10 +40,10 @@ public class EntityUtil {
 
                 List<Vec3> bounds = new ArrayList();
                 bounds.add(position);
-                bounds.add(position.addVector(0, entity.height/2, 0));
+                bounds.add(position.addVector(0, entity.height / 2, 0));
                 bounds.add(position.addVector(0, entity.getEyeHeight(), 0));
                 bounds.add(position.addVector(0, entity.height, 0));
-                bounds.add(position.addVector(0, entity.height+0.2, 0));
+                bounds.add(position.addVector(0, entity.height + 0.2, 0));
 
                 bounds.add(position.addVector(ax, ay, az));
                 bounds.add(position.addVector(ax, ay, -az));
@@ -67,7 +56,7 @@ public class EntityUtil {
                 bounds.add(position.addVector(-ax, 0, -az));
 
                 List<Vec3> data = new ArrayList();
-                for(int i = 0; i < bounds.size(); i++) {
+                for (int i = 0; i < bounds.size(); i++) {
                     Vec3 coords = MathUtil.to2D(bounds.get(i));
                     if (coords != null) {
                         data.add(coords);
@@ -113,7 +102,7 @@ public class EntityUtil {
         double pZ = Helper.player().posZ;
 
         double eX = entity.posX;
-        double eY = entity.posY + (entity.height/2);
+        double eY = entity.posY + (entity.height / 2);
         double eZ = entity.posZ;
 
         double dX = pX - eX;
@@ -152,18 +141,18 @@ public class EntityUtil {
 
     public static boolean isMonster(Entity entity) {
         return entity instanceof IMob ||
-                entity instanceof EntityGolem;
+          entity instanceof EntityGolem;
     }
 
     public static boolean isNeutral(Entity entity) {
         return entity instanceof EntityBat ||
-                entity instanceof EntitySquid ||
-                entity instanceof EntityVillager;
+          entity instanceof EntitySquid ||
+          entity instanceof EntityVillager;
     }
 
     public static boolean isProjectile(Entity entity) {
         return entity instanceof IProjectile ||
-                entity instanceof EntityFishHook;
+          entity instanceof EntityFishHook;
     }
 
     public static String getEntityTypeName(Entity entity) {

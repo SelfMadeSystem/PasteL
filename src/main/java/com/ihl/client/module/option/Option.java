@@ -12,20 +12,46 @@ import java.util.*;
 
 public class Option {
 
-    public enum Type {
-        BOOLEAN("<true|false>"),
-        CHOICE("<%s>"),
-        KEYBIND("<key>"),
-        LIST("<value>"),
-        NUMBER("<number>"),
-        OTHER(""),
-        STRING("<text>");
+    public Option parent;
+    public String name, desc;
+    public Module module;
+    public Type type;
+    public ResourceLocation icon;
+    public Map<String, Option> options = new LinkedHashMap<>();
+    public int color;
+    private Value value;
 
-        public String usage;
-
-        Type(String usage) {
-            this.usage = usage;
+    public Option(String name, String desc, Value value, Type type) {
+        this(name, desc, value, type, new ArrayList<>(), null);
+    }
+    public Option(String name, String desc, Value value, Type type, Option... options) {
+        this(name, desc, value, type, Arrays.asList(options), null);
+    }
+    public Option(String name, String desc, Value value, Type type, List<Option> options) {
+        this(name, desc, value, type, options, null);
+    }
+    // TODO: 2020-06-12 make this shit private.
+    public Option(String name, String desc, Value value, Type type, List<Option> options, Option parent) {
+        this.name = name;
+        this.desc = desc;
+        this.value = value;
+        this.type = type;
+        //System.out.println(parent);
+        this.parent = parent;
+        this.value.option = this;
+        if (options != null) {
+            for (Option option : options) {
+                this.options.put(option.name.toLowerCase().replaceAll(" ", ""), option);
+            }
         }
+        icon = new ResourceLocation("client/icons/option/" + (name.toLowerCase().replaceAll(" ", "")) + ".png");
+        color = ColorUtil.rainbow((long) (Math.random() * 10000000000D), 1f).getRGB();
+        /*List<Option> p = new ArrayList<>(this.parent);
+        p.add(this);
+        for (Map.Entry<String, Option> e : this.options.entrySet()) {
+            Option o = e.getValue();
+            o.setParents(p); // FIXME: 2020-06-12 Set Parents or put in creating new Options :)
+        }*/
     }
 
     public static List<String> getAllS(Map<String, Option> options, String separator) {
@@ -146,49 +172,8 @@ public class Option {
         }
     }
 
-    public Option parent;
-    public String name, desc;
-    public Module module;
-    private Value value;
-    public Type type;
-    public ResourceLocation icon;
-    public Map<String, Option> options = new LinkedHashMap<>();
-    public int color;
-
-    public Option(String name, String desc, Value value, Type type) {
-        this(name, desc, value, type, new ArrayList<>(), null);
-    }
-
-    public Option(String name, String desc, Value value, Type type, Option... options) {
-        this(name, desc, value, type, Arrays.asList(options), null);
-    }
-
-    public Option(String name, String desc, Value value, Type type, List<Option> options) {
-        this(name, desc, value, type, options, null);
-    }
-
-    // TODO: 2020-06-12 make this shit private.
-    public Option(String name, String desc, Value value, Type type, List<Option> options, Option parent) {
-        this.name = name;
-        this.desc = desc;
-        this.value = value;
-        this.type = type;
-        //System.out.println(parent);
-        this.parent = parent;
-        this.value.option = this;
-        if (options != null) {
-            for (Option option : options) {
-                this.options.put(option.name.toLowerCase().replaceAll(" ", ""), option);
-            }
-        }
-        icon = new ResourceLocation("client/icons/option/" + (name.toLowerCase().replaceAll(" ", "")) + ".png");
-        color = ColorUtil.rainbow((long) (Math.random() * 10000000000D), 1f).getRGB();
-        /*List<Option> p = new ArrayList<>(this.parent);
-        p.add(this);
-        for (Map.Entry<String, Option> e : this.options.entrySet()) {
-            Option o = e.getValue();
-            o.setParents(p); // FIXME: 2020-06-12 Set Parents or put in creating new Options :)
-        }*/
+    public boolean save() {
+        return true;
     }
 
     /*public void setParents(List<Option> parent) {// TODO: 2020-06-12 idfk
@@ -200,10 +185,10 @@ public class Option {
         }
     }*/
 
-    public boolean save() {
+    public boolean visible() {
         return true;
     }
-    public boolean visible() {return true;}
+
     public List<String> getAll() {
         return getAll(" ");
     }
@@ -439,7 +424,6 @@ public class Option {
         return (String) OBJECT(names);
     }
 
-
     /*---------------------------------------------------------------*/
     public Option getOption(String name) {
         return options.get(name);
@@ -477,5 +461,21 @@ public class Option {
     @Override
     public String toString() {
         return name + ":" + STRING();
+    }
+
+    public enum Type {
+        BOOLEAN("<true|false>"),
+        CHOICE("<%s>"),
+        KEYBIND("<key>"),
+        LIST("<value>"),
+        NUMBER("<number>"),
+        OTHER(""),
+        STRING("<text>");
+
+        public String usage;
+
+        Type(String usage) {
+            this.usage = usage;
+        }
     }
 }

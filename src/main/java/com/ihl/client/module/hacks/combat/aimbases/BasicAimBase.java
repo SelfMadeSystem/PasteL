@@ -7,13 +7,16 @@ import net.minecraft.entity.EntityLivingBase;
 
 public class BasicAimBase {
     private static final Minecraft mc;
+
     static {
         mc = Minecraft.getMinecraft();
     }
+
     public static float[] getAimTo(int limit, String aimWhere, double custom, double predict) {
         EntityPlayerSP p = mc.thePlayer;
         return getAimTo(limit, aimWhere, custom, new float[]{p.rotationYaw, p.rotationPitch}, predict);
     }
+
     public static float[] getAimTo(int limit, String aimWhere, double custom, float[] from, double predict) {
         EntityLivingBase target = TargetUtil.target;
         if (target == null)

@@ -2,9 +2,8 @@ package com.ihl.client.module.hacks.combat;
 
 import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
 import com.ihl.client.module.hacks.combat.aimbases.RenderBase;
-import com.ihl.client.module.option.*;
+import com.ihl.client.module.option.Option;
 import com.ihl.client.util.*;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;

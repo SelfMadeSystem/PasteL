@@ -2,8 +2,8 @@ package com.ihl.client.module.hacks.misc;
 
 import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.option.*;
-import com.ihl.client.util.*;
+import com.ihl.client.module.option.Option;
+import com.ihl.client.util.ChatUtil;
 
 @EventHandler(events = {EventPlayerUpdate.class})
 public class Example extends Module {

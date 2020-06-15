@@ -1,13 +1,9 @@
 package com.ihl.client.module.hacks.movement;
 
 import com.ihl.client.Helper;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventPlayerMove;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.Module;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueDouble;
+import com.ihl.client.event.*;
+import com.ihl.client.module.*;
+import com.ihl.client.module.option.*;
 import com.ihl.client.util.HelperUtil;
 
 @EventHandler(events = {EventPlayerMove.class})
@@ -17,7 +13,7 @@ public class Noclip extends Module {
 
     public Noclip() {
         super("Noclip", "Clip through all blocks", Category.MOVEMENT, "NONE");
-        options.put("speed", new Option("Speed", "Movement speed", new ValueDouble(0.23, new double[] {0, 4}, 0.01), Option.Type.NUMBER));
+        options.put("speed", new Option("Speed", "Movement speed", new ValueDouble(0.23, new double[]{0, 4}, 0.01), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

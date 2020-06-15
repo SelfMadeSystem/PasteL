@@ -3,21 +3,16 @@ package com.ihl.client.gui.ring;
 import com.ihl.client.gui.Gui;
 import com.ihl.client.input.InputUtil;
 import com.ihl.client.module.Module;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueDouble;
-import com.ihl.client.util.ColorUtil;
-import com.ihl.client.util.MathUtil;
-import com.ihl.client.util.RenderUtil;
-import com.ihl.client.util.RenderUtil2D;
+import com.ihl.client.module.option.*;
+import com.ihl.client.util.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class RingSlider extends Ring {
 
-    private Module module;
-    private Option option;
+    private final Module module;
+    private final Option option;
     private long timeAtPress;
 
     private boolean dragging = false;
@@ -57,7 +52,7 @@ public class RingSlider extends Ring {
 
     @Override
     public void mouseReleased(int button) {
-        if (button == 0 && timeAtPress + 1000 < System.currentTimeMillis()){
+        if (button == 0 && timeAtPress + 1000 < System.currentTimeMillis()) {
             dragging = false;
         }
     }

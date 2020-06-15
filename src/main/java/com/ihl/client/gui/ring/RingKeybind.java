@@ -2,11 +2,8 @@ package com.ihl.client.gui.ring;
 
 import com.ihl.client.gui.Gui;
 import com.ihl.client.module.Module;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueString;
-import com.ihl.client.util.ColorUtil;
-import com.ihl.client.util.RenderUtil;
-import com.ihl.client.util.RenderUtil2D;
+import com.ihl.client.module.option.*;
+import com.ihl.client.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 
@@ -14,8 +11,8 @@ import java.util.List;
 
 public class RingKeybind extends Ring {
 
-    private Module module;
-    private Option option;
+    private final Module module;
+    private final Option option;
 
     public RingKeybind(Module module, Option option, List<String> list) {
         super(list);
@@ -38,7 +35,7 @@ public class RingKeybind extends Ring {
             option.setValue("NONE");
             return;
         }
-        option.setValue(Keyboard.getKeyName(k));;
+        option.setValue(Keyboard.getKeyName(k));
     }
 
     @Override

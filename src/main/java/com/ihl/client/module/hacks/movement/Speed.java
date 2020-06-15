@@ -3,30 +3,37 @@ package com.ihl.client.module.hacks.movement;
 import com.ihl.client.event.*;
 import com.ihl.client.gui.Gui;
 import com.ihl.client.module.*;
+import com.ihl.client.module.hacks.movement.speeds.SpeedMode;
 import com.ihl.client.module.option.*;
 import com.ihl.client.module.option.options.*;
 import com.ihl.client.util.MUtil;
-import net.minecraft.util.MathHelper;
 
-import java.util.Map;
+import java.util.*;
 
 @EventHandler(events = {EventPlayerMove.class, EventPlayerUpdate.class})
 public class Speed extends Module {
 
-    private int jumps;
-    private int groundTick;
+    public int jumps;
+    public int groundTick;
 
     public Speed() {
         super("Speed", "Apply a movement multiplier", Category.MOVEMENT, "NONE");
         addChoice("Mode", "Bypass mode for speed.", "Custom", "NCP", "AAC");
         {//AAC Options
             Option aac = addOption(new CustomOption("AACOptions", "Options for mode \"AAC\"", "AAC"));
-            aac.addChoice("AACMode", "Mode for \"AAC\"", "3.5.0", "3.3.13", "3.6.4", "4.2", "4.2Hop");
+            //addChoice("AACMode", "Mode for \"AAC\"", "Timer", "3.3.13", "3.5.0", "3.6.4", "4.2", "4.2Hop");
+            aac.addDouble("AACTimer", "Timer speed for \"Timer\"", 5, 1, 20, 0.1);
+            aac.addDouble("AACTimerMove", "Movement speed for \"Timer\". 0 to use vanilla. 0.02 for LiquidBounce AACGround2", 0, 0, 0.5, 0.005);
+            aac.addBoolean("AACTimerPos", "Sends position packet for \"Timer\"", true);
+            // mc().getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(player().posX, player().posY, player().posZ, true));
+
         }
         {//NCP Options
             Option ncp = addOption(new CustomOption("NCPOptions", "Options for mode \"NCP\"", "NCP"));
-            ncp.addChoice("NCPMode", "Mode for \"NCP\"", "Hop", "YPort");
+            //addChoice("NCPMode", "Mode for \"NCP\"", "Hop", "YPort");
         }
+        SpeedMode.init();
+        generateOptions();
         { //Add values to the AddValue section.
             Option addValue = addOption(new OptBol("Add Value", "Adds Values. Enable this to add a value.", false) {
                 @Override
@@ -82,21 +89,15 @@ public class Speed extends Module {
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 
-    class CustomOption extends OptOtr {
-        String visible;
-
-        public CustomOption(String name, String description) {
-            this(name, description, "custom");
-        }
-
-        public CustomOption(String name, String description, String visible) {
-            super(name, description);
-            this.visible = visible;
-        }
-
-        @Override
-        public boolean visible() {
-            return module.STRING("mode").equalsIgnoreCase(visible);
+    private void generateOptions() {
+        for (String str : SpeedMode.speeds.keySet()) {
+            if (!(Arrays.asList(((ValueChoice) options.get("mode").getTValue()).list)).contains(str)) {
+                List<String> l = Arrays.asList(((ValueChoice) options.get("mode").getTValue()).list);
+                l.add(str);
+                ((ValueChoice) options.get("mode").getTValue()).list = l.toArray(new String[0]);
+            }
+            List<String> modes = new ArrayList<>(SpeedMode.speeds.get(str).keySet());
+            addOptionIfAbsent(new ModeOption(str, modes.toArray(new String[0])));
         }
     }
 
@@ -189,59 +190,72 @@ public class Speed extends Module {
                 } else {
                     groundTick++;
                 }
-                switch (STRING("mode")) {
-                    case "Custom": {
-                        if (!mc().gameSettings.keyBindJump.getIsKeyPressed() &&
-                          (player().moveForward != 0 || player().moveStrafing != 0) &&
-                          !player().isOnLadder() && !player().isSneaking()) {
-                            if (player().onGround) {
-                                if (Option.get(options, "normalvalues", "ground").BOOLEAN()) {
-                                    Option option = options.get("normalvalues").options.get("ground");
-                                    double vclip = option.DOUBLE("vclip");
-                                    double hclip = option.DOUBLE("hclip");
-                                    float timer = (float) option.DOUBLE("timer");
-                                    float airSpeed = (float) option.DOUBLE("airspeed");
-                                    double vset = option.DOUBLE("vset");
-                                    double hadd = option.DOUBLE("hadd");
-                                    double hmult = option.DOUBLE("hmult");
-                                    MUtil.vset(vset);
-                                    MUtil.moveAllTypes(vclip, hclip, timer, airSpeed, 0, 1, hadd, hmult);
-                                    if (option.BOOLEAN("strafe")) MUtil.strafe();
-                                }
-                            } else {
-                                if (player().motionY > 0) {
-                                    if (Option.get(options, "normalvalues", "up").BOOLEAN()) {
-                                        Option option = options.get("normalvalues").options.get("up");
-                                        doAction(option, false, false);
-                                    }
-                                }
-                                if (player().motionY < 0) {
-                                    if (Option.get(options, "normalvalues", "down").BOOLEAN()) {
-                                        Option option = options.get("normalvalues").options.get("down");
-                                        doAction(option, false, false);
-                                    }
+                if (!mc().gameSettings.keyBindJump.getIsKeyPressed() &&
+                  (player().moveForward != 0 || player().moveStrafing != 0) &&
+                  !player().isOnLadder() && !player().isSneaking()) {
+                    String mode = STRING("mode");
+                    if (mode.equalsIgnoreCase("Custom")) {
+
+                        if (player().onGround) {
+                            if (Option.get(options, "normalvalues", "ground").BOOLEAN()) {
+                                Option option = options.get("normalvalues").options.get("ground");
+                                double vclip = option.DOUBLE("vclip");
+                                double hclip = option.DOUBLE("hclip");
+                                float timer = (float) option.DOUBLE("timer");
+                                float airSpeed = (float) option.DOUBLE("airspeed");
+                                double vset = option.DOUBLE("vset");
+                                double hadd = option.DOUBLE("hadd");
+                                double hmult = option.DOUBLE("hmult");
+                                MUtil.vset(vset);
+                                MUtil.moveAllTypes(vclip, hclip, timer, airSpeed, 0, 1, hadd, hmult);
+                                if (option.BOOLEAN("strafe")) MUtil.strafe();
+                            }
+                        } else {
+                            if (player().motionY > 0) {
+                                if (Option.get(options, "normalvalues", "up").BOOLEAN()) {
+                                    Option option = options.get("normalvalues").options.get("up");
+                                    doAction(option, false, false);
                                 }
                             }
-                            for (Map.Entry<String, Option> set : options.get("customvalues").options.entrySet()) {
-                                Option option = set.getValue();
-                                if (option.BOOLEAN()) {
-                                    String condition = (String) option.getValue("condition");
-                                    int everyGround = option.INTEGER("everyground");
-                                    int everyTick = option.INTEGER("everytick");
-                                    int tickGround = option.INTEGER("tickground");
-                                    if (everyGround <= 0) everyGround = 1;
-                                    if (everyTick <= 0) everyTick = 1;
+                            if (player().motionY < 0) {
+                                if (Option.get(options, "normalvalues", "down").BOOLEAN()) {
+                                    Option option = options.get("normalvalues").options.get("down");
+                                    doAction(option, false, false);
+                                }
+                            }
+                        }
+                        for (Map.Entry<String, Option> set : options.get("customvalues").options.entrySet()) {
+                            Option option = set.getValue();
+                            if (option.BOOLEAN()) {
+                                String condition = (String) option.getValue("condition");
+                                int everyGround = option.INTEGER("everyground");
+                                int everyTick = option.INTEGER("everytick");
+                                int tickGround = option.INTEGER("tickground");
+                                if (everyGround <= 0) everyGround = 1;
+                                if (everyTick <= 0) everyTick = 1;
 
-                                    if ((condition.equalsIgnoreCase("always") || (condition.equalsIgnoreCase("up") && player().motionY > 0) ||
-                                      (condition.equalsIgnoreCase("down") && player().motionY < 0) || (condition.equalsIgnoreCase("ground") && player().onGround)) &&
-                                      (player().ticksExisted % everyTick == 0) && (jumps % everyGround == 0) && (groundTick % tickGround == 0)) {
-                                        doAction(option, true, true);
-                                    }
+                                if ((condition.equalsIgnoreCase("always") || (condition.equalsIgnoreCase("up") && player().motionY > 0) ||
+                                  (condition.equalsIgnoreCase("down") && player().motionY < 0) || (condition.equalsIgnoreCase("ground") && player().onGround)) &&
+                                  (player().ticksExisted % everyTick == 0) && (jumps % everyGround == 0) && (groundTick % tickGround == 0)) {
+                                    doAction(option, true, true);
                                 }
                             }
                         }
                         if (BOOLEAN("normalvalues", "strafe")) MUtil.strafe();
-                        break;
+                    } else {
+                        String type = STRING(mode + "Mode");
+                        player().setSprinting(true);
+                        timerSpeed(1);
+                        if (SpeedMode.speeds.get(mode) != null) {
+                            SpeedMode speedMode = SpeedMode.speeds.get(mode).get(type);
+                            if (speedMode != null) {
+                                speedMode.onUpdate((EventPlayerUpdate) event, this);
+                            }
+                        }
+                    }
+                }
+                /*switch (STRING("mode")) {
+                    case "Custom": {
                     }
                     case "NCP": {
                         String ncpMode = STRING("ncpOptions", "ncpMode");
@@ -285,6 +299,9 @@ public class Speed extends Module {
 
                         if (MUtil.isMoving() && !player().isSneaking()) {
                             switch (aacMode) {// "3.5.0", "3.3.13", "3.6.4", "4.2", "4.2Hop"
+                                case "Timer": {// TODO: 2020-06-14 Add Timer to thingy :) kthx
+                                    break;
+                                }
                                 case "3.3.13": { //LiquidBounce Skid :)
                                     if (player().onGround && player().isCollidedVertically) {
                                         // MotionXYZ
@@ -332,17 +349,25 @@ public class Speed extends Module {
                                     player().motionY -= 0.0149;
                                     break;
                                 }
-                                case "4.2": { //My Custom Wurst :)
+                                case "4.2": { //My FusionX Skid :) TODO: add
+                                    if (!player().onGround)
+                                        return;
+                                    //ChatUtils.message(prevYaw + " " + p.yaw + " " + p.sidewaysSpeed + " " + (prevYaw-5<p.yaw && prevYaw+5>p.yaw));
+                                    if ((player().prevRotationYaw - 5 < player().rotationYaw && player().prevRotationYaw + 5 > player().rotationPitch) && player().moveStrafing == 0) {
+                                        MUtil.strafe(MUtil.getSpeed() + 0.23f);
+                                    } else {
+                                        MUtil.strafe();
+                                    }
                                     break;
                                 }
-                                case "4.2Hop": { //My Custom Wurst :)
+                                case "4.2Hop": { //My FusionX Skid :) TODO: add
                                     break;
                                 }
                             }
                             break;
                         }
                     }
-                }
+                }*/
             }
         }
     }
@@ -379,5 +404,38 @@ public class Speed extends Module {
         MUtil.vmult(vmult);
         MUtil.hmult(hmult);
         //MUtil.moveAllTypes(vclip, hclip, timer, airSpeed, vadd, vmult, hadd, hmult);
+    }
+
+    static class ModeOption extends OptChc {
+        String visible;
+
+        public ModeOption(String name, String... values) {
+            super(name + "Mode", "The mode for speed mode of " + name + ".", values);
+            this.visible = name;
+        }
+
+        @Override
+        public boolean visible() {
+            String mode = module.STRING("mode");
+            return mode.equalsIgnoreCase(this.visible);
+        }
+    }
+
+    static class CustomOption extends OptOtr {
+        String visible;
+
+        public CustomOption(String name, String description) {
+            this(name, description, "custom");
+        }
+
+        public CustomOption(String name, String description, String visible) {
+            super(name, description);
+            this.visible = visible;
+        }
+
+        @Override
+        public boolean visible() {
+            return module.STRING("mode").equalsIgnoreCase(visible);
+        }
     }
 }

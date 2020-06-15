@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.util.ResourceLocation;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -31,7 +30,7 @@ public class Account {
 
         if (head == null) {
             head = new ResourceLocation("heads/" + username);
-            ThreadDownloadImageData textureHead = new ThreadDownloadImageData((File) null, String.format("https://minotar.net/helm/%s/64.png", username), (ResourceLocation) null, null);
+            ThreadDownloadImageData textureHead = new ThreadDownloadImageData(null, String.format("https://minotar.net/helm/%s/64.png", username), null, null);
             Minecraft.getMinecraft().getTextureManager().loadTexture(head, textureHead);
         }
     }

@@ -13,13 +13,12 @@ import java.util.List;
 public class MouseAimBase {
 
     private static final Minecraft mc;
+    public static int prev = 0;
+    public static float[] rotations;
 
     static {
         mc = Minecraft.getMinecraft();
     }
-
-    public static int prev = 0;
-    public static float[] rotations;
 
     public static void disable() {
         mc.mouseHelper.overrideMode = 0;
@@ -77,7 +76,7 @@ public class MouseAimBase {
         TargetUtil.targetEntity(priority, distance, range);
         EntityLivingBase target = TargetUtil.target;
         if (target == null) {
-            return new int[] {0, 0};
+            return new int[]{0, 0};
         }
 
 

@@ -1,18 +1,12 @@
 package com.ihl.client.commands;
 
-import com.ihl.client.commands.exceptions.ArgumentException;
-import com.ihl.client.commands.exceptions.CommandException;
-import com.ihl.client.commands.exceptions.SyntaxException;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventCommand;
+import com.ihl.client.commands.exceptions.*;
+import com.ihl.client.event.*;
 import com.ihl.client.module.Module;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueChoice;
+import com.ihl.client.module.option.*;
 import com.ihl.client.util.ChatUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class CommandModule extends Command {
 
@@ -85,7 +79,7 @@ public class CommandModule extends Command {
         } else {
             try {
                 List<String> wtf = new ArrayList<>(Arrays.asList(args));
-                wtf.remove(wtf.size()-1);
+                wtf.remove(wtf.size() - 1);
                 Option subOption = Option.get(module.options, wtf);
                 System.out.println(module.options.keySet());
                 if (subOption != null) {

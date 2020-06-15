@@ -1,19 +1,15 @@
 package com.ihl.client.module.hacks.movement;
 
 import com.ihl.client.Helper;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventPlayerMotion;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.Module;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueBoolean;
+import com.ihl.client.event.*;
+import com.ihl.client.module.*;
+import com.ihl.client.module.option.*;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
 @EventHandler(events = {EventPlayerMotion.class})
 public class Phase extends Module {
 
-    private boolean hasPhased = false;
+    private final boolean hasPhased = false;
 
     public Phase() {
         super("Phase", "Clip through non-solid blocks", Category.MOVEMENT, "NONE");

@@ -3,10 +3,7 @@ package com.ihl.client.module.hacks.misc;
 import com.ihl.client.Helper;
 import com.ihl.client.event.EventHandler;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueChoice;
-import com.ihl.client.module.option.ValueDouble;
+import com.ihl.client.module.option.*;
 import com.ihl.client.util.TimerUtil;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 
@@ -15,15 +12,15 @@ import java.util.Random;
 @EventHandler(events = {})
 public class SkinDerp extends Module {
 
+    private final int[] orderSpin = new int[]{6, 2, 4, 5, 3};
+    private final int[] orderSlide = new int[]{6, 3, 1, 2, 5, 4};
+    private final TimerUtil timer = new TimerUtil();
     private int index = 0;
-    private int[] orderSpin = new int[]{6, 2, 4, 5, 3};
-    private int[] orderSlide = new int[]{6, 3, 1, 2, 5, 4};
-    private TimerUtil timer = new TimerUtil();
 
     public SkinDerp() {
         super("Skin Derp", "Make your clothing layers toggle", Category.MISC, "NONE");
         options.put("delay", new Option("Delay", "Delay between toggling new part", new ValueDouble(0.2, new double[]{0, 2}, 0.01), Option.Type.NUMBER));
-        options.put("mode", new Option("Mode", "Skin derp mode", new ValueChoice(2, new String[]{"toggle", "random", "spin", "slide"}), Option.Type.CHOICE));
+        options.put("mode", new Option("Mode", "Skin derp mode", new ValueChoice(2, "toggle", "random", "spin", "slide"), Option.Type.CHOICE));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 

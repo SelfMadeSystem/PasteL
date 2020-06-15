@@ -5,7 +5,11 @@ public class ValueChoice extends Value {
     public String[] list;
 
     public ValueChoice(int value, String... list) {
-        super(list[value]);
+        this(list[value], list);
+    }
+
+    public ValueChoice(String value, String... list) {
+        super(value);
         this.list = list;
     }
 

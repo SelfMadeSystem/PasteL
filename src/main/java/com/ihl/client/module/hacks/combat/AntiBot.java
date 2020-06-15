@@ -2,7 +2,6 @@ package com.ihl.client.module.hacks.combat;
 
 import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
 import com.ihl.client.module.option.*;
 
 import java.util.*;
@@ -35,12 +34,6 @@ public class AntiBot extends Module {
         update();
     }
 
-    public void enable() {
-        super.enable();
-        update();
-        disable();
-    }
-
     public static void update() {
         ground = instance.options.get("ground").BOOLEAN();
         air = instance.options.get("air").BOOLEAN();
@@ -48,6 +41,12 @@ public class AntiBot extends Module {
         tabEquals = instance.options.get("tab").options.get("tabequals").BOOLEAN();
         dupTab = instance.options.get("duptab").BOOLEAN();
         dupWorld = instance.options.get("dupworld").BOOLEAN();
+    }
+
+    public void enable() {
+        super.enable();
+        update();
+        disable();
     }
 
     protected void onEvent(Event event) {

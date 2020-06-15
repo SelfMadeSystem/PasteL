@@ -10,6 +10,11 @@ import net.minecraft.client.entity.EntityPlayerSP;
 @EventHandler(events = {EventPlayerMotion.class})
 public class Step extends Module {
 
+    boolean prevCollided;
+    boolean stepping;
+    boolean again;
+    double y;
+    byte flag;
     public Step() {
         super("Step", "Step up blocks like stairs", Category.MOVEMENT, "NONE");
         Option start = addOther("Start", "Values when starting step");
@@ -47,12 +52,6 @@ public class Step extends Module {
         Helper.player().stepHeight = 0.5f;
         mc().timer.timerSpeed = 1f;
     }
-
-    boolean prevCollided;
-    boolean stepping;
-    boolean again;
-    double y;
-    byte flag;
 
     protected void onEvent(Event event) {
         if (event instanceof EventPlayerMotion) {

@@ -1,16 +1,10 @@
 package com.ihl.client.module.hacks.misc;
 
 import com.ihl.client.Helper;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventPacket;
+import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueDouble;
-import com.ihl.client.util.ChatUtil;
-import com.ihl.client.util.HelperUtil;
-import com.ihl.client.util.TimerUtil;
+import com.ihl.client.module.option.*;
+import com.ihl.client.util.*;
 import joptsimple.internal.Strings;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.network.play.server.S3APacketTabComplete;
@@ -20,13 +14,13 @@ import java.util.*;
 @EventHandler(events = {EventPacket.class})
 public class Plugins extends Module {
 
-    private List<String> plugins = new ArrayList();
+    private final List<String> plugins = new ArrayList();
+    private final TimerUtil timer = new TimerUtil();
     private boolean scan;
-    private TimerUtil timer = new TimerUtil();
 
     public Plugins() {
         super("Plugins", "Get a list of server plugins", Category.MISC, "NONE");
-        options.put("timeout", new Option("Timeout", "Period before timing out and cancelling request", new ValueDouble(5, new double[] {0, 10}, 0.1), Option.Type.NUMBER));
+        options.put("timeout", new Option("Timeout", "Period before timing out and cancelling request", new ValueDouble(5, new double[]{0, 10}, 0.1), Option.Type.NUMBER));
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 
@@ -62,7 +56,7 @@ public class Plugins extends Module {
                 if (e.packet instanceof S3APacketTabComplete && scan) {
                     S3APacketTabComplete packet = (S3APacketTabComplete) e.packet;
                     String[] commands = packet.func_149630_c();
-                    for(String s : commands) {
+                    for (String s : commands) {
                         String[] split = s.split(":");
                         if (split.length > 1) {
                             String in = split[0].replaceAll("/", "");
@@ -75,7 +69,7 @@ public class Plugins extends Module {
                     if (plugins.isEmpty()) {
                         ChatUtil.send("No plugins found");
                     } else {
-                        ChatUtil.send("[n]Plugins [t]([v]"+plugins.size()+"[t]): [v]" + Strings.join(plugins.toArray(new String[0]), "[t], [v]"));
+                        ChatUtil.send("[n]Plugins [t]([v]" + plugins.size() + "[t]): [v]" + Strings.join(plugins.toArray(new String[0]), "[t], [v]"));
                     }
                     disable();
                 }

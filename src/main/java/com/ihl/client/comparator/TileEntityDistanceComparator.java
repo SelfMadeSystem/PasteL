@@ -1,6 +1,5 @@
 package com.ihl.client.comparator;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 
@@ -8,7 +7,7 @@ import java.util.Comparator;
 
 public class TileEntityDistanceComparator implements Comparator<TileEntity> {
 
-    private EntityLivingBase central;
+    private final EntityLivingBase central;
 
     public TileEntityDistanceComparator(EntityLivingBase central) {
         this.central = central;

@@ -12,11 +12,13 @@ import java.util.*;
 @EventHandler(events = {EventPlayerUpdate.class})
 public class Antivoid extends Module {
 
+    private final List<Vec3> lastGround = new ArrayList<>();
+
     public Antivoid() {
         super("Antivoid", "Teleports you back when you fall in to the void.", Category.PLAYER, "NONE");
         addChoice("Mode", "Teleports you back when you fall in to the void.",
           "TeleportBack", "Flag", "Hypixel");
-        addOption(new OptBol("OnlyVoid", "Only goes back if above void.",true){
+        addOption(new OptBol("OnlyVoid", "Only goes back if above void.", true) {
             @Override
             public boolean visible() {
                 String st = module.STRING("mode");
@@ -29,19 +31,6 @@ public class Antivoid extends Module {
         addOption(new CustomOption("HAdd", "Amount to hAdd"));
         addOption(new CustomOption("VAdd", "Amount to vAdd"));
     }
-
-    class CustomOption extends OptDbl {
-        public CustomOption(String name, String description) {
-            super(name, description, 0, -20, 20, 1);
-        }
-        @Override
-        public boolean visible() {
-            String st = module.STRING("mode");
-            return st.equalsIgnoreCase("Flag");
-        }
-    }
-
-    private final List<Vec3> lastGround = new ArrayList<>();
 
     @Override
     protected void onEvent(Event event) {
@@ -77,6 +66,18 @@ public class Antivoid extends Module {
                     }
                 }
             }
+        }
+    }
+
+    class CustomOption extends OptDbl {
+        public CustomOption(String name, String description) {
+            super(name, description, 0, -20, 20, 1);
+        }
+
+        @Override
+        public boolean visible() {
+            String st = module.STRING("mode");
+            return st.equalsIgnoreCase("Flag");
         }
     }
 }

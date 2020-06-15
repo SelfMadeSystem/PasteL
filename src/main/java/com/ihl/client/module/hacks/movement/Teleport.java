@@ -1,32 +1,26 @@
 package com.ihl.client.module.hacks.movement;
 
 import com.ihl.client.Helper;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventPlayerUpdate;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.Module;
+import com.ihl.client.event.*;
+import com.ihl.client.module.*;
 import com.ihl.client.util.EntityUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 
 @EventHandler(events = EventPlayerUpdate.class)
 public class Teleport extends Module {
-    private MovingObjectPosition objectPosition;
-    private BlockPos endPos;
-
-    public Teleport() {
-        super("Teleport", "Just testing stuff", Category.MOVEMENT, "NONE");
-        initCommands(name.toLowerCase().replaceAll(" ", ""));
-    }
-
     double pX;
     double pY;
     double pZ;
     float pYaw;
     float pPitch;
+    private MovingObjectPosition objectPosition;
+    private BlockPos endPos;
+    public Teleport() {
+        super("Teleport", "Just testing stuff", Category.MOVEMENT, "NONE");
+        initCommands(name.toLowerCase().replaceAll(" ", ""));
+    }
 
     @Override
     public void enable() {

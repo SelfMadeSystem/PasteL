@@ -22,6 +22,33 @@ public class Module extends Helper {
     public static Map<String, Module> modules = new LinkedHashMap<>();
     protected static int currentId = 1;
     protected static RUtils rUtils;
+    public int id;
+    public String name, desc;
+    public Category category;
+    public int color;
+    public boolean active;
+    //        name     option   Note: Name also refers to the icon.
+    public Map<String, Option> options = new LinkedHashMap<>();
+    public ResourceLocation icon;
+
+    private Module() {
+        this.name = "";
+        this.desc = "";
+        this.category = Category.MISC;
+    }
+    public Module(String name, String desc, Category category, String keybind) {
+        this.id = currentId++;
+        this.name = name;
+        this.desc = desc;
+        this.category = category;
+
+        options.put("keybind", new Option("Keybind", "Module toggle keybind", new ValueString(keybind), Option.Type.KEYBIND));
+
+        String base = name.toLowerCase().replaceAll(" ", "");
+        modules.put(base, this);
+
+        icon = new ResourceLocation("client/icons/module/" + base + ".png");
+    }
 
     public static void init() {
         rUtils = new RUtils();
@@ -119,6 +146,7 @@ public class Module extends Helper {
             module.tick();
         }
     }
+    //protected Class[] events = new Class[]{};
 
     public static void event(Event event, boolean reverse) {
         if (Helper.player() == null) {
@@ -151,36 +179,6 @@ public class Module extends Helper {
             if (eventOption.module.name.equals(module.name))
                 module.optionChanged(eventOption);
         }
-    }
-
-    public int id;
-    public String name, desc;
-    public Category category;
-    public int color;
-    public boolean active;
-    //        name     option   Note: Name also refers to the icon.
-    public Map<String, Option> options = new LinkedHashMap<>();
-    public ResourceLocation icon;
-    //protected Class[] events = new Class[]{};
-
-    private Module() {
-        this.name = "";
-        this.desc = "";
-        this.category = Category.MISC;
-    }
-
-    public Module(String name, String desc, Category category, String keybind) {
-        this.id = currentId++;
-        this.name = name;
-        this.desc = desc;
-        this.category = category;
-
-        options.put("keybind", new Option("Keybind", "Module toggle keybind", new ValueString(keybind), Option.Type.KEYBIND));
-
-        String base = name.toLowerCase().replaceAll(" ", "");
-        modules.put(base, this);
-
-        icon = new ResourceLocation("client/icons/module/" + base + ".png");
     }
 
     protected void initCommands(String base) {
@@ -385,7 +383,7 @@ public class Module extends Helper {
     }
 
     public float FLOAT(String... names) {
-        return (float) OBJECT(names);
+        return ((Double) OBJECT(names)).floatValue();
     }
 
     public double DOUBLE(String... names) {

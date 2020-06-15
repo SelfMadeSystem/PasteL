@@ -1,13 +1,9 @@
 package com.ihl.client.module.hacks.misc;
 
 import com.ihl.client.commands.Command;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventChatSend;
-import com.ihl.client.event.EventHandler;
+import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueString;
+import com.ihl.client.module.option.*;
 
 @EventHandler(events = {EventChatSend.class})
 public class Commands extends Module {
@@ -26,7 +22,7 @@ public class Commands extends Module {
             if (e.type == Event.Type.PRE) {
                 String message = e.message;
                 if (message.substring(0, prefix.length()).equalsIgnoreCase(prefix)) {
-                    message = message.substring(prefix.length(), message.length());
+                    message = message.substring(prefix.length());
                     String[] args = message.split(" ");
                     String base = args[0].toLowerCase();
                     args = Command.dropFirst(args);

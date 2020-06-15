@@ -20,7 +20,7 @@ public final class RandomUtils {
     }
 
     public static float nextFloat(float startInclusive, float endInclusive) {
-        return startInclusive != endInclusive && endInclusive - startInclusive > 0.0F ? (float)((double)startInclusive + (double)(endInclusive - startInclusive) * Math.random()) : startInclusive;
+        return startInclusive != endInclusive && endInclusive - startInclusive > 0.0F ? (float) ((double) startInclusive + (double) (endInclusive - startInclusive) * Math.random()) : startInclusive;
     }
 
     public static String randomNumber(int length) {
@@ -38,7 +38,7 @@ public final class RandomUtils {
     public static String random(int length, char[] chars) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        for(int i = 0; i < length; ++i) {
+        for (int i = 0; i < length; ++i) {
             stringBuilder.append(chars[getRandom().nextInt(chars.length)]);
         }
 

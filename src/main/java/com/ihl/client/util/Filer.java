@@ -10,9 +10,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Filer {
+    private final String fileName;
+    private final File path;
     protected Minecraft mc;
-    private String fileName;
-    private File path;
 
     public Filer(String fileName, final String clientName) {
         this.mc = Minecraft.getMinecraft();

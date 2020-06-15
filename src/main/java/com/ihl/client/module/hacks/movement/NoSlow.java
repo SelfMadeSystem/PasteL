@@ -1,16 +1,10 @@
 package com.ihl.client.module.hacks.movement;
 
 import com.ihl.client.Helper;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventPacket;
-import com.ihl.client.event.EventPlayerUpdate;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.Module;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
+import com.ihl.client.event.*;
+import com.ihl.client.module.*;
+import net.minecraft.network.play.client.*;
+import net.minecraft.util.*;
 
 @EventHandler(events = {EventPacket.class, EventPlayerUpdate.class})
 public class NoSlow extends Module {

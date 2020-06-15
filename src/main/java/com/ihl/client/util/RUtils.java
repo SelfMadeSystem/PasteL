@@ -6,10 +6,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 
 public final class RUtils {
     public static boolean lookChanged;
@@ -451,7 +448,7 @@ public final class RUtils {
     }
 
     public static VecRotation searchCenter(final AxisAlignedBB bb, final boolean outborder, final boolean random, final double predict, final boolean throughWalls) {
-        if(outborder) {
+        if (outborder) {
             final Vec3 vec3 = new Vec3(bb.minX + (bb.maxX - bb.minX) * (x * 0.3 + 1.0), bb.minY + (bb.maxY - bb.minY) * (y * 0.3 + 1.0), bb.minZ + (bb.maxZ - bb.minZ) * (z * 0.3 + 1.0));
             return new VecRotation(vec3, toRotation(vec3, predict));
         }
@@ -461,13 +458,13 @@ public final class RUtils {
 
         VecRotation vecRotation = null;
 
-        for(double xSearch = 0.15D; xSearch < 0.85D; xSearch += 0.1D) {
+        for (double xSearch = 0.15D; xSearch < 0.85D; xSearch += 0.1D) {
             for (double ySearch = 0.15D; ySearch < 1D; ySearch += 0.1D) {
                 for (double zSearch = 0.15D; zSearch < 0.85D; zSearch += 0.1D) {
                     final Vec3 vec3 = new Vec3(bb.minX + (bb.maxX - bb.minX) * xSearch, bb.minY + (bb.maxY - bb.minY) * ySearch, bb.minZ + (bb.maxZ - bb.minZ) * zSearch);
                     final float[] rotation = toRotation(vec3, predict);
 
-                    if(throughWalls || isVisible(vec3)) {
+                    if (throughWalls || isVisible(vec3)) {
                         final VecRotation currentVec = new VecRotation(vec3, rotation);
 
                         if (vecRotation == null || (random ? getRotationDifference(currentVec.getRotation(), randomRotation) <

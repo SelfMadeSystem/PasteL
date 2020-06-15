@@ -25,13 +25,13 @@ public class CFont {
         this.antiAlias = antiAlias;
         this.fractionalMetrics = fractionalMetrics;
         this.tex = setupTexture(font, antiAlias, fractionalMetrics,
-                this.charData);
+          this.charData);
     }
 
     protected DynamicTexture setupTexture(Font font, boolean antiAlias,
                                           boolean fractionalMetrics, CharData[] chars) {
         BufferedImage img = generateFontImage(font, antiAlias,
-                fractionalMetrics, chars);
+          fractionalMetrics, chars);
         try {
             return new DynamicTexture(img);
         } catch (NullPointerException e) {
@@ -51,14 +51,14 @@ public class CFont {
 
         g.setColor(Color.WHITE);
         g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                fractionalMetrics ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
-                        : RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+          fractionalMetrics ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
+            : RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                antiAlias ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON
-                        : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+          antiAlias ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON
+            : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                antiAlias ? RenderingHints.VALUE_ANTIALIAS_ON
-                        : RenderingHints.VALUE_ANTIALIAS_OFF);
+          antiAlias ? RenderingHints.VALUE_ANTIALIAS_ON
+            : RenderingHints.VALUE_ANTIALIAS_OFF);
         FontMetrics fontMetrics = g.getFontMetrics();
 
         int charHeight = 0;
@@ -69,7 +69,7 @@ public class CFont {
             CharData charData = new CharData();
 
             Rectangle2D dimensions = fontMetrics.getStringBounds(
-                    String.valueOf(ch), g);
+              String.valueOf(ch), g);
 
             charData.width = (dimensions.getBounds().width + 8);
 
@@ -90,7 +90,7 @@ public class CFont {
             chars[i] = charData;
 
             g.drawString(String.valueOf(ch), positionX + 2, positionY
-                    + fontMetrics.getAscent());
+              + fontMetrics.getAscent());
 
             positionX += charData.width;
         }
@@ -98,10 +98,10 @@ public class CFont {
     }
 
     public void drawChar(CharData[] chars, char c, float x, float y)
-            throws ArrayIndexOutOfBoundsException {
+      throws ArrayIndexOutOfBoundsException {
         try {
             drawQuad(x, y, chars[c].width, chars[c].height, chars[c].storedX,
-                    chars[c].storedY, chars[c].width, chars[c].height);
+              chars[c].storedY, chars[c].width, chars[c].height);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,7 +122,7 @@ public class CFont {
         GL11.glTexCoord2f(renderSRCX, renderSRCY + renderSRCHeight);
         GL11.glVertex2d(x, y + height);
         GL11.glTexCoord2f(renderSRCX + renderSRCWidth, renderSRCY
-                + renderSRCHeight);
+          + renderSRCHeight);
         GL11.glVertex2d(x + width, y + height);
         GL11.glTexCoord2f(renderSRCX + renderSRCWidth, renderSRCY);
         GL11.glVertex2d(x + width, y);
@@ -162,7 +162,7 @@ public class CFont {
         if (this.antiAlias != antiAlias) {
             this.antiAlias = antiAlias;
             this.tex = setupTexture(this.font, antiAlias,
-                    this.fractionalMetrics, this.charData);
+              this.fractionalMetrics, this.charData);
         }
     }
 
@@ -174,7 +174,7 @@ public class CFont {
         if (this.fractionalMetrics != fractionalMetrics) {
             this.fractionalMetrics = fractionalMetrics;
             this.tex = setupTexture(this.font, this.antiAlias,
-                    fractionalMetrics, this.charData);
+              fractionalMetrics, this.charData);
         }
     }
 
@@ -185,7 +185,7 @@ public class CFont {
     public void setFont(Font font) {
         this.font = font;
         this.tex = setupTexture(font, this.antiAlias, this.fractionalMetrics,
-                this.charData);
+          this.charData);
     }
 
     protected class CharData {

@@ -2,26 +2,18 @@ package com.ihl.client.module.hacks.render;
 
 import com.ihl.client.Helper;
 import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventRender;
+import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
 import com.ihl.client.module.hacks.misc.Friends;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueBoolean;
-import com.ihl.client.module.option.ValueDouble;
-import com.ihl.client.module.option.ValueString;
-import com.ihl.client.util.ColorUtil;
-import com.ihl.client.util.EntityUtil;
-import com.ihl.client.util.RenderUtil3D;
+import com.ihl.client.module.option.*;
+import com.ihl.client.util.*;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.*;
 import net.minecraft.util.Vec3;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 
 @EventHandler(events = {EventRender.class})
 public class Tracer extends Module {

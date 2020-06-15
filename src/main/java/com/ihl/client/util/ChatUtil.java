@@ -1,12 +1,8 @@
 package com.ihl.client.util;
 
-import com.ihl.client.Client;
-import com.ihl.client.Helper;
+import com.ihl.client.*;
 import com.ihl.client.util.part.ChatColor;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.*;
 
 public class ChatUtil {
 

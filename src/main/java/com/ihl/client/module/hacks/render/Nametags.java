@@ -2,25 +2,20 @@ package com.ihl.client.module.hacks.render;
 
 import com.ihl.client.Helper;
 import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventRender;
+import com.ihl.client.event.*;
 import com.ihl.client.font.MinecraftFontRenderer;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueBoolean;
+import com.ihl.client.module.option.*;
 import com.ihl.client.util.*;
 import net.minecraft.client.network.NetworkPlayerInfo;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 
 @EventHandler(events = {EventRender.class})
 public class Nametags extends Module {

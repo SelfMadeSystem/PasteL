@@ -1,10 +1,7 @@
 package com.ihl.client.module.hacks.render;
 
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventEntityRender;
-import com.ihl.client.event.EventHandler;
+import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
 import org.lwjgl.opengl.GL11;
 
 @EventHandler(events = {EventEntityRender.class})

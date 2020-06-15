@@ -2,7 +2,6 @@ package com.ihl.client.module.hacks.render;
 
 import com.ihl.client.event.EventHandler;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
 
 @EventHandler(events = {})
 public class CameraClip extends Module {

@@ -12,23 +12,23 @@ import static org.lwjgl.opengl.GL11.*;
 public class RenderUtil {
 
     public static MinecraftFontRenderer[] fontTiny = new MinecraftFontRenderer[]{
-            new MinecraftFontRenderer(new Font("Calibri", Font.PLAIN, 10), true, true),
-            new MinecraftFontRenderer(new Font("Calibri", Font.BOLD, 10), true, true)
+      new MinecraftFontRenderer(new Font("Calibri", Font.PLAIN, 10), true, true),
+      new MinecraftFontRenderer(new Font("Calibri", Font.BOLD, 10), true, true)
     };
 
     public static MinecraftFontRenderer[] fontSmall = new MinecraftFontRenderer[]{
-            new MinecraftFontRenderer(new Font("Verdana", Font.PLAIN, 12), true, true),
-            new MinecraftFontRenderer(new Font("Verdana", Font.BOLD, 12), true, true)
+      new MinecraftFontRenderer(new Font("Verdana", Font.PLAIN, 12), true, true),
+      new MinecraftFontRenderer(new Font("Verdana", Font.BOLD, 12), true, true)
     };
 
     public static MinecraftFontRenderer[] fontMedium = new MinecraftFontRenderer[]{
-            new MinecraftFontRenderer(new Font("Verdana", Font.PLAIN, 18), true, true),
-            new MinecraftFontRenderer(new Font("Verdana", Font.BOLD, 18), true, true)
+      new MinecraftFontRenderer(new Font("Verdana", Font.PLAIN, 18), true, true),
+      new MinecraftFontRenderer(new Font("Verdana", Font.BOLD, 18), true, true)
     };
 
     public static MinecraftFontRenderer[] fontLarge = new MinecraftFontRenderer[]{
-            new MinecraftFontRenderer(new Font("Verdana", Font.PLAIN, 24), true, true),
-            new MinecraftFontRenderer(new Font("Verdana", Font.BOLD, 24), true, true)
+      new MinecraftFontRenderer(new Font("Verdana", Font.PLAIN, 24), true, true),
+      new MinecraftFontRenderer(new Font("Verdana", Font.BOLD, 24), true, true)
     };
 
     public static void startClip(double x1, double y1, double x2, double y2) {

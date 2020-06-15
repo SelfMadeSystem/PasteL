@@ -2,9 +2,8 @@ package com.ihl.client.module.option;
 
 public class Value {
 
-    protected Object value;
-
     public Option option;
+    protected Object value;
 
     public Value(Object value) {
         this.value = value;

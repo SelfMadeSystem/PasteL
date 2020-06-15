@@ -10,16 +10,14 @@ public class CustomMouser extends MouseHelper {
         new CustomMouser();
     }
 
+    public float rotationYaw, rotationPitch, prevRotationYaw, prevRotationPitch;
+    public int toPlayer = 0; //0 none 1 set 2 add
+    public boolean got, active;
     private Minecraft mc;
-
     public CustomMouser() {
         mc = Minecraft.getMinecraft();
         instance = this;
     }
-
-    public float rotationYaw, rotationPitch, prevRotationYaw, prevRotationPitch;
-    public int toPlayer = 0; //0 none 1 set 2 add
-    public boolean got, active;
 
     @Override
     public void grabMouseCursor() {
@@ -55,7 +53,7 @@ public class CustomMouser extends MouseHelper {
         byte var17 = 1;
 
         setAngles(var15, var16 * (float) var17);
-        return new float[] {rotationYaw, rotationPitch};
+        return new float[]{rotationYaw, rotationPitch};
     }
 
     public void setAngles(float yaw, float pitch) {

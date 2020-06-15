@@ -2,13 +2,11 @@ package com.ihl.client.util;
 
 import net.minecraft.util.Vec3;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
 
 import java.math.*;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.nio.*;
 
 public class MathUtil {
 

@@ -3,24 +3,19 @@ package com.ihl.client.module.hacks.render;
 import com.ihl.client.Helper;
 import com.ihl.client.comparator.EntityDistanceComparator;
 import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventRender;
+import com.ihl.client.event.*;
 import com.ihl.client.module.*;
 import com.ihl.client.module.hacks.misc.Friends;
 import com.ihl.client.module.option.*;
-import com.ihl.client.util.ColorUtil;
-import com.ihl.client.util.ConvexHull;
-import com.ihl.client.util.EntityUtil;
-import com.ihl.client.util.RenderUtil2D;
+import com.ihl.client.util.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 
 import javax.vecmath.Point2d;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.*;
 
 @EventHandler(events = {EventRender.class})
 public class ESP extends Module {

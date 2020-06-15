@@ -18,7 +18,7 @@ public class Nofall extends Module {
         if (event instanceof EventPlayerUpdate) {
             String mode = STRING("Mode");
             switch (mode) {
-                case "Spoof" : {
+                case "Spoof": {
                     if (mc().thePlayer.fallDistance > 2.5) {
                         mc().thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
                         //^^kind of bypasses hypixel sometimes get laggbaked by ncp

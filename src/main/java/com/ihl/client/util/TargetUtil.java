@@ -2,9 +2,9 @@ package com.ihl.client.util;
 
 import com.ihl.client.Helper;
 import com.ihl.client.comparator.*;
-import com.ihl.client.module.hacks.misc.Friends;
 import com.ihl.client.module.hacks.combat.AntiBot;
-import net.minecraft.entity.*;
+import com.ihl.client.module.hacks.misc.Friends;
+import net.minecraft.entity.EntityLivingBase;
 
 import java.util.*;
 
@@ -51,11 +51,11 @@ public class TargetUtil {
           !Friends.isFriend(entity.getName()) &&
           Helper.player().getDistanceToEntity(entity) < distance &&
           rotationDifference < range) && (
-            (!AntiBot.ground || entity.onGround) &&
+          (!AntiBot.ground || entity.onGround) &&
             (!AntiBot.air || !entity.onGround) &&
             /*(!AntiBot.tab || !entity.tabbystuff) &&*/// TODO: 2020-06-04 make tab thingy
             (!AntiBot.color || !entity.getName().replace("§r", "").contains("§")) &&
-              (!AntiBot.hit || AntiBot.hitted.contains(entity.getEntityId()))
-          );
+            (!AntiBot.hit || AntiBot.hitted.contains(entity.getEntityId()))
+        );
     }
 }

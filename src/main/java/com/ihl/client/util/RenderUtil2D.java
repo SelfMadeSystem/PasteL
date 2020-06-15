@@ -2,9 +2,7 @@ package com.ihl.client.util;
 
 import com.ihl.client.font.MinecraftFontRenderer;
 import com.ihl.client.util.part.ChatColor;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 
 import javax.vecmath.Point2d;
 import java.util.List;
@@ -65,7 +63,7 @@ public class RenderUtil2D extends RenderUtil {
         float[] rgba = ColorUtil.getRGBA(color);
         preRender(rgba);
 
-        glLineWidth((float)Math.max(0.1, width));
+        glLineWidth((float) Math.max(0.1, width));
 
         Tessellator tess = Tessellator.getInstance();
         WorldRenderer render = tess.getWorldRenderer();
@@ -91,12 +89,12 @@ public class RenderUtil2D extends RenderUtil {
         Tessellator tess = Tessellator.getInstance();
         WorldRenderer render = tess.getWorldRenderer();
 
-        for(double i = 0; i < 360; i++) {
-            double cs = i*Math.PI/180;
-            double ps = (i-1)*Math.PI/180;
-            double[] outer = new double[] {
-                    Math.cos(cs) * radius, -Math.sin(cs) * radius,
-                    Math.cos(ps) * radius, -Math.sin(ps) * radius
+        for (double i = 0; i < 360; i++) {
+            double cs = i * Math.PI / 180;
+            double ps = (i - 1) * Math.PI / 180;
+            double[] outer = new double[]{
+              Math.cos(cs) * radius, -Math.sin(cs) * radius,
+              Math.cos(ps) * radius, -Math.sin(ps) * radius
             };
 
             render.startDrawing(6);
@@ -122,10 +120,10 @@ public class RenderUtil2D extends RenderUtil {
         WorldRenderer render = tess.getWorldRenderer();
 
         render.startDrawing(2);
-        for(double i = 0; i < 360; i++) {
-            double cs = i*Math.PI/180;
-            double[] outer = new double[] {
-                    Math.cos(cs) * radius, -Math.sin(cs) * radius
+        for (double i = 0; i < 360; i++) {
+            double cs = i * Math.PI / 180;
+            double[] outer = new double[]{
+              Math.cos(cs) * radius, -Math.sin(cs) * radius
             };
 
             render.addVertex(x + outer[0], y + outer[1], 0);
@@ -145,11 +143,11 @@ public class RenderUtil2D extends RenderUtil {
         Tessellator tess = Tessellator.getInstance();
         WorldRenderer render = tess.getWorldRenderer();
 
-        for(double i = 0; i < 360; i++) {
-            double cs = i*Math.PI/180D;
-            double ps = (i-1)*Math.PI/180D;
-            double[] outer = new double[] { Math.cos(cs) * radius, -Math.sin(cs) * radius, Math.cos(ps) * radius, -Math.sin(ps) * radius };
-            double[] inner = new double[] { Math.cos(cs) * hole, -Math.sin(cs) * hole, Math.cos(ps) * hole, -Math.sin(ps) * hole };
+        for (double i = 0; i < 360; i++) {
+            double cs = i * Math.PI / 180D;
+            double ps = (i - 1) * Math.PI / 180D;
+            double[] outer = new double[]{Math.cos(cs) * radius, -Math.sin(cs) * radius, Math.cos(ps) * radius, -Math.sin(ps) * radius};
+            double[] inner = new double[]{Math.cos(cs) * hole, -Math.sin(cs) * hole, Math.cos(ps) * hole, -Math.sin(ps) * hole};
 
             render.startDrawing(7);
             render.addVertex(x + inner[0], y + inner[1], 0);
@@ -169,13 +167,13 @@ public class RenderUtil2D extends RenderUtil {
         Tessellator tess = Tessellator.getInstance();
         WorldRenderer render = tess.getWorldRenderer();
 
-        part = (part+maxParts)%maxParts;
+        part = (part + maxParts) % maxParts;
 
-        for(double i = (360D/maxParts)*(part+padding); i < ((360D/maxParts)*(part+1-padding))-0.5; i+= 1) {
-            double cs = (-i)*Math.PI/180;
-            double ps = (-i-1)*Math.PI/180;
-            double[] outer = new double[] { Math.cos(cs) * radius, -Math.sin(cs) * radius, Math.cos(ps) * radius, -Math.sin(ps) * radius };
-            double[] inner = new double[] { Math.cos(cs) * hole, -Math.sin(cs) * hole, Math.cos(ps) * hole, -Math.sin(ps) * hole };
+        for (double i = (360D / maxParts) * (part + padding); i < ((360D / maxParts) * (part + 1 - padding)) - 0.5; i += 1) {
+            double cs = (-i) * Math.PI / 180;
+            double ps = (-i - 1) * Math.PI / 180;
+            double[] outer = new double[]{Math.cos(cs) * radius, -Math.sin(cs) * radius, Math.cos(ps) * radius, -Math.sin(ps) * radius};
+            double[] inner = new double[]{Math.cos(cs) * hole, -Math.sin(cs) * hole, Math.cos(ps) * hole, -Math.sin(ps) * hole};
 
             render.startDrawing(7);
             render.addVertex(x + inner[0], y + inner[1], 0);
@@ -195,13 +193,13 @@ public class RenderUtil2D extends RenderUtil {
         Tessellator tess = Tessellator.getInstance();
         WorldRenderer render = tess.getWorldRenderer();
 
-        part = (part+maxParts)%maxParts;
+        part = (part + maxParts) % maxParts;
 
-        for(double i = (360D/maxParts)*part; i < ((360D/maxParts)*(part+frac))-0.5; i++) {
-            double cs = (-i)*Math.PI/180D;
-            double ps = (-i-1)*Math.PI/180D;
-            double[] outer = new double[] { Math.cos(cs) * radius, -Math.sin(cs) * radius, Math.cos(ps) * radius, -Math.sin(ps) * radius };
-            double[] inner = new double[] { Math.cos(cs) * hole, -Math.sin(cs) * hole, Math.cos(ps) * hole, -Math.sin(ps) * hole };
+        for (double i = (360D / maxParts) * part; i < ((360D / maxParts) * (part + frac)) - 0.5; i++) {
+            double cs = (-i) * Math.PI / 180D;
+            double ps = (-i - 1) * Math.PI / 180D;
+            double[] outer = new double[]{Math.cos(cs) * radius, -Math.sin(cs) * radius, Math.cos(ps) * radius, -Math.sin(ps) * radius};
+            double[] inner = new double[]{Math.cos(cs) * hole, -Math.sin(cs) * hole, Math.cos(ps) * hole, -Math.sin(ps) * hole};
 
             render.startDrawing(7);
             render.addVertex(x + inner[0], y + inner[1], 0);
@@ -215,9 +213,9 @@ public class RenderUtil2D extends RenderUtil {
     }
 
     public static void string(MinecraftFontRenderer font, String text, double x, double y, int color, int xAlign, int yAlign, boolean shadow) {
-        for(String key : ColorUtil.colors.keySet()) {
+        for (String key : ColorUtil.colors.keySet()) {
             ChatColor c = ColorUtil.colors.get(key);
-            text = text.replace(c.regex, "&"+c.color);
+            text = text.replace(c.regex, "&" + c.color);
         }
 
         text = ChatUtil.addFormat(text, "&");

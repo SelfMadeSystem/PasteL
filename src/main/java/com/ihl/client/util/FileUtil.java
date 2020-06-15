@@ -140,12 +140,12 @@ public class FileUtil {
                     Option option = Option.get(module.options, strings);
                     if (module.name.equalsIgnoreCase("speed"))
                         //System.out.println(option + " " + strings + " " + value);
-                    if (strings.get(0).equalsIgnoreCase("customvalues") && strings.size() > 1){
-                        module.options.get("customvalues").addOptionIfAbsent(((Speed) module).generateOption(strings.get(1)));
-                        if (strings.size() > 2 && strings.get(2).equalsIgnoreCase("name")) {
-                            module.options.get("customvalues").options.get(strings.get(1)).name = value;
+                        if (strings.get(0).equalsIgnoreCase("customvalues") && strings.size() > 1) {
+                            module.options.get("customvalues").addOptionIfAbsent(((Speed) module).generateOption(strings.get(1)));
+                            if (strings.size() > 2 && strings.get(2).equalsIgnoreCase("name")) {
+                                module.options.get("customvalues").options.get(strings.get(1)).name = value;
+                            }
                         }
-                    }
                     if (option != null) {
                         if (option.type == Option.Type.LIST) {
                             String[] splitter = value.split(",");

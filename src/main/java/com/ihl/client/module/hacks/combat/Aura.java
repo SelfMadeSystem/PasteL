@@ -13,6 +13,10 @@ import net.minecraft.util.MovingObjectPosition;
 @EventHandler(events = {EventPlayerUpdate.class, EventRender.class, EventPacket.class})
 public class Aura extends Module {
 
+    private long delay;
+    private long lastSwing;
+    private boolean attack;
+
     public Aura() {
         super("Aura", "Automatically hits stuff around you.", Category.COMBAT, "NONE");
         Option aW = addChoice("Aim Where", "Aim where", "top", "head", "centre", "feet", "fromTop", "fromBottom", "auto");
@@ -70,10 +74,6 @@ public class Aura extends Module {
             CustomMouser.instance.fromPlayer();
         }
     }
-
-    private long delay;
-    private long lastSwing;
-    private boolean attack;
 
     protected void onEvent(Event event) {
         String aimWhere = Option.get(options, "aimwhere").CHOICE();

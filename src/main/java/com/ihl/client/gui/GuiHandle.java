@@ -2,27 +2,20 @@ package com.ihl.client.gui;
 
 import com.ihl.client.Helper;
 import com.ihl.client.commands.Command;
-import com.ihl.client.gui.ring.RingKeybind;
-import com.ihl.client.gui.ring.RingString;
+import com.ihl.client.gui.ring.*;
 import com.ihl.client.module.Module;
-import com.ihl.client.util.ChatUtil;
-import com.ihl.client.util.RenderUtil;
-import com.ihl.client.util.RenderUtil2D;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.ScaledResolution;
+import com.ihl.client.util.*;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GuiHandle extends GuiScreen {
 
-    private static List<String> history = new CopyOnWriteArrayList();
+    private static final List<String> history = new CopyOnWriteArrayList();
     private int selected = -1;
     private GuiTextField console;
 

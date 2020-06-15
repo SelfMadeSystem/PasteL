@@ -2,23 +2,19 @@ package com.ihl.client.module.hacks.combat;
 
 import com.ihl.client.Helper;
 import com.ihl.client.event.*;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.Module;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueDouble;
+import com.ihl.client.module.*;
+import com.ihl.client.module.option.*;
 import com.ihl.client.util.TimerUtil;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 
 @EventHandler(events = {EventPlayerMotion.class})
 public class AutoPotion extends Module {
 
+    private final TimerUtil dropTimer = new TimerUtil();
+    private final TimerUtil inventoryTimer = new TimerUtil();
     private int holding;
     private double yaw, pitch;
-    private TimerUtil dropTimer = new TimerUtil();
-    private TimerUtil inventoryTimer = new TimerUtil();
 
     public AutoPotion() {
         super("Auto Potion", "Splash health potions when needed", Category.COMBAT, "NONE");
@@ -81,7 +77,7 @@ public class AutoPotion extends Module {
                 ItemStack stack = slot.getStack();
                 Item item = stack.getItem();
                 if (item instanceof ItemPotion &&
-                        ItemPotion.isSplash(stack.getMetadata())) {
+                  ItemPotion.isSplash(stack.getMetadata())) {
                     return i;
                 }
             }
@@ -96,7 +92,7 @@ public class AutoPotion extends Module {
                 ItemStack stack = slot.getStack();
                 Item item = stack.getItem();
                 if (item instanceof ItemPotion &&
-                        (stack.getItemDamage() == 16421) || stack.getItemDamage() == 16453) {
+                  (stack.getItemDamage() == 16421) || stack.getItemDamage() == 16453) {
                     return i;
                 }
             }

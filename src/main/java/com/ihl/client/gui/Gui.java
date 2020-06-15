@@ -2,14 +2,10 @@ package com.ihl.client.gui;
 
 import com.ihl.client.Helper;
 import com.ihl.client.comparator.StringLengthComparator;
-import com.ihl.client.gui.ring.PrevRing;
-import com.ihl.client.gui.ring.Ring;
-import com.ihl.client.gui.ring.RingCategory;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.Module;
+import com.ihl.client.gui.ring.*;
+import com.ihl.client.module.*;
 import com.ihl.client.module.option.Option;
-import com.ihl.client.util.ColorUtil;
-import com.ihl.client.util.RenderUtil2D;
+import com.ihl.client.util.*;
 import com.ihl.client.util.part.Settings;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.Display;

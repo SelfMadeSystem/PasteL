@@ -1,10 +1,7 @@
 package com.ihl.client.commands;
 
-import com.ihl.client.commands.exceptions.ArgumentException;
-import com.ihl.client.commands.exceptions.CommandException;
-import com.ihl.client.commands.exceptions.SyntaxException;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventCommand;
+import com.ihl.client.commands.exceptions.*;
+import com.ihl.client.event.*;
 import com.ihl.client.module.Module;
 import com.ihl.client.module.option.Option;
 import com.ihl.client.util.part.Settings;

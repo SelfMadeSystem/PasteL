@@ -1,14 +1,13 @@
 package com.ihl.client.comparator;
 
 import com.ihl.client.util.EntityUtil;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.*;
 
 import java.util.Comparator;
 
 public class EntityCrosshairComparator implements Comparator<Entity> {
 
-    private EntityLivingBase central;
+    private final EntityLivingBase central;
 
     public EntityCrosshairComparator(EntityLivingBase central) {
         this.central = central;

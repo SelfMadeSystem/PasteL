@@ -1,26 +1,19 @@
 package com.ihl.client.module.hacks.misc;
 
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventPlayerPickBlock;
+import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueBoolean;
-import com.ihl.client.module.option.ValueList;
-import com.ihl.client.module.option.ValueString;
+import com.ihl.client.module.option.*;
 import com.ihl.client.util.ChatUtil;
 import net.minecraft.entity.EntityLivingBase;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @EventHandler(events = {EventPlayerPickBlock.class})
 public class Friends extends Module {
 
     public Friends() {
         super("Friends", "Whitelist friends for combat mods", Category.MISC, "NONE");
-        options.put("friends", new Option("Friends", "List of friends", new ValueList(new String[]{}), Option.Type.LIST));
+        options.put("friends", new Option("Friends", "List of friends", new ValueList(), Option.Type.LIST));
         options.put("middleclick", new Option("Middle Click", "Allow middle clicking players to toggle them", new ValueBoolean(true), Option.Type.BOOLEAN));
         options.put("color", new Option("Color", "Render color override", new ValueString("ffffffff"), Option.Type.STRING));
         initCommands(name.toLowerCase().replaceAll(" ", ""));

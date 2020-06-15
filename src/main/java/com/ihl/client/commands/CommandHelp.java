@@ -1,9 +1,6 @@
 package com.ihl.client.commands;
 
-import com.ihl.client.commands.exceptions.ArgumentException;
-import com.ihl.client.commands.exceptions.CommandException;
-import com.ihl.client.commands.exceptions.SyntaxException;
-import com.ihl.client.gui.ring.Ring;
+import com.ihl.client.commands.exceptions.*;
 import com.ihl.client.module.Module;
 import com.ihl.client.module.option.Option;
 import com.ihl.client.util.ChatUtil;
@@ -21,7 +18,7 @@ public class CommandHelp extends Command {
         List<String> owo = Option.getAllS(Module.get("speed").options, " ");
         ChatUtil.sendRaw(owo.size() + "");
         System.out.println(owo.size());
-        for(String s: owo){
+        for (String s : owo) {
             ChatUtil.sendRaw(s);
             System.out.println(s);
         }

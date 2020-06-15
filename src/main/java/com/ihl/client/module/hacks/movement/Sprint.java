@@ -1,13 +1,9 @@
 package com.ihl.client.module.hacks.movement;
 
 import com.ihl.client.Helper;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventHandler;
-import com.ihl.client.event.EventPlayerLiving;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.Module;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueBoolean;
+import com.ihl.client.event.*;
+import com.ihl.client.module.*;
+import com.ihl.client.module.option.*;
 
 @EventHandler(events = {EventPlayerLiving.class})
 public class Sprint extends Module {
@@ -26,7 +22,7 @@ public class Sprint extends Module {
             EventPlayerLiving e = (EventPlayerLiving) event;
             if (e.type == Event.Type.PRE) {
                 if (canSprint) {
-                    if ((!directional && Helper.player().moveForward > 0) || directional) {
+                    if (directional || Helper.player().moveForward > 0) {
                         Helper.player().setSprinting(true);
                     }
                 }

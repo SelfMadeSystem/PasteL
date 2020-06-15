@@ -3,8 +3,7 @@ package com.ihl.client.util;
 import com.ihl.client.util.part.ChatColor;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ColorUtil {
 
@@ -12,14 +11,14 @@ public class ColorUtil {
 
     public static int transparency(int color, double alpha) {
         Color c = new Color(color);
-        float r = ((float) 1f / 255f) * c.getRed();
-        float g = ((float) 1f / 255f) * c.getGreen();
-        float b = ((float) 1f / 255f) * c.getBlue();
+        float r = (1f / 255f) * c.getRed();
+        float g = (1f / 255f) * c.getGreen();
+        float b = (1f / 255f) * c.getBlue();
         return new Color(r, g, b, (float) alpha).getRGB();
     }
 
     public static Color rainbow(long offset, float fade) {
-        float hue = (float) ((System.nanoTime() + offset) / 10000000000f) % 1;
+        float hue = ((System.nanoTime() + offset) / 10000000000f) % 1;
         long color = Long.parseLong(Integer.toHexString(Integer.valueOf(Color.HSBtoRGB(hue, 1f, 1f))), 16);
         Color c = new Color((int) color);
         return new Color((c.getRed() / 255f) * fade, (c.getGreen() / 255f) * fade, (c.getBlue() / 255f) * fade, c.getAlpha() / 255f);
@@ -30,7 +29,7 @@ public class ColorUtil {
         float r = (color >> 16 & 255) / 255f;
         float g = (color >> 8 & 255) / 255f;
         float b = (color & 255) / 255f;
-        return new float[] {r, g, b, a};
+        return new float[]{r, g, b, a};
     }
 
     public static int intFromHex(String hex) {
@@ -57,23 +56,23 @@ public class ColorUtil {
      *
      * @param color1 First color to blend.
      * @param color2 Second color to blend.
-     * @param ratio  Blend ratio. 0.5 will give even blend, 1.0 will return
-     *               color1, 0.0 will return color2 and so on.
+     * @param ratio Blend ratio. 0.5 will give even blend, 1.0 will return
+     * color1, 0.0 will return color2 and so on.
      * @return Blended color.
      */
     public static Color blend(Color color1, Color color2, double ratio) {
         float r = (float) ratio;
         float ir = (float) 1.0 - r;
 
-        float rgb1[] = new float[3];
-        float rgb2[] = new float[3];
+        float[] rgb1 = new float[3];
+        float[] rgb2 = new float[3];
 
         color1.getColorComponents(rgb1);
         color2.getColorComponents(rgb2);
 
         Color color = new Color(rgb1[0] * r + rgb2[0] * ir,
-                rgb1[1] * r + rgb2[1] * ir,
-                rgb1[2] * r + rgb2[2] * ir);
+          rgb1[1] * r + rgb2[1] * ir,
+          rgb1[2] * r + rgb2[2] * ir);
 
         return color;
     }
@@ -94,7 +93,7 @@ public class ColorUtil {
     /**
      * Make a color darker.
      *
-     * @param color    Color to make darker.
+     * @param color Color to make darker.
      * @param fraction Darkness fraction.
      * @return Darker color.
      */
@@ -119,7 +118,7 @@ public class ColorUtil {
     /**
      * Make a color lighter.
      *
-     * @param color    Color to make lighter.
+     * @param color Color to make lighter.
      * @param fraction Darkness fraction.
      * @return Lighter color.
      */
@@ -157,8 +156,8 @@ public class ColorUtil {
         String bHex = Integer.toString(b, 16);
 
         return (rHex.length() == 2 ? "" + rHex : "0" + rHex) +
-                (gHex.length() == 2 ? "" + gHex : "0" + gHex) +
-                (bHex.length() == 2 ? "" + bHex : "0" + bHex);
+          (gHex.length() == 2 ? "" + gHex : "0" + gHex) +
+          (bHex.length() == 2 ? "" + bHex : "0" + bHex);
     }
 
 
@@ -190,7 +189,7 @@ public class ColorUtil {
      */
     public static double colorDistance(double[] color1, double[] color2) {
         return ColorUtil.colorDistance(color1[0], color1[1], color1[2],
-                color2[0], color2[1], color2[2]);
+          color2[0], color2[1], color2[2]);
     }
 
 
@@ -202,14 +201,14 @@ public class ColorUtil {
      * @return Distance between colors.
      */
     public static double colorDistance(Color color1, Color color2) {
-        float rgb1[] = new float[3];
-        float rgb2[] = new float[3];
+        float[] rgb1 = new float[3];
+        float[] rgb2 = new float[3];
 
         color1.getColorComponents(rgb1);
         color2.getColorComponents(rgb2);
 
         return ColorUtil.colorDistance(rgb1[0], rgb1[1], rgb1[2],
-                rgb2[0], rgb2[1], rgb2[2]);
+          rgb2[0], rgb2[1], rgb2[2]);
     }
 
 

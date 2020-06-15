@@ -2,14 +2,10 @@ package com.ihl.client.gui.ring;
 
 import com.ihl.client.Helper;
 import com.ihl.client.gui.Gui;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.Module;
-import com.ihl.client.util.ColorUtil;
-import com.ihl.client.util.RenderUtil;
-import com.ihl.client.util.RenderUtil2D;
+import com.ihl.client.module.*;
+import com.ihl.client.util.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class RingModule extends Ring {
 

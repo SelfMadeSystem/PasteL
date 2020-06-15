@@ -96,8 +96,7 @@ public class HookEntityPlayerSP extends EntityPlayerSP {
         return false;
     }
 
-    public boolean isEntityInsideOpaqueBlock()
-    {
+    public boolean isEntityInsideOpaqueBlock() {
         return super.isEntityInsideOpaqueBlock() && !Module.get("phase").active && !Module.get("noclip").active && !Module.get("freecam").active;
     }
 }

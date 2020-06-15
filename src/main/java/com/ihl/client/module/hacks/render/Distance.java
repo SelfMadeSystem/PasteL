@@ -3,9 +3,7 @@ package com.ihl.client.module.hacks.render;
 import com.ihl.client.Helper;
 import com.ihl.client.event.EventHandler;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
-import com.ihl.client.module.option.Option;
-import com.ihl.client.module.option.ValueDouble;
+import com.ihl.client.module.option.*;
 import org.lwjgl.input.Mouse;
 
 @EventHandler(events = {})

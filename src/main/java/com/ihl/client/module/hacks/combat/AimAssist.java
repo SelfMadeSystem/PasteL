@@ -3,7 +3,6 @@ package com.ihl.client.module.hacks.combat;
 import com.ihl.client.Client;
 import com.ihl.client.event.*;
 import com.ihl.client.module.*;
-import com.ihl.client.module.Category;
 import com.ihl.client.module.hacks.combat.aimbases.*;
 import com.ihl.client.module.option.*;
 import com.ihl.client.util.*;

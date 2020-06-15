@@ -7,6 +7,7 @@ public class EventOption extends Event {
     public Module module;
     public Option option;
     public String changed;
+
     public EventOption(Module module, Option option, String changed) {
         super(Type.POST);
         this.module = module;
