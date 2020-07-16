@@ -15,6 +15,7 @@ public class MouseAimBase {
     private static final Minecraft mc;
     public static int prev = 0;
     public static float[] rotations;
+    public static int[] mouseRots;
 
     static {
         mc = Minecraft.getMinecraft();
@@ -47,7 +48,9 @@ public class MouseAimBase {
         }
     }
 
-    public static int[] getNextRotations(String priority, double distance, double range, String aimWhere, double custom, String mode, boolean invertYaw, boolean invertPitch, int maxOvershoot, double predict) {
+    public static int[] getNextRotations(String priority, double distance, double range, String aimWhere, double custom,
+                                         String mode, boolean invertYaw, boolean invertPitch, int maxOvershoot, double predict,
+                                         double yaw, double pitch) {
         int turnSpeedYaw;
         int turnSpeedPitch;
 
@@ -68,62 +71,34 @@ public class MouseAimBase {
             prev++;
         }
         EntityPlayerSP p = mc.thePlayer;
-        return getNextRotations(priority, distance, range, aimWhere, custom, invertYaw, invertPitch, maxOvershoot, turnSpeedYaw, turnSpeedPitch, new float[]{p.rotationYaw, p.rotationPitch}, predict);
+        mouseRots = new int[]{turnSpeedYaw, turnSpeedPitch};
+        return getNextRotations(priority, distance, range, aimWhere, custom, invertYaw, invertPitch, maxOvershoot, yaw, pitch, new float[]{p.rotationYaw, p.rotationPitch}, predict);
     }
 
     public static int[] getNextRotations(String priority, double distance, double range, String aimWhere,
-                                         double custom, boolean invertYaw, boolean invertPitch, double maxOvershoot, int turnSpeedYaw, int turnSpeedPitch, float[] from, double predict) {
+                                         double custom, boolean invertYaw, boolean invertPitch, double maxOvershoot,
+                                         double turnSpeedYaw, double turnSpeedPitch, float[] from, double predict) {
         TargetUtil.targetEntity(priority, distance, range);
         EntityLivingBase target = TargetUtil.target;
-        if (target == null) {
-            return new int[]{0, 0};
-        }
+        if (target == null || rotations == null) return new int[]{0, 0};
 
-
-
-            /*final float f = mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
-            final float gcd = f * f * f * 1.2F;*/
-
-        //ChatUtil.send(prev+""/*RUtils.angleDifference(mc.thePlayer.rotationYaw, rotations[0]) + " " + RUtils.angleDifference(mc.thePlayer.rotationPitch, rotations[1]) + " " +
-        //  turnSpeedYaw + " " + turnSpeedPitch*/);
-
-        if (rotations == null)
-            return new int[]{0, 0};
-
-        int[] changeMouse = new int[]{turnSpeedYaw * (rotations[0] < 0 ? -1 : 1),
-          turnSpeedPitch * (rotations[1] < 0 ? -1 : 1)};/*new int[]{(int) RUtils.angleDifference(mc.thePlayer.rotationYaw, rotations[0]),
-              (int) RUtils.angleDifference(mc.thePlayer.rotationPitch, rotations[1])};*/
-
-        //System.out.println(Arrays.toString(changeMouse) + "|" + mc.gameSettings.mouseSensitivity);
+        int[] changeMouse = new int[]{mouseRots[0] * (rotations[0] < 0 ? -1 : 1),
+          mouseRots[1] * (rotations[1] < 0 ? -1 : 1)};
 
         if (invertYaw)
             changeMouse[0] *= -1;
         if (invertPitch)
             changeMouse[1] *= -1;
-        changeMouse[0] *= (double) turnSpeedYaw / 100;
-        changeMouse[1] *= (double) turnSpeedPitch / 100;
 
+        changeMouse[0] *= turnSpeedYaw / 100;
+        changeMouse[1] *= turnSpeedPitch / 100;
         float[] fts0 = BasicAimBase.getAimTo(360, aimWhere, custom, from, predict);
-        //float[] fts1 = new float[]{RUtils.angleDifference(mc.thePlayer.rotationYaw, fts0[0]), RUtils.angleDifference(mc.thePlayer.rotationPitch, fts0[1])};
-        if (Math.abs(fts0[0]) + maxOvershoot < Math.abs(changeMouse[0]))
+        if (MathUtil.toMouse(Math.abs(fts0[0])) + maxOvershoot < Math.abs(changeMouse[0]))
             changeMouse[0] = (int) (Math.abs(fts0[0]) * (changeMouse[0] > 0 ? 1 : -1));
-        if (Math.abs(fts0[1]) + maxOvershoot < Math.abs(changeMouse[1]))
+        if (MathUtil.toMouse(Math.abs(fts0[1])) + maxOvershoot < Math.abs(changeMouse[1]))
             changeMouse[1] = (int) (Math.abs(fts0[1]) * (changeMouse[1] > 0 ? 1 : -1));
 
         return changeMouse;
-
-        /*float[] rotations = RUtils.limitAngleChange(new float[]{p.rotationYaw, p.rotationPitch}, to, turnSpeedYaw, turnSpeedPitch);
-
-        final float f = mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
-        final float gcd = f * f * f * 1.2F;
-
-        rotations[0] -= rotations[0] % gcd;
-        rotations[1] -= rotations[1] % gcd;*/
-
-        //System.out.printf("%s|%s%n", Arrays.toString(to), Arrays.toString(rotations));
-
-        //p.rotationYaw = rotations[0];
-        //p.rotationPitch = rotations[1];
     }
 
     public static void updateRotations(String aimWhere, double custom, double predict) {

@@ -28,7 +28,7 @@ public class Module extends Helper {
     public int color;
     public boolean active;
     //        name     option   Note: Name also refers to the icon.
-    public Map<String, Option> options = new LinkedHashMap<>();
+    public Map<String, Option> options = new LHM(this);
     public ResourceLocation icon;
 
     private Module() {
@@ -42,7 +42,7 @@ public class Module extends Helper {
         this.desc = desc;
         this.category = category;
 
-        options.put("keybind", new Option("Keybind", "Module toggle keybind", new ValueString(keybind), Option.Type.KEYBIND));
+        addOption(new Option("Keybind", "Module toggle keybind", new ValueString(keybind), Option.Type.KEYBIND));
 
         String base = name.toLowerCase().replaceAll(" ", "");
         modules.put(base, this);
@@ -57,6 +57,7 @@ public class Module extends Helper {
         //COMBAT
         new AimAssist();
         new AimBot();
+        new AimTest();
         new AntiBot();
         new Aura();
         new AutoClicker();
@@ -176,7 +177,7 @@ public class Module extends Helper {
         event(eventOption, false);
         for (String key : modules.keySet()) {
             Module module = modules.get(key);
-            if (eventOption.module.name.equals(module.name))
+            if (eventOption.module != null && eventOption.module.name.equals(module.name))
                 module.optionChanged(eventOption);
         }
     }
@@ -368,29 +369,41 @@ public class Module extends Helper {
         for (int i = 0; i < names.length; i++)
             names[i] = names[i].toLowerCase().replaceAll(" ", "").trim();
         Option currentOpt = options.get(names[0]);
+        if (currentOpt == null) return null;
         for (int i = 1; i < names.length; i++) {
             currentOpt = currentOpt.options.get(names[i]);
+            if (currentOpt == null) return null;
         }
         return currentOpt.getValue();
     }
 
     public boolean BOOLEAN(String... names) {
+        Object obj = OBJECT(names);
+        if (obj == null) return false;
         return (boolean) OBJECT(names);
     }
 
     public int INTEGER(String... names) {
+        Object obj = OBJECT(names);
+        if (obj == null) return 0;
         return ((Double) OBJECT(names)).intValue();
     }
 
     public float FLOAT(String... names) {
+        Object obj = OBJECT(names);
+        if (obj == null) return 0;
         return ((Double) OBJECT(names)).floatValue();
     }
 
     public double DOUBLE(String... names) {
+        Object obj = OBJECT(names);
+        if (obj == null) return 0;
         return (double) OBJECT(names);
     }
 
     public String STRING(String... names) {
+        Object obj = OBJECT(names);
+        if (obj == null) return "";
         return (String) OBJECT(names);
     }
 }

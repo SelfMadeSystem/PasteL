@@ -17,6 +17,8 @@ public class BasicAimBase {
         return getAimTo(limit, aimWhere, custom, new float[]{p.rotationYaw, p.rotationPitch}, predict);
     }
 
+    static Object obj;
+
     public static float[] getAimTo(int limit, String aimWhere, double custom, float[] from, double predict) {
         EntityLivingBase target = TargetUtil.target;
         if (target == null)
@@ -39,7 +41,14 @@ public class BasicAimBase {
                 to = RUtils.getNeededRotations(RUtils.getFromTop(target.getEntityBoundingBox(), custom), predict);
                 break;
             case "auto":
-                to = RUtils.getNeededRotations(RUtils.searchCenter(target.getEntityBoundingBox(), false, false, predict, false).getVec(), predict);
+                try {
+                    obj = RUtils.searchCenter(target.getEntityBoundingBox(), false, false, predict, true);
+                    to = RUtils.getNeededRotations(((VecRotation) obj).getVec(), predict);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                    System.out.println(obj);
+                    throw e;
+                }
                 break;
             default:
                 to = RUtils.getNeededRotations(RUtils.getFromBottom(target.getEntityBoundingBox(), custom), predict);

@@ -237,7 +237,7 @@ public abstract class EntityLivingBase extends Entity
 
             if (var7.getMaterial() != Material.air)
             {
-                double var9 = (double)Math.min(0.2F + var8 / 15.0F, 10.0F);
+                double var9 = Math.min(0.2F + var8 / 15.0F, 10.0F);
 
                 if (var9 > 2.5D)
                 {
@@ -245,7 +245,7 @@ public abstract class EntityLivingBase extends Entity
                 }
 
                 int var11 = (int)(150.0D * var9);
-                ((WorldServer)this.worldObj).func_175739_a(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, var11, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, new int[] {Block.getStateId(var6)});
+                ((WorldServer)this.worldObj).func_175739_a(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, var11, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, Block.getStateId(var6));
             }
         }
 
@@ -306,7 +306,7 @@ public abstract class EntityLivingBase extends Entity
                         float var4 = this.rand.nextFloat() - this.rand.nextFloat();
                         float var5 = this.rand.nextFloat() - this.rand.nextFloat();
                         float var6 = this.rand.nextFloat() - this.rand.nextFloat();
-                        this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX + (double)var4, this.posY + (double)var5, this.posZ + (double)var6, this.motionX, this.motionY, this.motionZ, new int[0]);
+                        this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX + (double)var4, this.posY + (double)var5, this.posZ + (double)var6, this.motionX, this.motionY, this.motionZ);
                     }
 
                     this.attackEntityFrom(DamageSource.drown, 2.0F);
@@ -315,7 +315,7 @@ public abstract class EntityLivingBase extends Entity
 
             if (!this.worldObj.isRemote && this.isRiding() && this.ridingEntity instanceof EntityLivingBase)
             {
-                this.mountEntity((Entity)null);
+                this.mountEntity(null);
             }
         }
         else
@@ -363,11 +363,11 @@ public abstract class EntityLivingBase extends Entity
         {
             if (!this.entityLivingToAttack.isEntityAlive())
             {
-                this.setRevengeTarget((EntityLivingBase)null);
+                this.setRevengeTarget(null);
             }
             else if (this.ticksExisted - this.revengeTimer > 100)
             {
-                this.setRevengeTarget((EntityLivingBase)null);
+                this.setRevengeTarget(null);
             }
         }
 
@@ -418,7 +418,7 @@ public abstract class EntityLivingBase extends Entity
                 double var8 = this.rand.nextGaussian() * 0.02D;
                 double var4 = this.rand.nextGaussian() * 0.02D;
                 double var6 = this.rand.nextGaussian() * 0.02D;
-                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, var8, var4, var6, new int[0]);
+                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, var8, var4, var6);
             }
         }
     }
@@ -509,7 +509,7 @@ public abstract class EntityLivingBase extends Entity
     public void writeEntityToNBT(NBTTagCompound tagCompound)
     {
         tagCompound.setFloat("HealF", this.getHealth());
-        tagCompound.setShort("Health", (short)((int)Math.ceil((double)this.getHealth())));
+        tagCompound.setShort("Health", (short)((int)Math.ceil(this.getHealth())));
         tagCompound.setShort("HurtTime", (short)this.hurtTime);
         tagCompound.setInteger("HurtByTimestamp", this.revengeTimer);
         tagCompound.setShort("DeathTime", (short)this.deathTime);
@@ -604,7 +604,7 @@ public abstract class EntityLivingBase extends Entity
             }
             else if (var6.getId() == 2)
             {
-                this.setHealth((float)((NBTTagShort)var6).getShort());
+                this.setHealth(((NBTTagShort)var6).getShort());
             }
         }
 
@@ -672,7 +672,7 @@ public abstract class EntityLivingBase extends Entity
                 double var5 = (double)(var11 >> 16 & 255) / 255.0D;
                 double var7 = (double)(var11 >> 8 & 255) / 255.0D;
                 double var9 = (double)(var11 >> 0 & 255) / 255.0D;
-                this.worldObj.spawnParticle(var12 ? EnumParticleTypes.SPELL_MOB_AMBIENT : EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, var5, var7, var9, new int[0]);
+                this.worldObj.spawnParticle(var12 ? EnumParticleTypes.SPELL_MOB_AMBIENT : EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, var5, var7, var9);
             }
         }
     }
@@ -765,10 +765,7 @@ public abstract class EntityLivingBase extends Entity
         {
             int var2 = p_70687_1_.getPotionID();
 
-            if (var2 == Potion.regeneration.id || var2 == Potion.poison.id)
-            {
-                return false;
-            }
+            return var2 != Potion.regeneration.id && var2 != Potion.poison.id;
         }
 
         return true;
@@ -1012,7 +1009,7 @@ public abstract class EntityLivingBase extends Entity
             var6 = var6.rotatePitch(-this.rotationPitch * (float)Math.PI / 180.0F);
             var6 = var6.rotateYaw(-this.rotationYaw * (float)Math.PI / 180.0F);
             var6 = var6.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, var6.xCoord, var6.yCoord, var6.zCoord, var3.xCoord, var3.yCoord + 0.05D, var3.zCoord, new int[] {Item.getIdFromItem(p_70669_1_.getItem())});
+            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, var6.xCoord, var6.yCoord, var6.zCoord, var3.xCoord, var3.yCoord + 0.05D, var3.zCoord, Item.getIdFromItem(p_70669_1_.getItem()));
         }
     }
 
@@ -1080,7 +1077,7 @@ public abstract class EntityLivingBase extends Entity
             this.motionY /= 2.0D;
             this.motionZ /= 2.0D;
             this.motionX -= p_70653_3_ / (double)var7 * (double)var8;
-            this.motionY += (double)var8;
+            this.motionY += var8;
             this.motionZ -= p_70653_5_ / (double)var7 * (double)var8;
 
             if (this.motionY > 0.4000000059604645D)
@@ -1294,7 +1291,7 @@ public abstract class EntityLivingBase extends Entity
 
     public EntityLivingBase func_94060_bK()
     {
-        return (EntityLivingBase)(this._combatTracker.func_94550_c() != null ? this._combatTracker.func_94550_c() : (this.attackingPlayer != null ? this.attackingPlayer : (this.entityLivingToAttack != null ? this.entityLivingToAttack : null)));
+        return this._combatTracker.func_94550_c() != null ? this._combatTracker.func_94550_c() : (this.attackingPlayer != null ? this.attackingPlayer : (this.entityLivingToAttack));
     }
 
     public final float getMaxHealth()
@@ -1527,7 +1524,7 @@ public abstract class EntityLivingBase extends Entity
                 {
                     int var12 = (int)(this.posX + (double)var10);
                     int var13 = (int)(this.posZ + (double)var11);
-                    AxisAlignedBB var2 = this.getEntityBoundingBox().offset((double)var10, 1.0D, (double)var11);
+                    AxisAlignedBB var2 = this.getEntityBoundingBox().offset(var10, 1.0D, var11);
 
                     if (this.worldObj.func_147461_a(var2).isEmpty())
                     {
@@ -1566,18 +1563,18 @@ public abstract class EntityLivingBase extends Entity
      */
     protected void jump()
     {
-        this.motionY = (double)this.func_175134_bD();
+        this.motionY = this.func_175134_bD();
 
         if (this.isPotionActive(Potion.jump))
         {
-            this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
+            this.motionY += (float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
         }
 
         if (this.isSprinting())
         {
             float var1 = this.rotationYaw * 0.017453292F;
-            this.motionX -= (double)(MathHelper.sin(var1) * 0.2F);
-            this.motionZ += (double)(MathHelper.cos(var1) * 0.2F);
+            this.motionX -= MathHelper.sin(var1) * 0.2F;
+            this.motionZ += MathHelper.cos(var1) * 0.2F;
         }
 
         this.isAirBorne = true;
@@ -1634,9 +1631,9 @@ public abstract class EntityLivingBase extends Entity
 
                 this.moveFlying(p_70612_1_, p_70612_2_, var6);
                 this.moveEntity(this.motionX, this.motionY, this.motionZ);
-                this.motionX *= (double)var5;
+                this.motionX *= var5;
                 this.motionY *= 0.800000011920929D;
-                this.motionZ *= (double)var5;
+                this.motionZ *= var5;
                 this.motionY -= 0.02D;
 
                 if (this.isCollidedHorizontally && this.isOffsetPositionInLiquid(this.motionX, this.motionY + 0.6000000238418579D - this.posY + var8, this.motionZ))
@@ -1696,8 +1693,8 @@ public abstract class EntityLivingBase extends Entity
 
                 if (this.isOnLadder())
                 {
-                    this.motionX = MathHelper.clamp_double(this.motionX, (double)(-var6), (double)var6);
-                    this.motionZ = MathHelper.clamp_double(this.motionZ, (double)(-var6), (double)var6);
+                    this.motionX = MathHelper.clamp_double(this.motionX, -var6, var6);
+                    this.motionZ = MathHelper.clamp_double(this.motionZ, -var6, var6);
                     this.fallDistance = 0.0F;
 
                     if (this.motionY < -var6)
@@ -1737,8 +1734,8 @@ public abstract class EntityLivingBase extends Entity
                 }
 
                 this.motionY *= 0.9800000190734863D;
-                this.motionX *= (double)var3;
-                this.motionZ *= (double)var3;
+                this.motionX *= var3;
+                this.motionZ *= var3;
             }
         }
 
@@ -1853,7 +1850,7 @@ public abstract class EntityLivingBase extends Entity
         if (var5 > 0.0025000002F)
         {
             var8 = 1.0F;
-            var7 = (float)Math.sqrt((double)var5) * 3.0F;
+            var7 = (float)Math.sqrt(var5) * 3.0F;
             var6 = (float)Math.atan2(var10, var9) * 180.0F / (float)Math.PI - 90.0F;
         }
 
@@ -2117,8 +2114,8 @@ public abstract class EntityLivingBase extends Entity
         this.newPosX = p_180426_1_;
         this.newPosY = p_180426_3_;
         this.newPosZ = p_180426_5_;
-        this.newRotationYaw = (double)p_180426_7_;
-        this.newRotationPitch = (double)p_180426_8_;
+        this.newRotationYaw = p_180426_7_;
+        this.newRotationPitch = p_180426_8_;
         this.newPosRotationIncrements = p_180426_9_;
     }
 
@@ -2276,7 +2273,7 @@ public abstract class EntityLivingBase extends Entity
      */
     public boolean isOnTeam(Team p_142012_1_)
     {
-        return this.getTeam() != null ? this.getTeam().isSameTeam(p_142012_1_) : false;
+        return this.getTeam() != null && this.getTeam().isSameTeam(p_142012_1_);
     }
 
     public void func_152111_bt() {}

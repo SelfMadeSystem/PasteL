@@ -2,8 +2,7 @@ package net.minecraft.client.renderer;
 
 import com.google.gson.JsonSyntaxException;
 import com.ihl.client.Client;
-import com.ihl.client.event.Event;
-import com.ihl.client.event.EventRender;
+import com.ihl.client.event.*;
 import com.ihl.client.module.Module;
 import com.ihl.client.util.*;
 import net.minecraft.block.Block;
@@ -1039,6 +1038,9 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
         if (this.mc.inGameHasFocus && var2) {
             this.mc.mouseHelper.mouseXYChange();
+            EventMouseMove evPre = new EventMouseMove(Event.Type.PRE);
+            Module.event(evPre, false);
+
             float var13 = this.mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
             float var14 = var13 * var13 * var13 * 8.0F;
             float var15 = (float) this.mc.mouseHelper.deltaX * var14;

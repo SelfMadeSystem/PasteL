@@ -4,6 +4,8 @@ import com.ihl.client.*;
 import com.ihl.client.util.part.ChatColor;
 import net.minecraft.util.*;
 
+import java.util.Arrays;
+
 public class ChatUtil {
 
     public static String clearFormat(String message) {
@@ -14,10 +16,17 @@ public class ChatUtil {
         return message.replaceAll("(?i)" + regex + "([0-9a-fklmnor])", "\u00a7$1");
     }
 
-    public static void send(String message) {
+    public static String toSt(Object o) {
+        if (o.getClass().isArray()) {
+            return Arrays.toString((Object[]) o);
+        }
+        return o.toString();
+    }
+
+    public static void send(Object message) {
         if (Helper.world() != null && Helper.player() != null) {
             message = "[v][[t]" + Client.NAME + "[v]][t]: " + message;
-            Helper.player().addChatMessage(makeComponent(message));
+            Helper.player().addChatMessage(makeComponent(toSt(message)));
         }
     }
 

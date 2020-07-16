@@ -188,12 +188,8 @@ public class AxisAlignedBB
                 }
             }
 
-            return p_72323_2_;
         }
-        else
-        {
-            return p_72323_2_;
-        }
+        return p_72323_2_;
     }
 
     /**

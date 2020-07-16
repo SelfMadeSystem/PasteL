@@ -1,5 +1,6 @@
 package com.ihl.client.util;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.Vec3;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
@@ -53,5 +54,25 @@ public class MathUtil {
 
     public static double roundInc(double val, double inc) {
         return Math.round(val * (1d / inc)) / (1d / inc);
+    }
+
+    public static int toMouse(float deg) {
+        float var13 = Minecraft.getMinecraft().gameSettings.mouseSensitivity * 0.6F + 0.2F;
+        float var14 = var13 * var13 * var13 * 8.0F;
+        return (int) (deg / var14);
+    }
+
+    public static float toDeg(int mouse) {
+        float var13 = Minecraft.getMinecraft().gameSettings.mouseSensitivity * 0.6F + 0.2F;
+        float var14 = var13 * var13 * var13 * 8.0F;
+        return mouse * var14;
+    }
+
+    public static boolean sameSides(double a, double b) {
+        return (a < 0 && b < 0) || (a > 0 && b > 0);
+    }
+
+    public static int toSide(double a) {
+        return a < 0 ? -1 : (a > 0 ? 1 : 0);
     }
 }

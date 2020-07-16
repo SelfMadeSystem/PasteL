@@ -21,16 +21,12 @@ public class Speed extends Module {
         addChoice("Mode", "Bypass mode for speed.", "Custom", "NCP", "AAC");
         {//AAC Options
             Option aac = addOption(new CustomOption("AACOptions", "Options for mode \"AAC\"", "AAC"));
-            //addChoice("AACMode", "Mode for \"AAC\"", "Timer", "3.3.13", "3.5.0", "3.6.4", "4.2", "4.2Hop");
             aac.addDouble("AACTimer", "Timer speed for \"Timer\"", 5, 1, 20, 0.1);
             aac.addDouble("AACTimerMove", "Movement speed for \"Timer\". 0 to use vanilla. 0.02 for LiquidBounce AACGround2", 0, 0, 0.5, 0.005);
             aac.addBoolean("AACTimerPos", "Sends position packet for \"Timer\"", true);
-            // mc().getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(player().posX, player().posY, player().posZ, true));
-
         }
         {//NCP Options
-            Option ncp = addOption(new CustomOption("NCPOptions", "Options for mode \"NCP\"", "NCP"));
-            //addChoice("NCPMode", "Mode for \"NCP\"", "Hop", "YPort");
+            //Option ncp = addOption(new CustomOption("NCPOptions", "Options for mode \"NCP\"", "NCP"));
         }
         SpeedMode.init();
         generateOptions();
@@ -161,9 +157,10 @@ public class Speed extends Module {
 
     private Option generateOption(String name, int condition, int everyGround, int everyTick, int tickGround) {
         Option opt = new Option(name, "Custom value.", new ValueBoolean(true), Option.Type.BOOLEAN);
+        opt.module = this;
         opt.addString("Name", "Name of module.", name);
         opt.addBooleanNoS("Delete", "Enable to delete this module.", false);
-        opt.options.put("condition", new Option("Condition", "Condition of this value, when it happens", new ValueChoice(condition, "always", "up", "down", "ground"), Option.Type.CHOICE));
+        opt.addOption(new Option("Condition", "Condition of this value, when it happens", new ValueChoice(condition, "always", "up", "down", "ground"), Option.Type.CHOICE));
         opt.addInteger("EveryGround", "Every X amount of ground hits to do this.", everyGround, 1, 40);
         opt.addInteger("EveryTick", "Every X ticks to do this.", everyTick, 1, 40);
         opt.addInteger("TickGround", "Every X ticks after ground.", tickGround, 1, 40);

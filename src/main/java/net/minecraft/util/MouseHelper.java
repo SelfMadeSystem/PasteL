@@ -1,7 +1,10 @@
 package net.minecraft.util;
 
+import com.ihl.client.util.*;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+
+import java.util.Arrays;
 
 public class MouseHelper {
     /**
@@ -9,10 +12,12 @@ public class MouseHelper {
      * 1 complete
      * 2 add override values to delta
      * 3 multiply override values to delta
+     * 4 custom
      */
     public int overrideMode = 0;
     public boolean moving = false;
     public int deltaX, deltaY, tickX, tickY, trueX, trueY;
+    public double cX1, cX2, cY1, cY2;
     public double overrideY, overrideX;
     private static final String __OBFID = "CL_00000648";
 
@@ -46,6 +51,9 @@ public class MouseHelper {
         } else if (overrideMode == 3) {
             x = (int) (overrideX * trueX);
             y = (int) (overrideY * trueY);
+        } else if (overrideMode == 4) {
+            x = (int) (trueX * Math.abs(MathUtil.sameSides(trueX, cX1) ? cX1 : cX2));
+            y = (int) (trueY * Math.abs(MathUtil.sameSides(trueY, cY1) ? cY1 : cY2));
         } else {
             x = trueX;
             y = trueY;

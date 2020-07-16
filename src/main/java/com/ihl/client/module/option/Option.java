@@ -17,19 +17,22 @@ public class Option {
     public Module module;
     public Type type;
     public ResourceLocation icon;
-    public Map<String, Option> options = new LinkedHashMap<>();
+    public LHM options = new LHM(module);
     public int color;
     private Value value;
 
     public Option(String name, String desc, Value value, Type type) {
         this(name, desc, value, type, new ArrayList<>(), null);
     }
+
     public Option(String name, String desc, Value value, Type type, Option... options) {
         this(name, desc, value, type, Arrays.asList(options), null);
     }
+
     public Option(String name, String desc, Value value, Type type, List<Option> options) {
         this(name, desc, value, type, options, null);
     }
+
     // TODO: 2020-06-12 make this shit private.
     public Option(String name, String desc, Value value, Type type, List<Option> options, Option parent) {
         this.name = name;
@@ -267,11 +270,7 @@ public class Option {
     // name, description, defaultValue
     // Returns created option.
     public Option addBoolean(String name, String description, boolean defaultValue) {
-        Option parent = this;
-        Option opt = new Option(name, description, new ValueBoolean(defaultValue), Option.Type.BOOLEAN, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
+        return addOption(new Option(name, description, new ValueBoolean(defaultValue), Option.Type.BOOLEAN, new ArrayList<>(), parent));
     }
 
     public Option addInteger(String name, String description, int defaultValue, int min, int max) {
@@ -279,43 +278,23 @@ public class Option {
     }
 
     public Option addDouble(String name, String description, double defaultValue, double min, double max, double increments) {
-        Option parent = this;
-        Option opt = new Option(name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), Option.Type.NUMBER, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
+        return addOption(new Option(name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), Option.Type.NUMBER, new ArrayList<>(), parent));
     }
 
     public Option addString(String name, String description, String defaultValue) {
-        Option parent = this;
-        Option opt = new Option(name, description, new ValueString(defaultValue), Option.Type.STRING, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
+        return addOption(new Option(name, description, new ValueString(defaultValue), Option.Type.STRING, new ArrayList<>(), parent));
     }
 
     public Option addChoice(String name, String description, String... values) {
-        Option parent = this;
-        Option opt = new Option(name, description, new ValueChoice(0, values), Option.Type.CHOICE, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
+        return addOption(new Option(name, description, new ValueChoice(0, values), Option.Type.CHOICE, new ArrayList<>(), parent));
     }
 
     public Option addOther(String name, String description) {
-        Option parent = this;
-        Option opt = new OptNoS(this.module, name, description, new ValueString(""), Option.Type.OTHER, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
+        return addOption(new OptNoS(this.module, name, description, new ValueString(""), Option.Type.OTHER, new ArrayList<>(), parent));
     }
 
     public OptNoS addBooleanNoS(String name, String description, boolean defaultValue) {
-        Option parent = this;
-        OptNoS opt = new OptNoS(this.module, name, description, new ValueBoolean(defaultValue), OptNoS.Type.BOOLEAN, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
+        return (OptNoS) addOption(new OptNoS(this.module, name, description, new ValueBoolean(defaultValue), Type.BOOLEAN, new ArrayList<>(), parent));
     }
 
     public OptNoS addIntegerNoS(String name, String description, int defaultValue, int min, int max) {
@@ -323,41 +302,21 @@ public class Option {
     }
 
     public OptNoS addDoubleNoS(String name, String description, double defaultValue, double min, double max, double increments) {
-        Option parent = this;
-        OptNoS opt = new OptNoS(this.module, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), OptNoS.Type.NUMBER, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
+        return (OptNoS) addOption(new OptNoS(this.module, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), OptNoS.Type.NUMBER, new ArrayList<>(), parent));
     }
 
     public OptNoS addStringNoS(String name, String description, String defaultValue) {
-        Option parent = this;
-        OptNoS opt = new OptNoS(this.module, name, description, new ValueString(defaultValue), OptNoS.Type.STRING, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
+        return (OptNoS) addOption(new OptNoS(this.module, name, description, new ValueString(defaultValue), OptNoS.Type.STRING, new ArrayList<>(), parent));
     }
 
     public OptNoS addChoiceNoS(String name, String description, String... values) {
-        Option parent = this;
-        OptNoS opt = new OptNoS(this.module, name, description, new ValueChoice(0, values), OptNoS.Type.CHOICE, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
+        return (OptNoS) addOption(new OptNoS(this.module, name, description, new ValueChoice(0, values), OptNoS.Type.CHOICE, new ArrayList<>(), parent));
     }
 
     public void addOptions(Option... options) {
         for (Option option : options) {
             addOption(option);
         }
-    }
-
-    public OptNoS addOtherNoS(String name, String description) {
-        Option parent = this;
-        OptNoS opt = new OptNoS(this.module, name, description, new ValueString(""), OptNoS.Type.OTHER, new ArrayList<>(), parent);
-        opt.module = this.module;
-        options.put(name.toLowerCase().replaceAll(" ", ""), opt);
-        return opt;
     }
 
     public Option removeOption(String optionName) {
@@ -367,6 +326,8 @@ public class Option {
     public Option addOption(Option option) {
         option.parent = this;
         option.module = this.module;
+        if (options.module == null)
+            options.module = this.module;
         options.put(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
         return option;
@@ -375,13 +336,15 @@ public class Option {
     public Option addOptionIfAbsent(Option option) {
         option.parent = this;
         option.module = this.module;
+        if (options.module == null)
+            options.module = this.module;
         options.putIfAbsent(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
         return option;
     }
 
     public void resetOptionMap() {
-        Map<String, Option> optionMap = new HashMap<>();
+        LHM optionMap = new LHM(module);
         for (Map.Entry<String, Option> entry : options.entrySet()) {
             optionMap.put(entry.getValue().name.toLowerCase().replaceAll(" ", ""), entry.getValue());
         }
@@ -390,37 +353,56 @@ public class Option {
 
     //Option Getters.
     // names
+    private Object nullObject(String notFound, String... names) {
+        new OptionNonExistentException(notFound, names, this.name).printStackTrace();
+        return null;
+    }
+
+    private static class OptionNonExistentException extends Exception {
+        public OptionNonExistentException(String notFound, String[] names, String name) {
+            super("No option found (" + notFound + ") getting (" + Arrays.toString(names) + ") module (" + name + ")");
+        }
+    }
+
     public Object OBJECT(String... names) {
         for (int i = 0; i < names.length; i++)
             names[i] = names[i].toLowerCase().replaceAll(" ", "").trim();
         Option currentOpt = options.get(names[0]);
-        if (currentOpt == null)
-            throw new NullPointerException("N0t value of name:" + names[0]);
+        if (currentOpt == null) return nullObject(names[0], names);
         for (int i = 1; i < names.length; i++) {
             currentOpt = currentOpt.options.get(names[i]);
-            if (currentOpt == null)
-                throw new NullPointerException("Not value of name:" + names[i]);
+            if (currentOpt == null) return nullObject(names[i], names);
         }
         return currentOpt.getValue();
     }
 
     public boolean BOOLEAN(String... names) {
+        Object obj = OBJECT(names);
+        if (obj == null) return false;
         return (boolean) OBJECT(names);
     }
 
     public int INTEGER(String... names) {
+        Object obj = OBJECT(names);
+        if (obj == null) return 0;
         return ((Double) OBJECT(names)).intValue();
     }
 
     public float FLOAT(String... names) {
-        return (float) OBJECT(names);
+        Object obj = OBJECT(names);
+        if (obj == null) return 0;
+        return ((Double) OBJECT(names)).floatValue();
     }
 
     public double DOUBLE(String... names) {
+        Object obj = OBJECT(names);
+        if (obj == null) return 0;
         return (double) OBJECT(names);
     }
 
     public String STRING(String... names) {
+        Object obj = OBJECT(names);
+        if (obj == null) return "";
         return (String) OBJECT(names);
     }
 

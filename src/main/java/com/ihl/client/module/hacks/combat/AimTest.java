@@ -4,31 +4,30 @@ import com.ihl.client.event.*;
 import com.ihl.client.module.*;
 import com.ihl.client.module.hacks.combat.aimbases.*;
 import com.ihl.client.module.option.Option;
-import com.ihl.client.util.TargetUtil;
+import com.ihl.client.util.*;
 import net.minecraft.util.MovingObjectPosition;
 
-@EventHandler(events = {EventMouseMove.class, EventRender.class})
-public class AimBot extends Module {
+import java.util.Arrays;
 
-    public AimBot() {
-        super("AimBot", "Aims at stuff", Category.COMBAT, "NONE");
-        addChoice("Aim When", "Aim when", "always", "mouse");
+@EventHandler(events = {EventMouseMove.class, EventRender.class})
+public class AimTest extends Module {
+
+    public AimTest() {
+        super("AimTest", "Aims at stuff", Category.COMBAT, "NONE");
         Option aW = addChoice("Aim Where", "Aim where", "top", "head", "centre", "feet", "fromTop", "fromBottom", "auto");
         aW.addDouble("Custom", "Value from  top for custom.", 0.4, 0, 3, 0.1);
-        addChoice("Mouse Mode", "How it overrides your mouse", "add", "complete");
         addChoice("Priority", "Switch target selection mode", "distance", "health", "direction");
         addDouble("Distance", "Distance to attack entities within", 3.6, 0, 10, 0.1);
         addDouble("Range", "View range to attack entities within", 180, 0, 180, 1);
         addBoolean("Invert yaw", "Enable or Disable if turning the wrong way.", true);
         addBoolean("Invert pitch", "Enable or Disable if turning the wrong way.", false);
-        addDouble("Predict", "Amount to predict. 0 is none, 1 is motion, 2 double that, and so on.", 1, 0, 10, 0.1);
-        addDouble("Yaw Speed", "Speed to aim towards the target", 30, 0, 300, 1);
-        addDouble("Yaw Speed Random", "Speed alters", 5, 0, 180, 1);
-        addDouble("Yaw Speed Increase", "The increase speed over time", 5, 0, 180, 1);
-        addDouble("Pitch Speed", "Speed to aim towards the target", 30, 0, 300, 1);
-        addDouble("Pitch Speed Random", "Speed alters", 5, 0, 180, 1);
-        addDouble("Pitch Speed Increase", "The increase speed over time", 5, 0, 180, 1);
-        addInteger("Maximum overshoot", "Maximum turn the aimbot is allowed to overshoot", 10, 0, 180);
+        addDouble("Yaw", "Yaw", 5, 1, 10, 0.1);
+        addDouble("YawR", "YawR", 1, 0, 5, 0.1);
+        addDouble("YawD", "YawD", 1, 0, 1, 0.1);
+        addDouble("Pitch", "Pitch", 5, 1, 10, 0.1);
+        addDouble("PitchR", "PitchR", 1, 0, 5, 0.1);
+        addDouble("PitchD", "PitchD", 1, 0, 1, 0.1);
+
         initCommands(name.toLowerCase().replaceAll(" ", ""));
     }
 
@@ -48,38 +47,33 @@ public class AimBot extends Module {
 
     protected void onEvent(Event event) {
         if (event instanceof EventMouseMove) {
-            String aimWhen = STRING("aimwhen");
-            String mouseMode = STRING("mousemode");
             String priority = STRING("priority");
             String aimWhere = STRING("aimwhere");
-            int ya = INTEGER("yawSpeedRandom");
-            int yaw = (int) (INTEGER("yawSpeed") + (Math.random() * ya) - ya / 2) + (noAim * INTEGER("yawSpeedIncrease") / 50);
-            int pa = INTEGER("pitchSpeedRandom");
-            int pitch = (int) (INTEGER("pitchSpeed") + (Math.random() * pa) - pa / 2) + (noAim * INTEGER("pitchSpeedIncrease") / 50);
             double distance = DOUBLE("distance");
             double custom = DOUBLE("aimwhere", "custom");
-            double predict = DOUBLE("predict");
             int range = INTEGER("range");
             int maxOvershoot = INTEGER("maximumOvershoot");
             boolean invertYaw = BOOLEAN("invertyaw");
             boolean invertPitch = BOOLEAN("invertpitch");
-            if (mouseMode.equalsIgnoreCase("add"))
-                mc().mouseHelper.overrideMode = 2;
-            else if (mouseMode.equalsIgnoreCase("complete"))
-                mc().mouseHelper.overrideMode = 1;
 
-            if (aimWhen.equalsIgnoreCase("mouse") && !mc().mouseHelper.moving)
-                return;
-            MouseAimBase.updateRotations(aimWhere, custom, predict);
-            MouseAimBase.mouseRots = new int[]{yaw, pitch};
-            int[] changeMouse = MouseAimBase.getNextRotations(priority, distance, range, aimWhere, custom, invertYaw, invertPitch, maxOvershoot, 1, 1, new float[]{player().rotationYaw, player().rotationPitch}, predict);
+            mc().mouseHelper.overrideMode = 4;
+
+            MouseAimBase.updateRotations(aimWhere, custom, 1);
+            MouseAimBase.mouseRots = new int[]{180, 180};
+            int[] changeMouse = MouseAimBase.getNextRotations(priority, distance, range, aimWhere, custom, invertYaw, invertPitch, maxOvershoot, 180, 180, new float[]{player().rotationYaw, player().rotationPitch}, 1);
             if (TargetUtil.target == null) {
                 mc().mouseHelper.overrideMode = 0;
                 return;
             }
+            double y1 = DOUBLE("yawR");
+            double yaw = (DOUBLE("yaw") + y1) - y1/2;
+            double p1 = DOUBLE("pitchR");
+            double pitch = (DOUBLE("pitch") + p1) - p1/2;
 
-            mc().mouseHelper.overrideX = changeMouse[0];
-            mc().mouseHelper.overrideY = changeMouse[1];
+            mc().mouseHelper.cX1 = MathUtil.toSide(changeMouse[0]) * yaw;
+            mc().mouseHelper.cX2 = DOUBLE("yawD");
+            mc().mouseHelper.cY1 = MathUtil.toSide(changeMouse[1]) * pitch;
+            mc().mouseHelper.cY2 = DOUBLE("pitchD");
 
             if (!mc().objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY)) noAim++;
             else noAim = 0;
