@@ -11,6 +11,6 @@ All the AAC & NCP speeds except AAC 4.2 are ~~stolen~~ *inspired* from LiquidBou
 
 Skidded from:
 - Base - Deluge
-- AAC & NCP Speed = LiquidBounce
+- AAC & NCP Speed as well as a lot of utils = LiquidBounce
 - Some other stuff: FusionX
 - A bit of other things. Wurst
