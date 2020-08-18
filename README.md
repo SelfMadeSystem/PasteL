@@ -1,5 +1,5 @@
 # PasteL
-By: Bram & Sms_Gamer_3808
+By: Sms_Gamer_3808
 
 Pasted Client
 
@@ -14,3 +14,5 @@ Skidded from:
 - AAC & NCP Speed as well as a lot of utils = LiquidBounce
 - Some other stuff: FusionX
 - A bit of other things. Wurst
+
+Bram helped a bit.
