@@ -29,24 +29,24 @@ public class Ring extends Component {
     protected ResourceLocation settingsIcon = new ResourceLocation("client/icons/settings.png");
 
     protected double[] alpha = new double[]{0, 0};
-    protected List<Object> visibleList;
-    protected List<Object> list;
+    protected List<?> visibleList;
+    protected List<?> list;
 
     protected double sizeR;
 
-    public Ring(List list) {
+    public Ring(List<?> list) {
         this.visibleList = list;
         this.list = list;
-        x = Display.getWidth() / 2;
-        y = Display.getHeight() / 2;
+        x = Display.getWidth() / 2F;
+        y = Display.getHeight() / 2F;
         sizeR = size + width;
         settingSlider = new double[list.size()];
         hasSettings = new boolean[list.size()];
     }
 
     public Ring reset() {
-        x = Display.getWidth() / 2;
-        y = Display.getHeight() / 2;
+        x = Display.getWidth() / 2F;
+        y = Display.getHeight() / 2F;
         sizeR = size + width;
         settingSlider = new double[visibleList.size()];
         hasSettings = new boolean[visibleList.size()];

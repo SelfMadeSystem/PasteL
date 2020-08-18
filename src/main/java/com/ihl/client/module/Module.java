@@ -30,6 +30,7 @@ public class Module extends Helper {
     //        name     option   Note: Name also refers to the icon.
     public Map<String, Option> options = new LHM(this);
     public ResourceLocation icon;
+    private int weight;
 
     private Module() {
         this.name = "";
@@ -97,7 +98,7 @@ public class Module extends Helper {
         new NoView();
         new Plugins();
         new Phase();
-        new Pinger();
+        new PacketFucker();
         new Sneak();
         new Speed();
         new SkinDerp();
@@ -187,14 +188,20 @@ public class Module extends Helper {
         usages.add(base);
         for (String key : options.keySet()) {
             Option option = Option.get(options, key);
-            for (String key2 : option.options.keySet()) {
-                Option option2 = Option.get(options, key, key2);
-                usages.add(String.format("%s %s %s %s", name.replaceAll(" ", ""), option.name.replaceAll(" ", ""), option2.name.replaceAll(" ", ""), option2.type == Option.Type.CHOICE ? String.format(option2.type.usage, Strings.join(((ValueChoice) option2.getTValue()).list, "|")) : option2.type.usage).toLowerCase());
-            }
-            usages.add(String.format("%s %s %s", name.replaceAll(" ", ""), option.name.replaceAll(" ", ""), option.type == Option.Type.CHOICE ? String.format(option.type.usage, Strings.join(((ValueChoice) option.getTValue()).list, "|")) : option.type.usage).toLowerCase());
+            initCommands0(usages, option, "");
+            usages.add((name.replaceAll(" ", "") + " " + option.name.replaceAll(" ", "") + " " + (option.type == Option.Type.CHOICE ? String.format(option.type.usage, Strings.join(((ValueChoice) option.getTValue()).list, "|")) : option.type.usage)).toLowerCase());
         }
 
         Command.commands.put(base, new CommandModule(base, usages));
+    }
+
+    private void initCommands0(List<String> usages, Option option, String names) {
+        for (String key2 : option.options.keySet()) {
+            Option option2 = option.getOption(key2);
+            initCommands0(usages, option2, option.name.replaceAll(" ", "") + " ");
+            usages.add((name.replaceAll(" ", "") + " " + names
+              + option.name.replaceAll(" ", "") + " " + option2.name.replaceAll(" ", "") + " " + (option2.type == Option.Type.CHOICE ? String.format(option2.type.usage, Strings.join(((ValueChoice) option2.getTValue()).list, "|")) : option2.type.usage)).toLowerCase());
+        }
     }
 
     public void enable() {
@@ -236,13 +243,30 @@ public class Module extends Helper {
 
     private void limitOption(Option option, boolean... disable) {
         if (option.type == Option.Type.NUMBER) {
-            ValueDouble value = (ValueDouble) option.getTValue();
-            double val = Math.min(Math.max(value.limit[0], (double) value.getValue()), value.limit[1]);
-            val = MathUtil.roundInc(val, value.step);
-            if (disable.length > 0 && disable[0])
-                option.setValueNoTrigger(val);
-            else
-                option.setValue(val);
+            if (option.getTValue() instanceof ValueDouble) {
+                ValueDouble value = (ValueDouble) option.getTValue();
+                double val = Math.min(Math.max(value.limit[0], (double) value.getValue()), value.limit[1]);
+                val = MathUtil.roundInc(val, value.step);
+                if (disable.length > 0 && disable[0])
+                    option.setValueNoTrigger(val);
+                else
+                    option.setValue(val);
+            } else if (option.getTValue() instanceof ValueRange) {
+                ValueRange value = (ValueRange) option.getTValue();
+                double[] v = (double[]) value.getValue();
+                double max = Math.min(Math.max(value.limit[0], v[1]), value.limit[1]);
+                double min = Math.min(Math.max(value.limit[0], v[0]), value.limit[1]);
+                min = MathUtil.roundInc(min, value.step);
+                if (disable.length > 0 && disable[0])
+                    option.setValueNoTrigger(min);
+                else
+                    option.setValue(min);
+                max = MathUtil.roundInc(max, value.step);
+                if (disable.length > 0 && disable[0])
+                    option.setValueNoTrigger(max);
+                else
+                    option.setValue(max);
+            }
         }
     }
 
@@ -259,6 +283,7 @@ public class Module extends Helper {
         Option opt = new Option(name, description, new ValueBoolean(defaultValue), Option.Type.BOOLEAN);
         opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.weight = weight++;
         return opt;
     }
 
@@ -270,6 +295,7 @@ public class Module extends Helper {
         Option opt = new Option(name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), Option.Type.NUMBER);
         opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.weight = weight++;
         return opt;
     }
 
@@ -277,6 +303,7 @@ public class Module extends Helper {
         Option opt = new Option(name, description, new ValueString(defaultValue), Option.Type.STRING);
         opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.weight = weight++;
         return opt;
     }
 
@@ -284,6 +311,7 @@ public class Module extends Helper {
         Option opt = new Option(name, description, new ValueChoice(0, values), Option.Type.CHOICE);
         opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.weight = weight++;
         return opt;
     }
 
@@ -291,6 +319,7 @@ public class Module extends Helper {
         Option opt = new OptNoS(this, name, description, new ValueString(""), Option.Type.OTHER);
         opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.weight = weight++;
         return opt;
     }
 
@@ -298,6 +327,7 @@ public class Module extends Helper {
         OptNoS opt = new OptNoS(this, name, description, new ValueBoolean(defaultValue), OptNoS.Type.BOOLEAN);
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
         opt.module = this;
+        opt.weight = weight++;
         return opt;
     }
 
@@ -309,6 +339,7 @@ public class Module extends Helper {
         OptNoS opt = new OptNoS(this, name, description, new ValueDouble(defaultValue, new double[]{min, max}, increments), OptNoS.Type.NUMBER);
         opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.weight = weight++;
         return opt;
     }
 
@@ -316,6 +347,7 @@ public class Module extends Helper {
         OptNoS opt = new OptNoS(this, name, description, new ValueString(defaultValue), OptNoS.Type.STRING);
         opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.weight = weight++;
         return opt;
     }
 
@@ -323,6 +355,7 @@ public class Module extends Helper {
         OptNoS opt = new OptNoS(this, name, description, new ValueChoice(0, values), OptNoS.Type.CHOICE);
         opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.weight = weight++;
         return opt;
     }
 
@@ -330,6 +363,7 @@ public class Module extends Helper {
         OptNoS opt = new OptNoS(this, name, description, new ValueString(""), OptNoS.Type.OTHER);
         opt.module = this;
         options.put(name.toLowerCase().replaceAll(" ", ""), opt);
+        opt.weight = weight++;
         return opt;
     }
 
@@ -344,6 +378,7 @@ public class Module extends Helper {
         option.parent = null;
         options.put(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
+        option.weight = weight++;
         return option;
     }
 
@@ -352,6 +387,7 @@ public class Module extends Helper {
         option.parent = null;
         options.putIfAbsent(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
+        option.weight = weight++;
         return option;
     }
 

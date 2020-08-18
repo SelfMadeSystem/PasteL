@@ -21,7 +21,7 @@ public class Longjump extends Module {
         if (event instanceof EventPlayerUpdate) {
             String mode = STRING("Mode");
             switch (mode) {
-                case "Hypixel": {
+                case "Hypixel": { //Bram made this
                     if (MUtil.isMoving() && player().onGround) {
                         MUtil.strafe(0.3);
                         timerSpeed(1.5F);

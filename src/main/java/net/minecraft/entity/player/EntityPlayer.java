@@ -1307,7 +1307,7 @@ public abstract class EntityPlayer extends EntityLivingBase
         {
             if (!targetEntity.hitByEntity(this))
             {
-                float var2 = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+                float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
                 byte var3 = 0;
                 float var4 = 0.0F;
 
@@ -1327,16 +1327,16 @@ public abstract class EntityPlayer extends EntityLivingBase
                     ++var18;
                 }
 
-                if (var2 > 0.0F || var4 > 0.0F)
+                if (damage > 0.0F || var4 > 0.0F)
                 {
-                    boolean var5 = this.fallDistance > 0.0F && !this.onGround && !this.isOnLadder() && !this.isInWater() && !this.isPotionActive(Potion.blindness) && this.ridingEntity == null && targetEntity instanceof EntityLivingBase;
+                    boolean isCritUwU = this.fallDistance > 0.0F && !this.onGround && !this.isOnLadder() && !this.isInWater() && !this.isPotionActive(Potion.blindness) && this.ridingEntity == null && targetEntity instanceof EntityLivingBase;
 
-                    if (var5 && var2 > 0.0F)
+                    if (isCritUwU && damage > 0.0F)
                     {
-                        var2 *= 1.5F;
+                        damage *= 1.5F;
                     }
 
-                    var2 += var4;
+                    damage += var4;
                     boolean var6 = false;
                     int var7 = EnchantmentHelper.getFireAspectModifier(this);
 
@@ -1349,7 +1349,7 @@ public abstract class EntityPlayer extends EntityLivingBase
                     double var8 = targetEntity.motionX;
                     double var10 = targetEntity.motionY;
                     double var12 = targetEntity.motionZ;
-                    boolean var14 = targetEntity.attackEntityFrom(DamageSource.causePlayerDamage(this), var2);
+                    boolean var14 = targetEntity.attackEntityFrom(DamageSource.causePlayerDamage(this), damage);
 
                     if (var14)
                     {
@@ -1372,7 +1372,7 @@ public abstract class EntityPlayer extends EntityLivingBase
                             targetEntity.motionZ = var12;
                         }
 
-                        if (var5)
+                        if (isCritUwU)
                         {
                             this.onCriticalHit(targetEntity);
                         }
@@ -1382,7 +1382,7 @@ public abstract class EntityPlayer extends EntityLivingBase
                             this.onEnchantmentCritical(targetEntity);
                         }
 
-                        if (var2 >= 18.0F)
+                        if (damage >= 18.0F)
                         {
                             this.triggerAchievement(AchievementList.overkill);
                         }
@@ -1420,7 +1420,7 @@ public abstract class EntityPlayer extends EntityLivingBase
 
                         if (targetEntity instanceof EntityLivingBase)
                         {
-                            this.addStat(StatList.damageDealtStat, Math.round(var2 * 10.0F));
+                            this.addStat(StatList.damageDealtStat, Math.round(damage * 10.0F));
 
                             if (var7 > 0)
                             {

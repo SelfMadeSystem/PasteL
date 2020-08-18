@@ -212,6 +212,42 @@ public class RenderUtil2D extends RenderUtil {
         postRender();
     }
 
+    public static void donutSegFracTest(double x, double y, double radius, double hole, double min, double max, int color) {
+        float[] rgba = ColorUtil.getRGBA(color);
+        preRender(rgba);
+
+        Tessellator tess = Tessellator.getInstance();
+        WorldRenderer render = tess.getWorldRenderer();
+
+        for (double i = min * 360; i < max * 360; i++) {
+            double cs = (-i) * Math.PI / 180D;
+            double ps = (-i - 1) * Math.PI / 180D;
+            double[] outer = new double[]{Math.cos(cs) * radius, -Math.sin(cs) * radius, Math.cos(ps) * radius, -Math.sin(ps) * radius};
+            double[] inner = new double[]{Math.cos(cs) * hole, -Math.sin(cs) * hole, Math.cos(ps) * hole, -Math.sin(ps) * hole};
+
+            render.startDrawing(7);
+            render.addVertex(x + inner[0], y + inner[1], 0);
+            render.addVertex(x + inner[2], y + inner[3], 0);
+            render.addVertex(x + outer[2], y + outer[3], 0);
+            render.addVertex(x + outer[0], y + outer[1], 0);
+            tess.draw();
+        }
+        double i = max * 360;
+        double cs = (-i) * Math.PI / 180D;
+        double ps = (-i - 1) * Math.PI / 180D;
+        double[] outer = new double[]{Math.cos(cs) * radius, -Math.sin(cs) * radius, Math.cos(ps) * radius, -Math.sin(ps) * radius};
+        double[] inner = new double[]{Math.cos(cs) * hole, -Math.sin(cs) * hole, Math.cos(ps) * hole, -Math.sin(ps) * hole};
+
+        render.startDrawing(7);
+        render.addVertex(x + inner[0], y + inner[1], 0);
+        render.addVertex(x + inner[2], y + inner[3], 0);
+        render.addVertex(x + outer[2], y + outer[3], 0);
+        render.addVertex(x + outer[0], y + outer[1], 0);
+        tess.draw();
+
+        postRender();
+    }
+
     public static void string(MinecraftFontRenderer font, String text, double x, double y, int color, int xAlign, int yAlign, boolean shadow) {
         for (String key : ColorUtil.colors.keySet()) {
             ChatColor c = ColorUtil.colors.get(key);

@@ -16,4 +16,8 @@ public class Value {
     public void setValue(Object value) {
         this.value = value;
     }
+
+    public String stringValue() {
+        return value.toString();
+    }
 }

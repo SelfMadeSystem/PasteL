@@ -20,7 +20,7 @@ public class ChatUtil {
         if (o.getClass().isArray()) {
             return Arrays.toString((Object[]) o);
         }
-        return o.toString();
+        return String.valueOf(o);
     }
 
     public static void send(Object message) {

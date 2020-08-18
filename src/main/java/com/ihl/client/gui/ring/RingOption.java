@@ -14,13 +14,12 @@ public class RingOption extends Ring {
 
     private final Module module;
 
-    public RingOption(List<String> list, Module module) {
+    public RingOption(List<Option> list, Module module) {
         super(list);
         this.module = module;
 
         for (int i = 0; i < list.size(); i++) {
-            String key = list.get(i);
-            Option option = Option.get(module.options, key);
+            Option option = list.get(i);
             hasSettings[i] = option.options != null && !option.options.isEmpty();
         }
     }
@@ -39,7 +38,7 @@ public class RingOption extends Ring {
         module.rendeRing(new EventRing(this));
         this.visibleList = new ArrayList<>(this.list);
         for (Object obj : this.list) {
-            if (!(module.options.get(String.valueOf(obj))).visible())
+            if (!((Option) obj).visible())
                 this.visibleList.remove(obj);
         }
         return super.reset();
@@ -48,11 +47,11 @@ public class RingOption extends Ring {
     @Override
     public void mouseClicked(int button) {
         if (mouseOver && button == 0) {
-            String key = (String) visibleList.get(selected);
-            Option option = Option.get(module.options, key);
+            Option option = (Option) visibleList.get(selected);
             if (mouseOverSettings) {
                 if (option.options != null && !option.options.isEmpty()) {
-                    List<String> list = Arrays.asList(option.options.keySet().toArray(new String[0]));
+                    List<Option> list = Arrays.asList(option.options.values().toArray(new Option[0]));
+                    list.sort(Comparator.comparingInt(o -> o.weight));
                     if (!list.isEmpty()) {
                         Gui.changeRing(new RingSubOption(list, module, option));
                     }
@@ -71,11 +70,13 @@ public class RingOption extends Ring {
                     case LIST:
                         Gui.changeRing(new RingList(module, option, (List<String>) (option.getValue())));
                         break;
+                    case RANGE:
                     case NUMBER:
                         Gui.changeRing(new RingSlider(module, option, Arrays.asList(option.name)));
                         break;
                     case OTHER:
-                        List<String> list = Arrays.asList(option.options.keySet().toArray(new String[0]));
+                        List<Option> list = Arrays.asList(option.options.values().toArray(new Option[0]));
+                        list.sort(Comparator.comparingInt(o -> o.weight));
                         if (!list.isEmpty()) {
                             Gui.changeRing(new RingSubOption(list, module, option));
                         }
@@ -98,8 +99,7 @@ public class RingOption extends Ring {
         int notVisible = 0;
 
         for (int i = 0; i < visibleList.size(); i++) {
-            String key = (String) visibleList.get(i);
-            Option option = Option.get(module.options, key);
+            Option option = (Option) visibleList.get(i);
 
             double iX = x + Math.cos(((360f / (visibleList.size() * 2)) * (((i - notVisible) + 0.5) * 2)) * Math.PI / 180) * (sizeR - (width / 2));
             double iY = y + Math.sin(((360f / (visibleList.size() * 2)) * (((i - notVisible) + 0.5) * 2)) * Math.PI / 180) * (sizeR - (width / 2));
@@ -134,7 +134,7 @@ public class RingOption extends Ring {
         }
 
         if (selected != -1) {
-            Option option = Option.get(module.options, (String) visibleList.get((int) Math.floor(selected)));
+            Option option = (Option)visibleList.get((int) Math.floor(selected));
             RenderUtil2D.string(RenderUtil.fontLarge[1], option.name, x, y, ColorUtil.transparency(white, alpha[0] * alpha[1]), 0, 0, false);
             RenderUtil2D.string(RenderUtil.fontTiny[1], option.desc, x, y + (RenderUtil.fontLarge[1].getHeight() / 2) + 2, ColorUtil.transparency(gray, alpha[0] * alpha[1]), 0, 1, false);
             switch (option.type) {

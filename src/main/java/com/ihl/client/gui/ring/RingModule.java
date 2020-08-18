@@ -3,6 +3,7 @@ package com.ihl.client.gui.ring;
 import com.ihl.client.Helper;
 import com.ihl.client.gui.Gui;
 import com.ihl.client.module.*;
+import com.ihl.client.module.option.Option;
 import com.ihl.client.util.*;
 
 import java.util.*;
@@ -33,7 +34,8 @@ public class RingModule extends Ring {
             String key = (String) visibleList.get(selected);
             Module module = Module.get(key);
             if (mouseOverSettings) {
-                List<String> list = Arrays.asList(module.options.keySet().toArray(new String[0]));
+                List<Option> list = Arrays.asList(module.options.values().toArray(new Option[0]));
+                list.sort(Comparator.comparingInt(o -> o.weight));
                 if (!list.isEmpty()) {
                     Gui.changeRing(new RingOption(list, module));
                 }

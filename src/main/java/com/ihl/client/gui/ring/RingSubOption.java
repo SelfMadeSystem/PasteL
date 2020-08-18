@@ -15,14 +15,13 @@ public class RingSubOption extends Ring {
     private final Module module;
     private final Option option;
 
-    public RingSubOption(List<String> list, Module module, Option option) {
+    public RingSubOption(List<Option> list, Module module, Option option) {
         super(list);
         this.module = module;
         this.option = option;
 
         for (int i = 0; i < list.size(); i++) {
-            String key = list.get(i);
-            Option subOption = Option.get(option.options, key);
+            Option subOption = list.get(i);
             hasSettings[i] = subOption.options != null && !subOption.options.isEmpty();
         }
     }
@@ -30,8 +29,9 @@ public class RingSubOption extends Ring {
     @Override
     public void tick() {
         if (visibleList.isEmpty()) {
-            List<String> list = Arrays.asList(module.options.keySet().toArray(new String[0]));
-            if (list != null && !list.isEmpty()) {
+            List<Option> list = Arrays.asList(module.options.values().toArray(new Option[0]));
+            list.sort(Comparator.comparingInt(o -> o.weight));
+            if (!list.isEmpty()) {
                 Gui.changeRing(new RingOption(list, module));
                 return;
             }
@@ -42,12 +42,12 @@ public class RingSubOption extends Ring {
     @Override
     public void mouseClicked(int button) {
         if (mouseOver && button == 0) {
-            String key = (String) visibleList.get(selected);
-            Option subOption = Option.get(option.options, key);
+            Option subOption = (Option) visibleList.get(selected);
             //System.out.println(subOption.name + "  " + mouseOverSettings + "  " + hasSettings[selected]);
             if (mouseOverSettings) {
                 if (subOption.options != null && !subOption.options.isEmpty()) {
-                    List<String> list = Arrays.asList(subOption.options.keySet().toArray(new String[0]));
+                    List<Option> list = Arrays.asList(subOption.options.values().toArray(new Option[0]));
+                    list.sort(Comparator.comparingInt(o -> o.weight));
                     if (!list.isEmpty()) {
                         Gui.changeRing(new RingSubOption(list, module, subOption));
                     }
@@ -66,11 +66,13 @@ public class RingSubOption extends Ring {
                     case LIST:
                         Gui.changeRing(new RingList(module, subOption, (List<String>) (subOption.getValue())));
                         break;
+                    case RANGE:
                     case NUMBER:
                         Gui.changeRing(new RingSlider(module, subOption, Arrays.asList(subOption.name)));
                         break;
                     case OTHER:
-                        List<String> list = Arrays.asList(subOption.options.keySet().toArray(new String[0]));
+                        List<Option> list = Arrays.asList(subOption.options.values().toArray(new Option[0]));
+                        list.sort(Comparator.comparingInt(o -> o.weight));
                         if (!list.isEmpty()) {
                             Gui.changeRing(new RingSubOption(list, module, subOption));
                         }
@@ -94,7 +96,7 @@ public class RingSubOption extends Ring {
         module.rendeRing(new EventRing(this, option));
         this.visibleList = new ArrayList<>(this.list);
         for (Object obj : this.list) {
-            if ((option.options.get(String.valueOf(obj))) != null && !(option.options.get(String.valueOf(obj))).visible())
+            if (obj != null && !((Option) obj).visible())
                 this.visibleList.remove(obj);
         }
         return super.reset();
@@ -109,8 +111,7 @@ public class RingSubOption extends Ring {
             Gui.prevRing();
 
         for (int i = 0; i < visibleList.size(); i++) {
-            String key = (String) visibleList.get(i);
-            Option subOption = Option.get(option.options, key);
+            Option subOption = (Option) visibleList.get(i);
 
             if (subOption == null) {
                 Gui.prevRing();
@@ -157,7 +158,7 @@ public class RingSubOption extends Ring {
         }
 
         if (selected != -1) {
-            Option subOption = Option.get(option.options, (String) visibleList.get((int) Math.floor(selected)));
+            Option subOption = (Option) visibleList.get((int) Math.floor(selected));
             RenderUtil2D.string(RenderUtil.fontLarge[1], subOption.name, x, y, ColorUtil.transparency(white, alpha[0] * alpha[1]), 0, 0, false);
             RenderUtil2D.string(RenderUtil.fontTiny[1], subOption.desc, x, y + (RenderUtil.fontLarge[1].getHeight() / 2) + 2, ColorUtil.transparency(gray, alpha[0] * alpha[1]), 0, 1, false);
             RenderUtil2D.string(RenderUtil.fontSmall[1], StringUtils.capitalize(subOption.STRING()), x, y + (RenderUtil.fontLarge[1].getHeight() / 2) + RenderUtil.fontTiny[1].getHeight() + 2, ColorUtil.transparency(white, alpha[0] * alpha[1]), 0, 1, false);

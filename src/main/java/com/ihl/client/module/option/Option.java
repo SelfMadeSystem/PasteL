@@ -19,6 +19,7 @@ public class Option {
     public ResourceLocation icon;
     public LHM options = new LHM(module);
     public int color;
+    public int weight;
     private Value value;
 
     public Option(String name, String desc, Value value, Type type) {
@@ -33,7 +34,6 @@ public class Option {
         this(name, desc, value, type, options, null);
     }
 
-    // TODO: 2020-06-12 make this shit private.
     public Option(String name, String desc, Value value, Type type, List<Option> options, Option parent) {
         this.name = name;
         this.desc = desc;
@@ -144,6 +144,14 @@ public class Option {
                     throw new ArgumentException();
                 }
                 break;
+            case RANGE:
+                try {
+                    String[] args = arg.split(",", 2);
+                    value = new double[]{Double.parseDouble(args[0]), Double.parseDouble(args[1])};
+                } catch (Exception e) {
+                    throw new ArgumentException();
+                }
+                break;
             case OTHER:
                 value = "";
                 break;
@@ -247,6 +255,20 @@ public class Option {
         return 0;
     }
 
+    public double MIN() {
+        if (value instanceof ValueRange) {
+            return ((double[]) value.getValue())[0];
+        }
+        return 0;
+    }
+
+    public double MAX() {
+        if (value instanceof ValueRange) {
+            return ((double[]) value.getValue())[1];
+        }
+        return 0;
+    }
+
     public int INTEGER() {
         return (int) DOUBLE();
     }
@@ -255,7 +277,7 @@ public class Option {
         if (type == Type.LIST) {
             return Strings.join(LIST(), ",");
         }
-        return value.getValue().toString();
+        return value.stringValue();
     }
 
     public String CHOICE() {
@@ -330,6 +352,7 @@ public class Option {
             options.module = this.module;
         options.put(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
+        option.weight = weight++;
         return option;
     }
 
@@ -340,6 +363,7 @@ public class Option {
             options.module = this.module;
         options.putIfAbsent(option.name.toLowerCase().replaceAll(" ", ""), option);
         resetOptionMap();
+        option.weight = weight++;
         return option;
     }
 
@@ -451,6 +475,7 @@ public class Option {
         KEYBIND("<key>"),
         LIST("<value>"),
         NUMBER("<number>"),
+        RANGE("<min,max>"),
         OTHER(""),
         STRING("<text>");
 
